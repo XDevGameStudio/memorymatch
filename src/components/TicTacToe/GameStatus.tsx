@@ -4,12 +4,15 @@ import { motion } from 'framer-motion';
 
 interface GameStatusProps {
   winner: string | null;
+  isDraw: boolean;
   isXNext: boolean;
   onReset: () => void;
 }
 
-const GameStatus: React.FC<GameStatusProps> = ({ winner, isXNext, onReset }) => {
-  const status = winner
+const GameStatus: React.FC<GameStatusProps> = ({ winner, isDraw, isXNext, onReset }) => {
+  const status = isDraw
+    ? "Game Over - It's a Tie!"
+    : winner
     ? `Winner: ${winner}`
     : `Next player: ${isXNext ? 'X' : 'O'}`;
 
@@ -19,7 +22,7 @@ const GameStatus: React.FC<GameStatusProps> = ({ winner, isXNext, onReset }) => 
         key={status}
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-2xl font-semibold text-white/90"
+        className="text-2xl font-semibold text-gray-700"
       >
         {status}
       </motion.div>

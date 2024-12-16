@@ -23,6 +23,9 @@ const Game = () => {
   const [isXNext, setIsXNext] = useState(true);
   const { winner, line } = calculateWinner(squares);
 
+  const isBoardFull = squares.every(square => square !== null);
+  const isDraw = !winner && isBoardFull;
+
   const handleClick = (i: number) => {
     if (winner || squares[i]) return;
 
@@ -38,7 +41,7 @@ const Game = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-center gap-8 p-4 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500">
+    <div className="min-h-screen w-full flex flex-col items-center justify-center gap-8 p-4 bg-[#F1F0FB]">
       <Board
         squares={squares}
         winningLine={line}
@@ -46,6 +49,7 @@ const Game = () => {
       />
       <GameStatus
         winner={winner}
+        isDraw={isDraw}
         isXNext={isXNext}
         onReset={resetGame}
       />
