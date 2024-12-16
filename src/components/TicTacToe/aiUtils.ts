@@ -1,4 +1,5 @@
 type Board = (string | null)[];
+type Difficulty = 'easy' | 'medium' | 'hard';
 
 const evaluateBoard = (board: Board, depth: number): number => {
   const { winner } = calculateWinner(board);
@@ -74,7 +75,33 @@ const minimax = (
   }
 };
 
-export const getBestMove = (board: Board): number => {
-  const { move } = minimax(board, 0, true);
-  return move !== null ? move : getEmptySquares(board)[0];
+const getRandomMove = (board: Board): number => {
+  const emptySquares = getEmptySquares(board);
+  const randomIndex = Math.floor(Math.random() * emptySquares.length);
+  return emptySquares[randomIndex];
+};
+
+export const getBestMove = (board: Board, difficulty: Difficulty): number => {
+  const emptySquares = getEmptySquares(board);
+  
+  switch (difficulty) {
+    case 'easy':
+      // 20% chance of making the best move, 80% random
+      return Math.random() < 0.2 
+        ? minimax(board, 0, true).move ?? emptySquares[0]
+        : getRandomMove(board);
+    
+    case 'medium':
+      // 60% chance of making the best move, 40% random
+      return Math.random() < 0.6
+        ? minimax(board, 0, true).move ?? emptySquares[0]
+        : getRandomMove(board);
+    
+    case 'hard':
+      // Always make the best move
+      return minimax(board, 0, true).move ?? emptySquares[0];
+    
+    default:
+      return getRandomMove(board);
+  }
 };
