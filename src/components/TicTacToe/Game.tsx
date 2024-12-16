@@ -4,6 +4,7 @@ import GameStatus from './GameStatus';
 import { getBestMove } from './aiUtils';
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button"
 
 const calculateWinner = (squares: (string | null)[]): { winner: string | null; line: number[] | null } => {
   const lines = [
@@ -24,6 +25,8 @@ const Game = () => {
   const [squares, setSquares] = useState<(string | null)[]>(Array(9).fill(null));
   const [isXNext, setIsXNext] = useState(true);
   const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('medium');
+  const [wins, setWins] = useState(0);
+  const [losses, setLosses] = useState(0);
   const { winner, line } = calculateWinner(squares);
 
   const isBoardFull = squares.every(square => square !== null);
@@ -43,6 +46,16 @@ const Game = () => {
     }
   }, [isXNext, squares, winner, isDraw, difficulty]);
 
+  useEffect(() => {
+    if (winner) {
+      if (winner === 'X') {
+        setWins(prev => prev + 1);
+      } else if (winner === 'O') {
+        setLosses(prev => prev + 1);
+      }
+    }
+  }, [winner]);
+
   const handleClick = (i: number) => {
     if (winner || squares[i] || !isXNext) return;
 
@@ -55,6 +68,12 @@ const Game = () => {
   const resetGame = () => {
     setSquares(Array(9).fill(null));
     setIsXNext(true);
+  };
+
+  const resetEverything = () => {
+    resetGame();
+    setWins(0);
+    setLosses(0);
   };
 
   return (
@@ -80,6 +99,18 @@ const Game = () => {
           </div>
         </RadioGroup>
       </div>
+
+      <div className="flex gap-8 text-lg font-semibold mb-4">
+        <div className="flex flex-col items-center">
+          <span className="text-green-600">Wins</span>
+          <span className="text-2xl">{wins}</span>
+        </div>
+        <div className="flex flex-col items-center">
+          <span className="text-red-600">Losses</span>
+          <span className="text-2xl">{losses}</span>
+        </div>
+      </div>
+
       <Board
         squares={squares}
         winningLine={line}
@@ -91,6 +122,13 @@ const Game = () => {
         isXNext={isXNext}
         onReset={resetGame}
       />
+      <Button 
+        variant="outline"
+        onClick={resetEverything}
+        className="mt-4"
+      >
+        Reset Everything
+      </Button>
     </div>
   );
 };
