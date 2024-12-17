@@ -195,7 +195,7 @@ const Game = () => {
             onClick={resetEverything}
             className="w-full"
           >
-            Reset
+            Reset Everything
           </Button>
         )}
       </div>
