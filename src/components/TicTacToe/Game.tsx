@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Board from './Board';
-import GameStatus from './GameStatus';
 import { getBestMove } from './aiUtils';
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { Toggle } from "@/components/ui/toggle"
 import { Moon, Sun } from "lucide-react"
-import { useTheme } from 'next-themes';
+import { useTheme } from '@/hooks/use-theme';
+import StartScreen from './StartScreen';
+import WinnerDialog from './WinnerDialog';
 
 const calculateWinner = (squares: (string | null)[]): { winner: string | null; line: number[] | null } => {
   const lines = [
@@ -30,7 +30,8 @@ const Game = () => {
   const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('medium');
   const [wins, setWins] = useState(0);
   const [losses, setLosses] = useState(0);
-  const [vsAI, setVsAI] = useState(true);
+  const [vsAI, setVsAI] = useState<boolean | null>(null);
+  const [showWinnerDialog, setShowWinnerDialog] = useState(false);
   const { theme, setTheme } = useTheme();
   const { winner, line } = calculateWinner(squares);
 
@@ -50,6 +51,12 @@ const Game = () => {
       return () => clearTimeout(timer);
     }
   }, [isXNext, squares, winner, isDraw, difficulty, vsAI]);
+
+  useEffect(() => {
+    if (winner || isDraw) {
+      setShowWinnerDialog(true);
+    }
+  }, [winner, isDraw]);
 
   useEffect(() => {
     if (winner && vsAI) {
@@ -73,6 +80,7 @@ const Game = () => {
   const resetGame = () => {
     setSquares(Array(9).fill(null));
     setIsXNext(true);
+    setShowWinnerDialog(false);
   };
 
   const resetEverything = () => {
@@ -80,6 +88,19 @@ const Game = () => {
     setWins(0);
     setLosses(0);
   };
+
+  const handleStartGame = (againstAI: boolean) => {
+    setVsAI(againstAI);
+    resetEverything();
+  };
+
+  if (vsAI === null) {
+    return (
+      <div className="min-h-screen w-full flex items-center justify-center bg-background text-foreground">
+        <StartScreen onStart={handleStartGame} />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center gap-8 p-4 bg-background text-foreground relative">
@@ -93,12 +114,15 @@ const Game = () => {
         <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
       </Button>
 
-      <div className="flex flex-col items-center gap-8">
-        <div className="flex flex-col items-center gap-4">
+      <div className="flex flex-col items-center gap-8 w-full max-w-[300px]">
+        <div className="flex flex-col items-center gap-4 w-full">
           <h2 className="text-lg font-medium">Game Mode</h2>
           <RadioGroup
             defaultValue={vsAI ? "ai" : "player"}
-            onValueChange={(value) => setVsAI(value === "ai")}
+            onValueChange={(value) => {
+              setVsAI(value === "ai");
+              resetEverything();
+            }}
             className="flex gap-4"
           >
             <div className="flex items-center space-x-2">
@@ -113,39 +137,39 @@ const Game = () => {
         </div>
 
         {vsAI && (
-          <div className="flex flex-col items-center gap-4">
-            <h2 className="text-lg font-medium">AI Difficulty</h2>
-            <div className="flex gap-2">
-              {['easy', 'medium', 'hard'].map((level) => (
-                <Button
-                  key={level}
-                  variant={difficulty === level ? "default" : "outline"}
-                  onClick={() => setDifficulty(level as 'easy' | 'medium' | 'hard')}
-                  className="capitalize"
-                >
-                  {level}
-                </Button>
-              ))}
+          <>
+            <div className="flex flex-col items-center gap-4 w-full">
+              <h2 className="text-lg font-medium">AI Difficulty</h2>
+              <div className="grid grid-cols-3 gap-2 w-full">
+                {['easy', 'medium', 'hard'].map((level) => (
+                  <Button
+                    key={level}
+                    variant={difficulty === level ? "default" : "outline"}
+                    onClick={() => setDifficulty(level as 'easy' | 'medium' | 'hard')}
+                    className="capitalize w-full"
+                  >
+                    {level}
+                  </Button>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
 
-        {vsAI && (
-          <div className="flex gap-8 text-lg">
-            <div className="flex flex-col items-center">
-              <span className="text-primary">Wins</span>
-              <span className="text-2xl font-medium">{wins}</span>
+            <div className="flex gap-8 text-lg">
+              <div className="flex flex-col items-center">
+                <span className="text-primary">Wins</span>
+                <span className="text-2xl font-medium">{wins}</span>
+              </div>
+              <div className="flex flex-col items-center">
+                <span className="text-primary">Losses</span>
+                <span className="text-2xl font-medium">{losses}</span>
+              </div>
             </div>
-            <div className="flex flex-col items-center">
-              <span className="text-primary">Losses</span>
-              <span className="text-2xl font-medium">{losses}</span>
-            </div>
-          </div>
+          </>
         )}
 
         <div className="text-xl font-medium mb-4">
           {!winner && !isDraw && (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 bg-primary/5 px-4 py-2 rounded-full">
               Turn: <span className="font-bold">{isXNext ? 'X' : 'O'}</span>
             </div>
           )}
@@ -157,17 +181,19 @@ const Game = () => {
           onClick={handleClick}
         />
 
-        <GameStatus
+        <WinnerDialog
           winner={winner}
           isDraw={isDraw}
-          isXNext={isXNext}
           onReset={resetGame}
+          open={showWinnerDialog}
+          onOpenChange={setShowWinnerDialog}
         />
 
         {vsAI && (
           <Button 
             variant="outline"
             onClick={resetEverything}
+            className="w-full"
           >
             Reset Everything
           </Button>
