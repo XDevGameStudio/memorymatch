@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Board from './Board';
 import { getBestMove } from './aiUtils';
-import { getTrashTalk } from './aiTrashTalk';
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Moon, Sun } from "lucide-react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Label } from "@/components/ui/label"
+import { Button } from "@/components/ui/button"
+import { Moon, Sun } from "lucide-react"
 import { useTheme } from '@/hooks/use-theme';
-import { useToast } from "@/hooks/use-toast";
 import StartScreen from './StartScreen';
 import WinnerDialog from './WinnerDialog';
 
@@ -35,7 +33,6 @@ const Game = () => {
   const [vsAI, setVsAI] = useState<boolean | null>(null);
   const [showWinnerDialog, setShowWinnerDialog] = useState(false);
   const { theme, setTheme } = useTheme();
-  const { toast } = useToast();
   const { winner, line } = calculateWinner(squares);
 
   const isBoardFull = squares.every(square => square !== null);
@@ -49,12 +46,6 @@ const Game = () => {
         newSquares[aiMove] = 'O';
         setSquares(newSquares);
         setIsXNext(true);
-        
-        // Add trash talk after AI moves
-        toast({
-          description: getTrashTalk(),
-          duration: 3000,
-        });
       }, 500);
 
       return () => clearTimeout(timer);
