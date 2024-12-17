@@ -14,12 +14,12 @@ const Cell: React.FC<CellProps> = ({ value, isWinning, onClick }) => {
       whileHover={{ scale: value ? 1 : 1.05 }}
       whileTap={{ scale: 0.95 }}
       className={cn(
-        "w-full aspect-square rounded-lg text-4xl font-bold flex items-center justify-center",
+        "w-full aspect-square rounded-md text-4xl font-bold flex items-center justify-center",
         "transition-colors duration-200",
-        "bg-white/50 hover:bg-white/60",
-        "border-2 border-white/20",
-        isWinning && "bg-green-200/50 hover:bg-green-200/60",
-        !value && "hover:border-white/30"
+        "border border-primary/20",
+        "hover:bg-primary/5",
+        isWinning && "bg-primary/10",
+        !value && "hover:border-primary/40"
       )}
       onClick={onClick}
     >
@@ -28,7 +28,7 @@ const Cell: React.FC<CellProps> = ({ value, isWinning, onClick }) => {
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           className={cn(
-            value === 'X' ? 'text-blue-500' : 'text-rose-500'
+            value === 'X' ? 'text-primary' : 'text-primary'
           )}
         >
           {value}

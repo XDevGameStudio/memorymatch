@@ -9,12 +9,14 @@ interface GameStatusProps {
   onReset: () => void;
 }
 
-const GameStatus: React.FC<GameStatusProps> = ({ winner, isDraw, isXNext, onReset }) => {
+const GameStatus: React.FC<GameStatusProps> = ({ winner, isDraw, onReset }) => {
   const status = isDraw
     ? "Game Over - It's a Tie!"
     : winner
     ? `Winner: ${winner}`
-    : `Next player: ${isXNext ? 'X' : 'O'}`;
+    : null;
+
+  if (!status) return null;
 
   return (
     <div className="flex flex-col items-center gap-4">
@@ -22,16 +24,15 @@ const GameStatus: React.FC<GameStatusProps> = ({ winner, isDraw, isXNext, onRese
         key={status}
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-2xl font-semibold text-gray-700"
+        className="text-xl font-medium text-primary"
       >
         {status}
       </motion.div>
       <Button
-        variant="secondary"
+        variant="outline"
         onClick={onReset}
-        className="px-8"
       >
-        Reset Game
+        New Game
       </Button>
     </div>
   );
