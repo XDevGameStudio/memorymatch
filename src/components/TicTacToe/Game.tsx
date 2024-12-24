@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import Board from './Board';
 import { getBestMove } from './aiUtils';
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Label } from "@/components/ui/label"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import { useTheme } from '@/hooks/use-theme';
 import StartScreen from './StartScreen';
 import WinnerDialog from './WinnerDialog';
 import GameControls from './GameControls';
 import PlayerStats from './PlayerStats';
 import ThemeSelector from './ThemeSelector';
+import GameModeSelector from './GameModeSelector';
 import { motion } from 'framer-motion';
 
 const calculateWinner = (squares: (string | null)[]): { winner: string | null; line: number[] | null } => {
@@ -88,15 +87,11 @@ const Game = () => {
     setIsPaused(false);
   };
 
-  const resetEverything = () => {
+  const handleStartGame = (againstAI: boolean) => {
+    setVsAI(againstAI);
     resetGame();
     setWins(0);
     setLosses(0);
-  };
-
-  const handleStartGame = (againstAI: boolean) => {
-    setVsAI(againstAI);
-    resetEverything();
   };
 
   const handlePause = () => {
@@ -105,7 +100,9 @@ const Game = () => {
 
   const handleHome = () => {
     setVsAI(null);
-    resetEverything();
+    resetGame();
+    setWins(0);
+    setLosses(0);
   };
 
   const handleHelp = () => {
@@ -120,10 +117,10 @@ const Game = () => {
           <li>Block your opponent from getting three in a row</li>
           <li>Have fun!</li>
         </ol>
-        <button class="mt-4 px-4 py-2 bg-primary text-primary-foreground" onclick="this.parentElement.parentElement.close()">Close</button>
+        <button class="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-md" onclick="this.parentElement.parentElement.close()">Close</button>
       </div>
     `;
-    dialog.className = "p-4 rounded-none bg-background text-foreground";
+    dialog.className = "p-4 rounded-md bg-background text-foreground";
     document.body.appendChild(dialog);
     dialog.showModal();
     dialog.addEventListener('close', () => {
@@ -159,32 +156,15 @@ const Game = () => {
         animate={{ opacity: 1, y: 0 }}
         className="flex flex-col items-center gap-8 w-full max-w-[300px]"
       >
-        <h1 className="text-4xl font-bold">Tic Tac Toe X</h1>
-        
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="flex flex-col items-center gap-4 w-full"
-        >
-          <h2 className="text-lg font-medium">Game Mode</h2>
-          <RadioGroup
-            defaultValue={vsAI ? "ai" : "player"}
-            onValueChange={(value) => {
-              setVsAI(value === "ai");
-              resetEverything();
-            }}
-            className="flex gap-4"
-          >
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="ai" id="ai" className="rounded-none" />
-              <Label htmlFor="ai">vs AI</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="player" id="player" className="rounded-none" />
-              <Label htmlFor="player">vs Player</Label>
-            </div>
-          </RadioGroup>
-        </motion.div>
+        <GameModeSelector 
+          vsAI={vsAI} 
+          onModeChange={(isAI) => {
+            setVsAI(isAI);
+            resetGame();
+            setWins(0);
+            setLosses(0);
+          }} 
+        />
 
         {vsAI && (
           <motion.div 
@@ -199,7 +179,7 @@ const Game = () => {
                   key={level}
                   variant={difficulty === level ? "default" : "outline"}
                   onClick={() => setDifficulty(level as 'easy' | 'medium' | 'hard')}
-                  className="capitalize w-full rounded-none"
+                  className="capitalize w-full"
                 >
                   {level}
                 </Button>
@@ -250,16 +230,6 @@ const Game = () => {
           open={showWinnerDialog}
           onOpenChange={setShowWinnerDialog}
         />
-
-        {vsAI && (
-          <Button 
-            variant="outline"
-            onClick={resetEverything}
-            className="w-full rounded-none"
-          >
-            Reset Everything
-          </Button>
-        )}
       </motion.div>
 
       <div className="fixed bottom-4 right-4">
