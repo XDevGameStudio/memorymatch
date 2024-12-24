@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Board from './Board';
 import { getBestMove } from './aiUtils';
-import { Button } from "@/components/ui/button";
 import { useTheme } from '@/hooks/use-theme';
 import StartScreen from './StartScreen';
 import WinnerDialog from './WinnerDialog';
@@ -117,10 +116,10 @@ const Game = () => {
           <li>Block your opponent from getting three in a row</li>
           <li>Have fun!</li>
         </ol>
-        <button class="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-md" onclick="this.parentElement.parentElement.close()">Close</button>
+        <button class="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-none" onclick="this.parentElement.parentElement.close()">Close</button>
       </div>
     `;
-    dialog.className = "p-4 rounded-md bg-background text-foreground";
+    dialog.className = "p-4 rounded-none bg-background text-foreground";
     document.body.appendChild(dialog);
     dialog.showModal();
     dialog.addEventListener('close', () => {
@@ -135,6 +134,7 @@ const Game = () => {
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
           className="flex flex-col items-center gap-8 w-full max-w-[800px] p-4"
         >
           <h1 className="text-4xl font-bold">Tic Tac Toe X</h1>
@@ -154,6 +154,7 @@ const Game = () => {
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
         className="flex flex-col items-center gap-8 w-full max-w-[300px]"
       >
         <GameModeSelector 
@@ -170,19 +171,25 @@ const Game = () => {
           <motion.div 
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
             className="flex flex-col items-center gap-4 w-full"
           >
             <h2 className="text-lg font-medium">AI Difficulty</h2>
             <div className="grid grid-cols-3 gap-2 w-full">
               {['easy', 'medium', 'hard'].map((level) => (
-                <Button
+                <motion.button
                   key={level}
-                  variant={difficulty === level ? "default" : "outline"}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className={`capitalize w-full px-4 py-2 rounded-none transition-colors ${
+                    difficulty === level 
+                      ? 'bg-primary text-primary-foreground' 
+                      : 'bg-primary/5 hover:bg-primary/10'
+                  }`}
                   onClick={() => setDifficulty(level as 'easy' | 'medium' | 'hard')}
-                  className="capitalize w-full"
                 >
                   {level}
-                </Button>
+                </motion.button>
               ))}
             </div>
           </motion.div>
@@ -195,7 +202,8 @@ const Game = () => {
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="flex items-center gap-2 bg-primary/5 px-4 py-2"
+              transition={{ duration: 0.3 }}
+              className="flex items-center gap-2 bg-primary/5 px-4 py-2 rounded-none"
             >
               Turn: <span className="font-bold">{isXNext ? 'X' : 'O'}</span>
             </motion.div>
@@ -204,7 +212,8 @@ const Game = () => {
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="flex items-center gap-2 bg-primary/5 px-4 py-2"
+              transition={{ duration: 0.3 }}
+              className="flex items-center gap-2 bg-primary/5 px-4 py-2 rounded-none"
             >
               Game Paused
             </motion.div>

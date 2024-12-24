@@ -10,8 +10,9 @@ interface GameModeSelectorProps {
 const GameModeSelector = ({ vsAI, onModeChange }: GameModeSelectorProps) => {
   return (
     <motion.div 
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
       className="flex flex-col items-center gap-4 w-full"
     >
       <h2 className="text-lg font-medium">Game Mode</h2>
@@ -20,14 +21,22 @@ const GameModeSelector = ({ vsAI, onModeChange }: GameModeSelectorProps) => {
         onValueChange={(value) => onModeChange(value === "ai")}
         className="flex gap-4"
       >
-        <div className="flex items-center space-x-2">
-          <RadioGroupItem value="ai" id="ai" />
+        <motion.div 
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="flex items-center space-x-2 bg-primary/5 px-4 py-2 rounded-none cursor-pointer"
+        >
+          <RadioGroupItem value="ai" id="ai" className="rounded-none" />
           <Label htmlFor="ai">vs AI</Label>
-        </div>
-        <div className="flex items-center space-x-2">
-          <RadioGroupItem value="player" id="player" />
+        </motion.div>
+        <motion.div 
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="flex items-center space-x-2 bg-primary/5 px-4 py-2 rounded-none cursor-pointer"
+        >
+          <RadioGroupItem value="player" id="player" className="rounded-none" />
           <Label htmlFor="player">vs Player</Label>
-        </div>
+        </motion.div>
       </RadioGroup>
     </motion.div>
   );

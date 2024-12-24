@@ -7,6 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Theme } from "@/hooks/use-theme";
+import { motion } from "framer-motion";
 
 interface ThemeSelectorProps {
   theme: Theme;
@@ -16,7 +17,11 @@ interface ThemeSelectorProps {
 
 const ThemeSelector = ({ theme, setTheme, onHelp }: ThemeSelectorProps) => {
   return (
-    <div className="absolute top-4 right-4 flex gap-2">
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="absolute top-4 right-4 flex gap-2"
+    >
       <Button
         variant="outline"
         size="icon"
@@ -49,7 +54,7 @@ const ThemeSelector = ({ theme, setTheme, onHelp }: ThemeSelectorProps) => {
           <DropdownMenuItem onClick={() => setTheme("forest")}>Forest</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-    </div>
+    </motion.div>
   );
 };
 
