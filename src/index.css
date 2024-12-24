@@ -23,7 +23,7 @@
     --border: 0 0% 90%;
     --input: 0 0% 90%;
     --ring: 0 0% 0%;
-    --radius: 0.5rem;
+    --radius: 0rem;
   }
 
   .dark {
@@ -45,6 +45,72 @@
     --destructive-foreground: 0 0% 100%;
     --border: 0 0% 20%;
     --input: 0 0% 20%;
+    --ring: 0 0% 100%;
+  }
+
+  .candy {
+    --background: 350 100% 88%;
+    --foreground: 0 0% 100%;
+    --card: 350 100% 88%;
+    --card-foreground: 0 0% 100%;
+    --popover: 350 100% 88%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 0 0% 100%;
+    --primary-foreground: 350 100% 88%;
+    --secondary: 350 100% 92%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 350 100% 92%;
+    --muted-foreground: 0 0% 100%;
+    --accent: 350 100% 92%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 350 100% 85%;
+    --input: 350 100% 85%;
+    --ring: 0 0% 100%;
+  }
+
+  .sunset {
+    --background: 25 100% 50%;
+    --foreground: 0 0% 100%;
+    --card: 25 100% 50%;
+    --card-foreground: 0 0% 100%;
+    --popover: 25 100% 50%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 0 0% 100%;
+    --primary-foreground: 25 100% 50%;
+    --secondary: 25 100% 55%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 25 100% 55%;
+    --muted-foreground: 0 0% 100%;
+    --accent: 25 100% 55%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 25 100% 45%;
+    --input: 25 100% 45%;
+    --ring: 0 0% 100%;
+  }
+
+  .forest {
+    --background: 142 76% 73%;
+    --foreground: 0 0% 100%;
+    --card: 142 76% 73%;
+    --card-foreground: 0 0% 100%;
+    --popover: 142 76% 73%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 0 0% 100%;
+    --primary-foreground: 142 76% 73%;
+    --secondary: 142 76% 78%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 142 76% 78%;
+    --muted-foreground: 0 0% 100%;
+    --accent: 142 76% 78%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 142 76% 68%;
+    --input: 142 76% 68%;
     --ring: 0 0% 100%;
   }
 }
