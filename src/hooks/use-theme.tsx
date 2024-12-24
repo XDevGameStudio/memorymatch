@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-type Theme = 'light' | 'dark';
+export type Theme = 'light' | 'dark' | 'candy' | 'sunset' | 'forest';
 
 export function useTheme() {
   const [theme, setTheme] = useState<Theme>(() => {
@@ -12,7 +12,7 @@ export function useTheme() {
 
   useEffect(() => {
     const root = window.document.documentElement;
-    root.classList.remove('light', 'dark');
+    root.classList.remove('light', 'dark', 'candy', 'sunset', 'forest');
     root.classList.add(theme);
     localStorage.setItem('theme', theme);
   }, [theme]);

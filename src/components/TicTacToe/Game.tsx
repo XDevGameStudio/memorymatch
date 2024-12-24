@@ -4,18 +4,13 @@ import { getBestMove } from './aiUtils';
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { Moon, Sun, HelpCircle } from "lucide-react"
 import { useTheme } from '@/hooks/use-theme';
 import StartScreen from './StartScreen';
 import WinnerDialog from './WinnerDialog';
 import GameControls from './GameControls';
 import PlayerStats from './PlayerStats';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import ThemeSelector from './ThemeSelector';
+import { motion } from 'framer-motion';
 
 const calculateWinner = (squares: (string | null)[]): { winner: string | null; line: number[] | null } => {
   const lines = [
@@ -113,55 +108,41 @@ const Game = () => {
     resetEverything();
   };
 
+  const handleHelp = () => {
+    const dialog = document.createElement('dialog');
+    dialog.innerHTML = `
+      <div class="p-4">
+        <h2 class="text-lg font-bold mb-2">How to Play Tic Tac Toe X</h2>
+        <ol class="list-decimal pl-4">
+          <li>Choose to play against AI or another player</li>
+          <li>Take turns placing X's and O's on the board</li>
+          <li>Get three in a row to win</li>
+          <li>Block your opponent from getting three in a row</li>
+          <li>Have fun!</li>
+        </ol>
+        <button class="mt-4 px-4 py-2 bg-primary text-primary-foreground" onclick="this.parentElement.parentElement.close()">Close</button>
+      </div>
+    `;
+    dialog.className = "p-4 rounded-none bg-background text-foreground";
+    document.body.appendChild(dialog);
+    dialog.showModal();
+    dialog.addEventListener('close', () => {
+      document.body.removeChild(dialog);
+    });
+  };
+
   if (vsAI === null) {
     return (
       <div className="min-h-screen w-full flex items-center justify-center bg-background text-foreground">
-        <div className="absolute top-4 right-4 flex gap-2">
-          <Button
-            variant="outline"
-            size="icon"
-            className="rounded-none"
-            onClick={() => {
-              const dialog = document.createElement('dialog');
-              dialog.innerHTML = `
-                <div class="p-4">
-                  <h2 class="text-lg font-bold mb-2">How to Play Tic Tac Toe X</h2>
-                  <ol class="list-decimal pl-4">
-                    <li>Choose to play against AI or another player</li>
-                    <li>Take turns placing X's and O's on the board</li>
-                    <li>Get three in a row to win</li>
-                    <li>Block your opponent from getting three in a row</li>
-                    <li>Have fun!</li>
-                  </ol>
-                  <button class="mt-4 px-4 py-2 bg-primary text-primary-foreground" onclick="this.parentElement.parentElement.close()">Close</button>
-                </div>
-              `;
-              dialog.className = "p-4 rounded-none bg-background text-foreground";
-              document.body.appendChild(dialog);
-              dialog.showModal();
-              dialog.addEventListener('close', () => {
-                document.body.removeChild(dialog);
-              });
-            }}
-          >
-            <HelpCircle className="h-4 w-4" />
-          </Button>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="icon" className="rounded-none">
-                {theme === "dark" ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => setTheme("light")}>Light</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme("dark")}>Dark</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme("candy")}>Candy</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme("sunset")}>Sunset</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme("forest")}>Forest</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-        <StartScreen onStart={handleStartGame} />
+        <ThemeSelector theme={theme} setTheme={setTheme} onHelp={handleHelp} />
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex flex-col items-center gap-8 w-full max-w-[800px] p-4"
+        >
+          <h1 className="text-4xl font-bold">Tic Tac Toe X</h1>
+          <StartScreen onStart={handleStartGame} />
+        </motion.div>
         <div className="fixed bottom-4 right-4">
           <p className="text-sm text-muted-foreground">created by x dev</p>
         </div>
@@ -171,56 +152,20 @@ const Game = () => {
 
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center gap-8 p-4 bg-background text-foreground relative">
-      <div className="absolute top-4 right-4 flex gap-2">
-        <Button
-          variant="outline"
-          size="icon"
-          className="rounded-none"
-          onClick={() => {
-            const dialog = document.createElement('dialog');
-            dialog.innerHTML = `
-              <div class="p-4">
-                <h2 class="text-lg font-bold mb-2">How to Play Tic Tac Toe X</h2>
-                <ol class="list-decimal pl-4">
-                  <li>Choose to play against AI or another player</li>
-                  <li>Take turns placing X's and O's on the board</li>
-                  <li>Get three in a row to win</li>
-                  <li>Block your opponent from getting three in a row</li>
-                  <li>Have fun!</li>
-                </ol>
-                <button class="mt-4 px-4 py-2 bg-primary text-primary-foreground" onclick="this.parentElement.parentElement.close()">Close</button>
-              </div>
-            `;
-            dialog.className = "p-4 rounded-none bg-background text-foreground";
-            document.body.appendChild(dialog);
-            dialog.showModal();
-            dialog.addEventListener('close', () => {
-              document.body.removeChild(dialog);
-            });
-          }}
-        >
-          <HelpCircle className="h-4 w-4" />
-        </Button>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="icon" className="rounded-none">
-              {theme === "dark" ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => setTheme("light")}>Light</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme("dark")}>Dark</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme("candy")}>Candy</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme("sunset")}>Sunset</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme("forest")}>Forest</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+      <ThemeSelector theme={theme} setTheme={setTheme} onHelp={handleHelp} />
 
-      <div className="flex flex-col items-center gap-8 w-full max-w-[300px]">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex flex-col items-center gap-8 w-full max-w-[300px]"
+      >
         <h1 className="text-4xl font-bold">Tic Tac Toe X</h1>
         
-        <div className="flex flex-col items-center gap-4 w-full">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="flex flex-col items-center gap-4 w-full"
+        >
           <h2 className="text-lg font-medium">Game Mode</h2>
           <RadioGroup
             defaultValue={vsAI ? "ai" : "player"}
@@ -231,18 +176,22 @@ const Game = () => {
             className="flex gap-4"
           >
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="ai" id="ai" />
+              <RadioGroupItem value="ai" id="ai" className="rounded-none" />
               <Label htmlFor="ai">vs AI</Label>
             </div>
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="player" id="player" />
+              <RadioGroupItem value="player" id="player" className="rounded-none" />
               <Label htmlFor="player">vs Player</Label>
             </div>
           </RadioGroup>
-        </div>
+        </motion.div>
 
         {vsAI && (
-          <div className="flex flex-col items-center gap-4 w-full">
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex flex-col items-center gap-4 w-full"
+          >
             <h2 className="text-lg font-medium">AI Difficulty</h2>
             <div className="grid grid-cols-3 gap-2 w-full">
               {['easy', 'medium', 'hard'].map((level) => (
@@ -256,21 +205,29 @@ const Game = () => {
                 </Button>
               ))}
             </div>
-          </div>
+          </motion.div>
         )}
 
         <PlayerStats wins={wins} losses={losses} vsAI={vsAI} />
 
         <div className="text-xl font-medium mb-4">
           {!winner && !isDraw && !isPaused && (
-            <div className="flex items-center gap-2 bg-primary/5 px-4 py-2">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="flex items-center gap-2 bg-primary/5 px-4 py-2"
+            >
               Turn: <span className="font-bold">{isXNext ? 'X' : 'O'}</span>
-            </div>
+            </motion.div>
           )}
           {isPaused && (
-            <div className="flex items-center gap-2 bg-primary/5 px-4 py-2">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="flex items-center gap-2 bg-primary/5 px-4 py-2"
+            >
               Game Paused
-            </div>
+            </motion.div>
           )}
         </div>
 
@@ -303,7 +260,7 @@ const Game = () => {
             Reset Everything
           </Button>
         )}
-      </div>
+      </motion.div>
 
       <div className="fixed bottom-4 right-4">
         <p className="text-sm text-muted-foreground">created by x dev</p>
