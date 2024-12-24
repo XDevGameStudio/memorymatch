@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
+import { Bot, User2 } from "lucide-react";
 
 interface StartScreenProps {
   onStart: (vsAI: boolean) => void;
@@ -10,24 +12,30 @@ const StartScreen = ({ onStart }: StartScreenProps) => {
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="flex flex-col items-center gap-6 p-8 rounded-lg border border-primary/20"
+      className="flex flex-col items-center gap-8"
     >
-      <h1 className="text-2xl font-semibold text-primary">Tic Tac Toe</h1>
-      <div className="flex flex-col gap-4 w-full max-w-[300px]">
-        <Button 
-          variant="outline" 
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-[800px]">
+        <Card 
+          className="p-6 hover:border-primary transition-colors cursor-pointer flex flex-col items-center gap-4"
           onClick={() => onStart(true)}
-          className="w-full h-12 text-lg"
         >
-          Play vs AI
-        </Button>
-        <Button 
-          variant="outline" 
+          <Bot className="w-12 h-12" />
+          <div className="text-center">
+            <h3 className="text-xl font-semibold mb-2">Play vs AI</h3>
+            <p className="text-sm text-muted-foreground">Challenge our AI opponent with adjustable difficulty</p>
+          </div>
+        </Card>
+
+        <Card 
+          className="p-6 hover:border-primary transition-colors cursor-pointer flex flex-col items-center gap-4"
           onClick={() => onStart(false)}
-          className="w-full h-12 text-lg"
         >
-          Play vs Player
-        </Button>
+          <User2 className="w-12 h-12" />
+          <div className="text-center">
+            <h3 className="text-xl font-semibold mb-2">Play vs Player</h3>
+            <p className="text-sm text-muted-foreground">Challenge a friend in local multiplayer</p>
+          </div>
+        </Card>
       </div>
     </motion.div>
   );
