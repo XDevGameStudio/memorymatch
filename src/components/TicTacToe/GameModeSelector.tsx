@@ -19,7 +19,7 @@ const GameModeSelector = ({ vsAI, onModeChange }: GameModeSelectorProps) => {
         whileTap={{ scale: 0.98 }}
         onClick={() => onModeChange(true)}
         className={`flex items-center justify-center gap-2 px-6 py-3 rounded-lg w-full transition-colors duration-200 ${
-          vsAI ? 'bg-primary/20 border-2 border-primary/20' : 'bg-primary/5 hover:bg-primary/10'
+          vsAI ? 'bg-primary text-primary-foreground' : 'bg-secondary hover:bg-secondary/80'
         }`}
       >
         <Bot className="w-4 h-4" />
@@ -31,7 +31,7 @@ const GameModeSelector = ({ vsAI, onModeChange }: GameModeSelectorProps) => {
         whileTap={{ scale: 0.98 }}
         onClick={() => onModeChange(false)}
         className={`flex items-center justify-center gap-2 px-6 py-3 rounded-lg w-full transition-colors duration-200 ${
-          !vsAI ? 'bg-primary/20 border-2 border-primary/20' : 'bg-primary/5 hover:bg-primary/10'
+          !vsAI ? 'bg-primary text-primary-foreground' : 'bg-secondary hover:bg-secondary/80'
         }`}
       >
         <User2 className="w-4 h-4" />

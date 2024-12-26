@@ -11,9 +11,8 @@ const StartScreen = ({ onStart }: StartScreenProps) => {
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="flex flex-col items-center gap-8 w-full max-w-[800px] p-4 mt-12"
+      className="flex flex-col items-center gap-8 w-full max-w-[800px] p-4"
     >
-      <h1 className="text-4xl font-bold">Tic Tac Toe X</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
         <Card 
           className="p-8 hover:border-primary transition-colors cursor-pointer flex flex-col items-center gap-6 rounded-lg hover:bg-primary/5"

@@ -24,19 +24,19 @@ const ThemeSelector = ({ theme, setTheme }: ThemeSelectorProps) => {
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="fixed top-4 right-4 flex gap-2 z-50"
+      className="fixed top-20 left-4 flex gap-2 z-50"
     >
       <Button
         variant="outline"
         size="icon"
-        className="rounded-lg"
+        className="rounded-lg bg-background/80 backdrop-blur-sm"
         onClick={() => setShowHelp(true)}
       >
         <HelpCircle className="h-4 w-4" />
       </Button>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="icon" className="rounded-lg">
+          <Button variant="outline" size="icon" className="rounded-lg bg-background/80 backdrop-blur-sm">
             {theme === "dark" ? (
               <Moon className="h-4 w-4" />
             ) : theme === "candy" ? (
@@ -60,7 +60,7 @@ const ThemeSelector = ({ theme, setTheme }: ThemeSelectorProps) => {
       </DropdownMenu>
 
       <Dialog open={showHelp} onOpenChange={setShowHelp}>
-        <DialogContent className="rounded-lg fixed right-4 top-20 w-80">
+        <DialogContent className="rounded-lg fixed left-4 top-32 w-80">
           <h2 className="text-lg font-bold mb-2">How to Play Tic Tac Toe X</h2>
           <ol className="list-decimal pl-4">
             <li>Choose to play against AI or another player</li>
