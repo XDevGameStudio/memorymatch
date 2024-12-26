@@ -108,19 +108,19 @@ const Game = () => {
   const handleHelp = () => {
     const dialog = document.createElement('dialog');
     dialog.innerHTML = `
-      <div class="p-4">
-        <h2 class="text-lg font-bold mb-2">How to Play Tic Tac Toe X</h2>
-        <ol class="list-decimal pl-4">
+      <div class="p-6 max-w-sm">
+        <h2 class="text-lg font-bold mb-4">How to Play Tic Tac Toe X</h2>
+        <ol class="list-decimal pl-4 space-y-2">
           <li>Choose to play against AI or another player</li>
           <li>Take turns placing X's and O's on the board</li>
           <li>Get three in a row to win</li>
           <li>Block your opponent from getting three in a row</li>
           <li>Have fun!</li>
         </ol>
-        <button class="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-none" onclick="this.parentElement.parentElement.close()">Close</button>
+        <button class="mt-6 px-4 py-2 bg-primary text-primary-foreground rounded-lg w-full" onclick="this.parentElement.parentElement.close()">Close</button>
       </div>
     `;
-    dialog.className = "p-4 rounded-none bg-background text-foreground";
+    dialog.className = "fixed top-1/4 right-4 p-4 rounded-lg bg-background text-foreground shadow-lg border border-border";
     document.body.appendChild(dialog);
     dialog.showModal();
     dialog.addEventListener('close', () => {
@@ -138,6 +138,8 @@ const Game = () => {
         transition={{ duration: 0.3 }}
         className="flex flex-col items-center gap-8 w-full max-w-[300px]"
       >
+        <h1 className="text-2xl font-bold mb-4">Tic Tac Toe X</h1>
+        
         {vsAI === null ? (
           <StartScreen onStart={handleStartGame} />
         ) : (
@@ -160,7 +162,7 @@ const Game = () => {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="flex items-center gap-2 bg-primary/5 px-4 py-2 rounded"
+                  className="flex items-center gap-2 bg-primary/5 px-4 py-2 rounded-lg"
                 >
                   Turn: <span className="font-bold">{isXNext ? 'X' : 'O'}</span>
                 </motion.div>
@@ -170,7 +172,7 @@ const Game = () => {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="fixed inset-0 bg-background/80 backdrop-blur-sm z-10 flex items-center justify-center"
+                  className="fixed inset-0 bg-background/80 backdrop-blur-md z-10 flex items-center justify-center"
                 >
                   <div className="text-2xl font-bold">Game Paused</div>
                 </motion.div>

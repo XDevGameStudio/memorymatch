@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Home, RefreshCw, Pause } from "lucide-react";
+import { RefreshCw, Pause, Home } from "lucide-react";
 import { motion } from "framer-motion";
 
 interface GameControlsProps {
@@ -16,11 +16,11 @@ const GameControls = ({ onReset, onPause, onHome }: GameControlsProps) => {
       transition={{ duration: 0.3 }}
       className="flex gap-2 mt-4"
     >
-      <Button variant="outline" size="icon" className="rounded-lg" onClick={onReset}>
-        <RefreshCw className="h-4 w-4" />
-      </Button>
       <Button variant="outline" size="icon" className="rounded-lg" onClick={onPause}>
         <Pause className="h-4 w-4" />
+      </Button>
+      <Button variant="outline" size="icon" className="rounded-lg" onClick={onReset}>
+        <RefreshCw className="h-4 w-4" />
       </Button>
       <Button variant="outline" size="icon" className="rounded-lg" onClick={onHome}>
         <Home className="h-4 w-4" />
