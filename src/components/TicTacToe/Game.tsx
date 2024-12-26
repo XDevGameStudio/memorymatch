@@ -8,7 +8,8 @@ import GameControls from './GameControls';
 import PlayerStats from './PlayerStats';
 import ThemeSelector from './ThemeSelector';
 import GameModeSelector from './GameModeSelector';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Bot, User2 } from 'lucide-react';
 
 const calculateWinner = (squares: (string | null)[]): { winner: string | null; line: number[] | null } => {
   const lines = [
@@ -127,26 +128,6 @@ const Game = () => {
     });
   };
 
-  if (vsAI === null) {
-    return (
-      <div className="min-h-screen w-full flex items-center justify-center bg-background text-foreground">
-        <ThemeSelector theme={theme} setTheme={setTheme} onHelp={handleHelp} />
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-          className="flex flex-col items-center gap-8 w-full max-w-[800px] p-4"
-        >
-          <h1 className="text-4xl font-bold">Tic Tac Toe X</h1>
-          <StartScreen onStart={handleStartGame} />
-        </motion.div>
-        <div className="fixed bottom-4 right-4">
-          <p className="text-sm text-muted-foreground">created by x dev</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center gap-8 p-4 bg-background text-foreground relative">
       <ThemeSelector theme={theme} setTheme={setTheme} onHelp={handleHelp} />
@@ -157,93 +138,67 @@ const Game = () => {
         transition={{ duration: 0.3 }}
         className="flex flex-col items-center gap-8 w-full max-w-[300px]"
       >
-        <GameModeSelector 
-          vsAI={vsAI} 
-          onModeChange={(isAI) => {
-            setVsAI(isAI);
-            resetGame();
-            setWins(0);
-            setLosses(0);
-          }} 
-        />
+        {vsAI === null ? (
+          <StartScreen onStart={handleStartGame} />
+        ) : (
+          <>
+            <GameModeSelector 
+              vsAI={vsAI} 
+              onModeChange={(isAI) => {
+                setVsAI(isAI);
+                resetGame();
+                setWins(0);
+                setLosses(0);
+              }} 
+            />
 
-        {vsAI && (
-          <motion.div 
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-            className="flex flex-col items-center gap-4 w-full"
-          >
-            <h2 className="text-lg font-medium">AI Difficulty</h2>
-            <div className="grid grid-cols-3 gap-2 w-full">
-              {['easy', 'medium', 'hard'].map((level) => (
-                <motion.button
-                  key={level}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className={`capitalize w-full px-4 py-2 rounded-none transition-colors ${
-                    difficulty === level 
-                      ? 'bg-primary text-primary-foreground' 
-                      : 'bg-primary/5 hover:bg-primary/10'
-                  }`}
-                  onClick={() => setDifficulty(level as 'easy' | 'medium' | 'hard')}
+            <PlayerStats wins={wins} losses={losses} vsAI={vsAI} />
+
+            <AnimatePresence>
+              {!winner && !isDraw && !isPaused && (
+                <motion.div 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="flex items-center gap-2 bg-primary/5 px-4 py-2 rounded"
                 >
-                  {level}
-                </motion.button>
-              ))}
-            </div>
-          </motion.div>
+                  Turn: <span className="font-bold">{isXNext ? 'X' : 'O'}</span>
+                </motion.div>
+              )}
+              {isPaused && (
+                <motion.div 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="fixed inset-0 bg-background/80 backdrop-blur-sm z-10 flex items-center justify-center"
+                >
+                  <div className="text-2xl font-bold">Game Paused</div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            <Board
+              squares={squares}
+              winningLine={line}
+              onClick={handleClick}
+            />
+
+            <GameControls
+              onReset={resetGame}
+              onPause={handlePause}
+              onHome={handleHome}
+            />
+
+            <WinnerDialog
+              winner={winner}
+              isDraw={isDraw}
+              onReset={resetGame}
+              open={showWinnerDialog}
+              onOpenChange={setShowWinnerDialog}
+            />
+          </>
         )}
-
-        <PlayerStats wins={wins} losses={losses} vsAI={vsAI} />
-
-        <div className="text-xl font-medium mb-4">
-          {!winner && !isDraw && !isPaused && (
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.3 }}
-              className="flex items-center gap-2 bg-primary/5 px-4 py-2 rounded-none"
-            >
-              Turn: <span className="font-bold">{isXNext ? 'X' : 'O'}</span>
-            </motion.div>
-          )}
-          {isPaused && (
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.3 }}
-              className="flex items-center gap-2 bg-primary/5 px-4 py-2 rounded-none"
-            >
-              Game Paused
-            </motion.div>
-          )}
-        </div>
-
-        <Board
-          squares={squares}
-          winningLine={line}
-          onClick={handleClick}
-        />
-
-        <GameControls
-          onReset={resetGame}
-          onPause={handlePause}
-          onHome={handleHome}
-        />
-
-        <WinnerDialog
-          winner={winner}
-          isDraw={isDraw}
-          onReset={resetGame}
-          open={showWinnerDialog}
-          onOpenChange={setShowWinnerDialog}
-        />
       </motion.div>
-
-      <div className="fixed bottom-4 right-4">
-        <p className="text-sm text-muted-foreground">created by x dev</p>
-      </div>
     </div>
   );
 };

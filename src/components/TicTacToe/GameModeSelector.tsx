@@ -1,6 +1,7 @@
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { motion } from "framer-motion";
+import { Bot, User2 } from "lucide-react";
 
 interface GameModeSelectorProps {
   vsAI: boolean;
@@ -15,7 +16,6 @@ const GameModeSelector = ({ vsAI, onModeChange }: GameModeSelectorProps) => {
       transition={{ duration: 0.3 }}
       className="flex flex-col items-center gap-4 w-full"
     >
-      <h2 className="text-lg font-medium">Game Mode</h2>
       <RadioGroup
         defaultValue={vsAI ? "ai" : "player"}
         onValueChange={(value) => onModeChange(value === "ai")}
@@ -24,17 +24,19 @@ const GameModeSelector = ({ vsAI, onModeChange }: GameModeSelectorProps) => {
         <motion.div 
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="flex items-center space-x-2 bg-primary/5 px-4 py-2 rounded-none cursor-pointer"
+          className="flex items-center gap-2 bg-primary/5 px-4 py-2 rounded cursor-pointer"
         >
-          <RadioGroupItem value="ai" id="ai" className="rounded-none" />
+          <RadioGroupItem value="ai" id="ai" className="rounded" />
+          <Bot className="w-4 h-4" />
           <Label htmlFor="ai">vs AI</Label>
         </motion.div>
         <motion.div 
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="flex items-center space-x-2 bg-primary/5 px-4 py-2 rounded-none cursor-pointer"
+          className="flex items-center gap-2 bg-primary/5 px-4 py-2 rounded cursor-pointer"
         >
-          <RadioGroupItem value="player" id="player" className="rounded-none" />
+          <RadioGroupItem value="player" id="player" className="rounded" />
+          <User2 className="w-4 h-4" />
           <Label htmlFor="player">vs Player</Label>
         </motion.div>
       </RadioGroup>

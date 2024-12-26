@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { Bot, User2 } from "lucide-react";
@@ -14,10 +13,10 @@ const StartScreen = ({ onStart }: StartScreenProps) => {
       animate={{ opacity: 1, y: 0 }}
       className="flex flex-col items-center gap-8 w-full max-w-[800px] p-4"
     >
-      <h1 className="text-4xl font-bold mb-8">Tic Tac Toe X</h1>
+      <h1 className="text-4xl font-bold">Tic Tac Toe X</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
         <Card 
-          className="p-8 hover:border-primary transition-colors cursor-pointer flex flex-col items-center gap-6 rounded-none"
+          className="p-8 hover:border-primary transition-colors cursor-pointer flex flex-col items-center gap-6 rounded"
           onClick={() => onStart(true)}
         >
           <Bot className="w-16 h-16" />
@@ -28,13 +27,13 @@ const StartScreen = ({ onStart }: StartScreenProps) => {
         </Card>
 
         <Card 
-          className="p-8 hover:border-primary transition-colors cursor-pointer flex flex-col items-center gap-6 rounded-none"
+          className="p-8 hover:border-primary transition-colors cursor-pointer flex flex-col items-center gap-6 rounded"
           onClick={() => onStart(false)}
         >
           <User2 className="w-16 h-16" />
           <div className="text-center">
             <h3 className="text-xl font-semibold mb-2">Play vs Player</h3>
-            <p className="text-sm text-muted-foreground">Challenge a friend in local multiplayer</p>
+            <p className="text-sm text-muted-foreground">Challenge a friend in a multiplayer match</p>
           </div>
         </Card>
       </div>
