@@ -8,13 +8,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Theme } from "@/hooks/use-theme";
 import { motion } from "framer-motion";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useState } from "react";
 
 interface ThemeSelectorProps {
   theme: Theme;
   setTheme: (theme: Theme) => void;
-  onHelp: () => void;
 }
 
 const ThemeSelector = ({ theme, setTheme }: ThemeSelectorProps) => {
@@ -24,7 +23,7 @@ const ThemeSelector = ({ theme, setTheme }: ThemeSelectorProps) => {
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="fixed top-20 left-4 flex gap-2 z-50"
+      className="fixed top-4 right-4 flex gap-2 z-50"
     >
       <Button
         variant="outline"
@@ -60,8 +59,8 @@ const ThemeSelector = ({ theme, setTheme }: ThemeSelectorProps) => {
       </DropdownMenu>
 
       <Dialog open={showHelp} onOpenChange={setShowHelp}>
-        <DialogContent className="rounded-lg fixed left-4 top-32 w-80">
-          <h2 className="text-lg font-bold mb-2">How to Play Tic Tac Toe X</h2>
+        <DialogContent className="fixed right-4 top-16 w-80">
+          <DialogTitle>How to Play Tic Tac Toe X</DialogTitle>
           <ol className="list-decimal pl-4">
             <li>Choose to play against AI or another player</li>
             <li>Take turns placing X's and O's on the board</li>

@@ -8,8 +8,8 @@ import GameControls from './GameControls';
 import PlayerStats from './PlayerStats';
 import ThemeSelector from './ThemeSelector';
 import GameModeSelector from './GameModeSelector';
+import GameHeader from './GameHeader';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bot, User2 } from 'lucide-react';
 
 const calculateWinner = (squares: (string | null)[]): { winner: string | null; line: number[] | null } => {
   const lines = [
@@ -94,65 +94,28 @@ const Game = () => {
     setLosses(0);
   };
 
-  const handlePause = () => {
-    setIsPaused(!isPaused);
-  };
-
-  const handleHome = () => {
-    setVsAI(null);
-    resetGame();
-    setWins(0);
-    setLosses(0);
-  };
-
-  const handleHelp = () => {
-    const dialog = document.createElement('dialog');
-    dialog.innerHTML = `
-      <div class="p-6 max-w-sm">
-        <h2 class="text-lg font-bold mb-4">How to Play Tic Tac Toe X</h2>
-        <ol class="list-decimal pl-4 space-y-2">
-          <li>Choose to play against AI or another player</li>
-          <li>Take turns placing X's and O's on the board</li>
-          <li>Get three in a row to win</li>
-          <li>Block your opponent from getting three in a row</li>
-          <li>Have fun!</li>
-        </ol>
-        <button class="mt-6 px-4 py-2 bg-primary text-primary-foreground rounded-lg w-full" onclick="this.parentElement.parentElement.close()">Close</button>
-      </div>
-    `;
-    dialog.className = "fixed top-1/4 right-4 p-4 rounded-lg bg-background text-foreground shadow-lg border border-border";
-    document.body.appendChild(dialog);
-    dialog.showModal();
-    dialog.addEventListener('close', () => {
-      document.body.removeChild(dialog);
-    });
-  };
-
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center gap-8 p-4 bg-background text-foreground relative">
-      <ThemeSelector theme={theme} setTheme={setTheme} onHelp={handleHelp} />
-
+      <ThemeSelector theme={theme} setTheme={setTheme} />
+      
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
         className="flex flex-col items-center gap-8 w-full max-w-[300px]"
       >
-        <h1 className="text-2xl font-bold mb-4">Tic Tac Toe X</h1>
+        <GameHeader />
         
         {vsAI === null ? (
           <StartScreen onStart={handleStartGame} />
         ) : (
           <>
-            <GameModeSelector 
-              vsAI={vsAI} 
-              onModeChange={(isAI) => {
-                setVsAI(isAI);
-                resetGame();
-                setWins(0);
-                setLosses(0);
-              }} 
-            />
+            <GameModeSelector vsAI={vsAI} onModeChange={(isAI) => {
+              setVsAI(isAI);
+              resetGame();
+              setWins(0);
+              setLosses(0);
+            }} />
 
             <PlayerStats wins={wins} losses={losses} vsAI={vsAI} />
 
@@ -187,8 +150,13 @@ const Game = () => {
 
             <GameControls
               onReset={resetGame}
-              onPause={handlePause}
-              onHome={handleHome}
+              onPause={() => setIsPaused(!isPaused)}
+              onHome={() => {
+                setVsAI(null);
+                resetGame();
+                setWins(0);
+                setLosses(0);
+              }}
             />
 
             <WinnerDialog
