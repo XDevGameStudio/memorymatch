@@ -29,14 +29,14 @@ const ThemeSelector = ({ theme, setTheme }: ThemeSelectorProps) => {
       <Button
         variant="outline"
         size="icon"
-        className="rounded"
+        className="rounded-lg"
         onClick={() => setShowHelp(true)}
       >
         <HelpCircle className="h-4 w-4" />
       </Button>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="icon" className="rounded">
+          <Button variant="outline" size="icon" className="rounded-lg">
             {theme === "dark" ? (
               <Moon className="h-4 w-4" />
             ) : theme === "candy" ? (
@@ -50,7 +50,7 @@ const ThemeSelector = ({ theme, setTheme }: ThemeSelectorProps) => {
             )}
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="rounded">
+        <DropdownMenuContent align="end" className="rounded-lg">
           <DropdownMenuItem onClick={() => setTheme("light")}>Light</DropdownMenuItem>
           <DropdownMenuItem onClick={() => setTheme("dark")}>Dark</DropdownMenuItem>
           <DropdownMenuItem onClick={() => setTheme("candy")}>Candy</DropdownMenuItem>
@@ -60,7 +60,7 @@ const ThemeSelector = ({ theme, setTheme }: ThemeSelectorProps) => {
       </DropdownMenu>
 
       <Dialog open={showHelp} onOpenChange={setShowHelp}>
-        <DialogContent className="rounded fixed right-4 top-16 w-80">
+        <DialogContent className="rounded-lg fixed right-4 top-20 w-80">
           <h2 className="text-lg font-bold mb-2">How to Play Tic Tac Toe X</h2>
           <ol className="list-decimal pl-4">
             <li>Choose to play against AI or another player</li>

@@ -11,12 +11,12 @@ const StartScreen = ({ onStart }: StartScreenProps) => {
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="flex flex-col items-center gap-8 w-full max-w-[800px] p-4"
+      className="flex flex-col items-center gap-8 w-full max-w-[800px] p-4 mt-12"
     >
       <h1 className="text-4xl font-bold">Tic Tac Toe X</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
         <Card 
-          className="p-8 hover:border-primary transition-colors cursor-pointer flex flex-col items-center gap-6 rounded"
+          className="p-8 hover:border-primary transition-colors cursor-pointer flex flex-col items-center gap-6 rounded-lg hover:bg-primary/5"
           onClick={() => onStart(true)}
         >
           <Bot className="w-16 h-16" />
@@ -27,7 +27,7 @@ const StartScreen = ({ onStart }: StartScreenProps) => {
         </Card>
 
         <Card 
-          className="p-8 hover:border-primary transition-colors cursor-pointer flex flex-col items-center gap-6 rounded"
+          className="p-8 hover:border-primary transition-colors cursor-pointer flex flex-col items-center gap-6 rounded-lg hover:bg-primary/5"
           onClick={() => onStart(false)}
         >
           <User2 className="w-16 h-16" />

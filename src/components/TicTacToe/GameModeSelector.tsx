@@ -19,23 +19,27 @@ const GameModeSelector = ({ vsAI, onModeChange }: GameModeSelectorProps) => {
       <RadioGroup
         defaultValue={vsAI ? "ai" : "player"}
         onValueChange={(value) => onModeChange(value === "ai")}
-        className="flex gap-4"
+        className="flex flex-col md:flex-row gap-4 w-full max-w-md"
       >
         <motion.div 
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="flex items-center gap-2 bg-primary/5 px-4 py-2 rounded cursor-pointer"
+          className={`flex items-center gap-2 px-6 py-3 rounded-lg cursor-pointer w-full transition-colors duration-200 ${
+            vsAI ? 'bg-primary/20' : 'bg-primary/5'
+          }`}
         >
-          <RadioGroupItem value="ai" id="ai" className="rounded" />
+          <RadioGroupItem value="ai" id="ai" className="rounded-full" />
           <Bot className="w-4 h-4" />
           <Label htmlFor="ai">vs AI</Label>
         </motion.div>
         <motion.div 
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="flex items-center gap-2 bg-primary/5 px-4 py-2 rounded cursor-pointer"
+          className={`flex items-center gap-2 px-6 py-3 rounded-lg cursor-pointer w-full transition-colors duration-200 ${
+            !vsAI ? 'bg-primary/20' : 'bg-primary/5'
+          }`}
         >
-          <RadioGroupItem value="player" id="player" className="rounded" />
+          <RadioGroupItem value="player" id="player" className="rounded-full" />
           <User2 className="w-4 h-4" />
           <Label htmlFor="player">vs Player</Label>
         </motion.div>
