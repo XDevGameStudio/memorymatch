@@ -50,11 +50,21 @@ const ThemeSelector = ({ theme, setTheme }: ThemeSelectorProps) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="rounded-lg">
-          <DropdownMenuItem onClick={() => setTheme("light")}>Light</DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setTheme("dark")}>Dark</DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setTheme("candy")}>Candy</DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setTheme("sunset")}>Sunset</DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setTheme("forest")}>Forest</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setTheme("light")} className="gap-2">
+            <Sun className="h-4 w-4" /> Light
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setTheme("dark")} className="gap-2">
+            <Moon className="h-4 w-4" /> Dark
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setTheme("candy")} className="gap-2">
+            <Candy className="h-4 w-4" /> Candy
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setTheme("sunset")} className="gap-2">
+            <Sunset className="h-4 w-4" /> Sunset
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setTheme("forest")} className="gap-2">
+            <TreePine className="h-4 w-4" /> Forest
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
 

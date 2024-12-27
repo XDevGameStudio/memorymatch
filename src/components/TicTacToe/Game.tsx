@@ -9,7 +9,10 @@ import PlayerStats from './PlayerStats';
 import ThemeSelector from './ThemeSelector';
 import GameModeSelector from './GameModeSelector';
 import GameHeader from './GameHeader';
+import DifficultySelector from './DifficultySelector';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Button } from '../ui/button';
+import { Settings } from 'lucide-react';
 
 const calculateWinner = (squares: (string | null)[]): { winner: string | null; line: number[] | null } => {
   const lines = [
@@ -30,6 +33,7 @@ const Game = () => {
   const [squares, setSquares] = useState<(string | null)[]>(Array(9).fill(null));
   const [isXNext, setIsXNext] = useState(true);
   const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('medium');
+  const [showDifficultySelector, setShowDifficultySelector] = useState(false);
   const [wins, setWins] = useState(0);
   const [losses, setLosses] = useState(0);
   const [vsAI, setVsAI] = useState<boolean | null>(null);
@@ -92,6 +96,9 @@ const Game = () => {
     resetGame();
     setWins(0);
     setLosses(0);
+    if (againstAI) {
+      setShowDifficultySelector(true);
+    }
   };
 
   return (
@@ -110,12 +117,28 @@ const Game = () => {
           <StartScreen onStart={handleStartGame} />
         ) : (
           <>
-            <GameModeSelector vsAI={vsAI} onModeChange={(isAI) => {
-              setVsAI(isAI);
-              resetGame();
-              setWins(0);
-              setLosses(0);
-            }} />
+            <div className="w-full flex flex-col gap-4">
+              <GameModeSelector vsAI={vsAI} onModeChange={(isAI) => {
+                setVsAI(isAI);
+                resetGame();
+                setWins(0);
+                setLosses(0);
+                if (isAI) {
+                  setShowDifficultySelector(true);
+                }
+              }} />
+              
+              {vsAI && (
+                <Button
+                  variant="outline"
+                  onClick={() => setShowDifficultySelector(true)}
+                  className="w-full flex items-center justify-center gap-2"
+                >
+                  <Settings className="w-4 h-4" />
+                  <span className="capitalize">{difficulty} Mode</span>
+                </Button>
+              )}
+            </div>
 
             <PlayerStats wins={wins} losses={losses} vsAI={vsAI} />
 
@@ -166,9 +189,20 @@ const Game = () => {
               open={showWinnerDialog}
               onOpenChange={setShowWinnerDialog}
             />
+
+            <DifficultySelector
+              open={showDifficultySelector}
+              onOpenChange={setShowDifficultySelector}
+              onSelect={setDifficulty}
+              currentDifficulty={difficulty}
+            />
           </>
         )}
       </motion.div>
+
+      <div className="fixed bottom-4 right-4">
+        <p className="text-sm text-muted-foreground font-bold">created by x dev</p>
+      </div>
     </div>
   );
 };
