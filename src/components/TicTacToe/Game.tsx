@@ -112,30 +112,28 @@ const Game = () => {
         ) : (
           <>
             <div className="w-full flex flex-col gap-4">
-              <div className="relative w-full">
-                <AnimatePresence>
-                  {vsAI && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -20, height: 0 }}
-                      animate={{ opacity: 1, y: 0, height: 'auto' }}
-                      exit={{ opacity: 0, y: -20, height: 0 }}
-                      className="absolute bottom-full mb-4 left-1/2 -translate-x-1/2 w-full"
-                    >
-                      <DifficultySelector
-                        currentDifficulty={difficulty}
-                        onSelect={setDifficulty}
-                      />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-                
-                <GameModeSelector vsAI={vsAI} onModeChange={(isAI) => {
-                  setVsAI(isAI);
-                  resetGame();
-                  setWins(0);
-                  setLosses(0);
-                }} />
-              </div>
+              <AnimatePresence>
+                {vsAI && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="w-full flex justify-center"
+                  >
+                    <DifficultySelector
+                      currentDifficulty={difficulty}
+                      onSelect={setDifficulty}
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+              
+              <GameModeSelector vsAI={vsAI} onModeChange={(isAI) => {
+                setVsAI(isAI);
+                resetGame();
+                setWins(0);
+                setLosses(0);
+              }} />
             </div>
 
             <PlayerStats wins={wins} losses={losses} vsAI={vsAI} />
