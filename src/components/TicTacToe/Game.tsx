@@ -112,28 +112,19 @@ const Game = () => {
         ) : (
           <>
             <div className="w-full flex flex-col gap-4">
-              <AnimatePresence>
-                {vsAI && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="w-full flex justify-center"
-                  >
-                    <DifficultySelector
-                      currentDifficulty={difficulty}
-                      onSelect={setDifficulty}
-                    />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-              
               <GameModeSelector vsAI={vsAI} onModeChange={(isAI) => {
                 setVsAI(isAI);
                 resetGame();
                 setWins(0);
                 setLosses(0);
               }} />
+              
+              {vsAI && (
+                <DifficultySelector
+                  currentDifficulty={difficulty}
+                  onSelect={setDifficulty}
+                />
+              )}
             </div>
 
             <PlayerStats wins={wins} losses={losses} vsAI={vsAI} />
