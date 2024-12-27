@@ -10,6 +10,7 @@ import { Theme } from "@/hooks/use-theme";
 import { motion } from "framer-motion";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 interface ThemeSelectorProps {
   theme: Theme;
@@ -28,14 +29,14 @@ const ThemeSelector = ({ theme, setTheme }: ThemeSelectorProps) => {
       <Button
         variant="outline"
         size="icon"
-        className="rounded-lg bg-background/80 backdrop-blur-sm"
+        className="rounded-lg bg-background/80 backdrop-blur-sm hover:bg-accent"
         onClick={() => setShowHelp(true)}
       >
         <HelpCircle className="h-4 w-4" />
       </Button>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="icon" className="rounded-lg bg-background/80 backdrop-blur-sm">
+          <Button variant="outline" size="icon" className="rounded-lg bg-background/80 backdrop-blur-sm hover:bg-accent">
             {theme === "dark" ? (
               <Moon className="h-4 w-4" />
             ) : theme === "candy" ? (
@@ -50,19 +51,49 @@ const ThemeSelector = ({ theme, setTheme }: ThemeSelectorProps) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="rounded-lg">
-          <DropdownMenuItem onClick={() => setTheme("light")} className="gap-2">
+          <DropdownMenuItem 
+            onClick={() => setTheme("light")} 
+            className={cn(
+              "gap-2 cursor-pointer",
+              theme === "light" && "bg-accent"
+            )}
+          >
             <Sun className="h-4 w-4" /> Light
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setTheme("dark")} className="gap-2">
+          <DropdownMenuItem 
+            onClick={() => setTheme("dark")} 
+            className={cn(
+              "gap-2 cursor-pointer",
+              theme === "dark" && "bg-accent"
+            )}
+          >
             <Moon className="h-4 w-4" /> Dark
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setTheme("candy")} className="gap-2">
+          <DropdownMenuItem 
+            onClick={() => setTheme("candy")} 
+            className={cn(
+              "gap-2 cursor-pointer",
+              theme === "candy" && "bg-accent"
+            )}
+          >
             <Candy className="h-4 w-4" /> Candy
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setTheme("sunset")} className="gap-2">
+          <DropdownMenuItem 
+            onClick={() => setTheme("sunset")} 
+            className={cn(
+              "gap-2 cursor-pointer",
+              theme === "sunset" && "bg-accent"
+            )}
+          >
             <Sunset className="h-4 w-4" /> Sunset
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setTheme("forest")} className="gap-2">
+          <DropdownMenuItem 
+            onClick={() => setTheme("forest")} 
+            className={cn(
+              "gap-2 cursor-pointer",
+              theme === "forest" && "bg-accent"
+            )}
+          >
             <TreePine className="h-4 w-4" /> Forest
           </DropdownMenuItem>
         </DropdownMenuContent>

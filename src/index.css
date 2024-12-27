@@ -14,7 +14,7 @@
     --secondary-foreground: 0 0% 0%;
     --muted: 0 0% 100%;
     --muted-foreground: 0 0% 0%;
-    --accent: 0 0% 100%;
+    --accent: 0 0% 90%;
     --accent-foreground: 0 0% 0%;
     --radius: 0.5rem;
   }
@@ -28,7 +28,7 @@
     --secondary-foreground: 0 0% 100%;
     --muted: 0 0% 0%;
     --muted-foreground: 0 0% 100%;
-    --accent: 0 0% 0%;
+    --accent: 0 0% 20%;
     --accent-foreground: 0 0% 100%;
   }
 
@@ -43,7 +43,6 @@
     --muted-foreground: 0 0% 100%;
     --accent: 24 100% 83%;
     --accent-foreground: 341 91% 68%;
-    background: linear-gradient(90deg, hsla(24, 100%, 83%, 1) 0%, hsla(341, 91%, 68%, 1) 100%);
   }
 
   .forest {
@@ -51,13 +50,12 @@
     --foreground: 0 0% 100%;
     --primary: 139 70% 35%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 97 90% 66%;
+    --secondary: 139 70% 65%;
     --secondary-foreground: 0 0% 100%;
     --muted: 139 70% 85%;
     --muted-foreground: 0 0% 100%;
-    --accent: 97 90% 76%;
-    --accent-foreground: 139 70% 55%;
-    background: linear-gradient(90deg, hsla(139, 70%, 75%, 1) 0%, hsla(63, 90%, 76%, 1) 100%);
+    --accent: 139 70% 35%;
+    --accent-foreground: 0 0% 100%;
   }
 
   .sunset {
@@ -71,7 +69,6 @@
     --muted-foreground: 0 0% 0%;
     --accent: 0 100% 71%;
     --accent-foreground: 0 0% 100%;
-    background: linear-gradient(225deg, #FFE29F 0%, #FFA99F 48%, #FF719A 100%);
   }
 
   body {

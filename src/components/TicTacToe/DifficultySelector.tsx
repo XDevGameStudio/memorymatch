@@ -1,69 +1,40 @@
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import { motion } from "framer-motion";
-import { Brain } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface DifficultySelectorProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  onSelect: (difficulty: 'easy' | 'medium' | 'hard') => void;
   currentDifficulty: 'easy' | 'medium' | 'hard';
+  onSelect: (difficulty: 'easy' | 'medium' | 'hard') => void;
 }
 
 const DifficultySelector = ({
-  open,
-  onOpenChange,
-  onSelect,
   currentDifficulty,
+  onSelect,
 }: DifficultySelectorProps) => {
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Brain className="w-5 h-5" />
-            Select AI Difficulty
-          </DialogTitle>
-        </DialogHeader>
-        <div className="flex flex-col gap-4 mt-4">
-          <Button
-            variant={currentDifficulty === 'easy' ? 'default' : 'outline'}
-            onClick={() => {
-              onSelect('easy');
-              onOpenChange(false);
-            }}
-            className="w-full justify-start"
-          >
-            Easy - AI makes random moves most of the time
-          </Button>
-          <Button
-            variant={currentDifficulty === 'medium' ? 'default' : 'outline'}
-            onClick={() => {
-              onSelect('medium');
-              onOpenChange(false);
-            }}
-            className="w-full justify-start"
-          >
-            Medium - AI makes some strategic moves
-          </Button>
-          <Button
-            variant={currentDifficulty === 'hard' ? 'default' : 'outline'}
-            onClick={() => {
-              onSelect('hard');
-              onOpenChange(false);
-            }}
-            className="w-full justify-start"
-          >
-            Hard - AI plays perfectly
-          </Button>
-        </div>
-      </DialogContent>
-    </Dialog>
+    <motion.div 
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="flex gap-1 bg-secondary rounded-lg p-1 w-full max-w-[200px] mx-auto"
+    >
+      {[
+        { key: 'easy', label: 'E' },
+        { key: 'medium', label: 'M' },
+        { key: 'hard', label: 'H' }
+      ].map(({ key, label }) => (
+        <button
+          key={key}
+          onClick={() => onSelect(key as 'easy' | 'medium' | 'hard')}
+          className={cn(
+            "flex-1 py-2 rounded-md transition-all font-mono text-sm font-bold",
+            currentDifficulty === key 
+              ? "bg-primary text-primary-foreground" 
+              : "hover:bg-primary/10"
+          )}
+        >
+          {label}
+        </button>
+      ))}
+    </motion.div>
   );
 };
 
