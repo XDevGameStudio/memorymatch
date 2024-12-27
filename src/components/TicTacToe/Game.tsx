@@ -73,7 +73,12 @@ const Game = () => {
   }, [winner, vsAI]);
 
   const handleClick = (i: number) => {
-    if (winner || squares[i] || (!isXNext && vsAI) || isPaused) return;
+    if (winner || squares[i] || (!isXNext && vsAI)) return;
+    
+    if (isPaused) {
+      setIsPaused(false);
+      return;
+    }
 
     const newSquares = squares.slice();
     newSquares[i] = isXNext ? 'X' : 'O';

@@ -100,9 +100,9 @@ const ThemeSelector = ({ theme, setTheme }: ThemeSelectorProps) => {
       </DropdownMenu>
 
       <Dialog open={showHelp} onOpenChange={setShowHelp}>
-        <DialogContent className="fixed right-4 top-16 w-80">
+        <DialogContent className="sm:max-w-[425px] fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
           <DialogTitle>How to Play Tic Tac Toe X</DialogTitle>
-          <ol className="list-decimal pl-4">
+          <ol className="list-decimal pl-4 space-y-2">
             <li>Choose to play against AI or another player</li>
             <li>Take turns placing X's and O's on the board</li>
             <li>Get three in a row to win</li>
