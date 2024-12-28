@@ -86,6 +86,12 @@ const Game = () => {
     setIsXNext(!isXNext);
   };
 
+  const handlePauseOverlayClick = () => {
+    if (isPaused) {
+      setIsPaused(false);
+    }
+  };
+
   const resetGame = () => {
     setSquares(Array(9).fill(null));
     setIsXNext(true);
@@ -150,7 +156,8 @@ const Game = () => {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="fixed inset-0 bg-background/80 backdrop-blur-md z-10 flex items-center justify-center"
+                  className="fixed inset-0 bg-background/80 backdrop-blur-md z-10 flex items-center justify-center cursor-pointer"
+                  onClick={handlePauseOverlayClick}
                 >
                   <div className="text-2xl font-bold">Game Paused</div>
                 </motion.div>
