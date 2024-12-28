@@ -20,6 +20,22 @@ interface ThemeSelectorProps {
 const ThemeSelector = ({ theme, setTheme }: ThemeSelectorProps) => {
   const [showHelp, setShowHelp] = useState(false);
 
+  const themeIcons = {
+    light: <Sun className="h-4 w-4" />,
+    dark: <Moon className="h-4 w-4" />,
+    candy: <Candy className="h-4 w-4" />,
+    sunset: <Sunset className="h-4 w-4" />,
+    forest: <TreePine className="h-4 w-4" />
+  };
+
+  const themeLabels = {
+    light: "Light",
+    dark: "Dark",
+    candy: "Candy",
+    sunset: "Sunset",
+    forest: "Forest"
+  };
+
   return (
     <motion.div 
       initial={{ opacity: 0 }}
@@ -37,70 +53,35 @@ const ThemeSelector = ({ theme, setTheme }: ThemeSelectorProps) => {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline" size="icon" className="rounded-lg bg-background/80 backdrop-blur-sm hover:bg-accent">
-            {theme === "dark" ? (
-              <Moon className="h-4 w-4" />
-            ) : theme === "candy" ? (
-              <Candy className="h-4 w-4" />
-            ) : theme === "sunset" ? (
-              <Sunset className="h-4 w-4" />
-            ) : theme === "forest" ? (
-              <TreePine className="h-4 w-4" />
-            ) : (
-              <Sun className="h-4 w-4" />
-            )}
+            {themeIcons[theme]}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="rounded-lg">
-          <DropdownMenuItem 
-            onClick={() => setTheme("light")} 
-            className={cn(
-              "gap-2 cursor-pointer",
-              theme === "light" && "bg-accent"
-            )}
-          >
-            <Sun className="h-4 w-4" /> Light
-          </DropdownMenuItem>
-          <DropdownMenuItem 
-            onClick={() => setTheme("dark")} 
-            className={cn(
-              "gap-2 cursor-pointer",
-              theme === "dark" && "bg-accent"
-            )}
-          >
-            <Moon className="h-4 w-4" /> Dark
-          </DropdownMenuItem>
-          <DropdownMenuItem 
-            onClick={() => setTheme("candy")} 
-            className={cn(
-              "gap-2 cursor-pointer",
-              theme === "candy" && "bg-accent"
-            )}
-          >
-            <Candy className="h-4 w-4" /> Candy
-          </DropdownMenuItem>
-          <DropdownMenuItem 
-            onClick={() => setTheme("sunset")} 
-            className={cn(
-              "gap-2 cursor-pointer",
-              theme === "sunset" && "bg-accent"
-            )}
-          >
-            <Sunset className="h-4 w-4" /> Sunset
-          </DropdownMenuItem>
-          <DropdownMenuItem 
-            onClick={() => setTheme("forest")} 
-            className={cn(
-              "gap-2 cursor-pointer",
-              theme === "forest" && "bg-accent"
-            )}
-          >
-            <TreePine className="h-4 w-4" /> Forest
-          </DropdownMenuItem>
+          {(Object.keys(themeIcons) as Theme[]).map((t) => (
+            <DropdownMenuItem 
+              key={t}
+              onClick={() => setTheme(t)} 
+              className={cn(
+                "gap-2 cursor-pointer flex items-center",
+                theme === t && "bg-accent"
+              )}
+            >
+              {themeIcons[t]}
+              <span>{themeLabels[t]}</span>
+              {theme === t && (
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  className="w-2 h-2 rounded-full bg-primary ml-auto"
+                />
+              )}
+            </DropdownMenuItem>
+          ))}
         </DropdownMenuContent>
       </DropdownMenu>
 
       <Dialog open={showHelp} onOpenChange={setShowHelp}>
-        <DialogContent className="sm:max-w-[425px] fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+        <DialogContent className="sm:max-w-[425px]">
           <DialogTitle>How to Play Tic Tac Toe X</DialogTitle>
           <ol className="list-decimal pl-4 space-y-2">
             <li>Choose to play against AI or another player</li>

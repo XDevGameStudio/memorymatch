@@ -46,16 +46,16 @@
   }
 
   .forest {
-    --background: 139 70% 75%;
+    --background: 139 70% 35%;
     --foreground: 0 0% 100%;
-    --primary: 139 70% 35%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 139 70% 65%;
+    --primary: 139 70% 85%;
+    --primary-foreground: 139 70% 35%;
+    --secondary: 139 70% 35%;
     --secondary-foreground: 0 0% 100%;
-    --muted: 139 70% 85%;
+    --muted: 139 70% 35%;
     --muted-foreground: 0 0% 100%;
-    --accent: 139 70% 35%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 139 70% 85%;
+    --accent-foreground: 139 70% 35%;
   }
 
   .sunset {
@@ -91,6 +91,14 @@
 
   .selected-box {
     @apply ring-2 ring-primary font-bold;
+  }
+
+  .mode-button {
+    @apply flex items-center justify-center gap-2 px-6 py-3 rounded-lg w-full transition-colors duration-200 bg-secondary/80 hover:bg-secondary;
+  }
+
+  .mode-button-selected {
+    @apply bg-primary text-primary-foreground;
   }
 }
 
