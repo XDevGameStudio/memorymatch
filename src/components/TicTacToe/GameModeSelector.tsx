@@ -1,13 +1,13 @@
 import { motion } from "framer-motion";
 import { Bot, User2 } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 interface GameModeSelectorProps {
   vsAI: boolean;
   onModeChange: (isAI: boolean) => void;
+  onDifficultyChange?: (difficulty: 'easy' | 'medium' | 'hard') => void;
 }
 
-const GameModeSelector = ({ vsAI, onModeChange }: GameModeSelectorProps) => {
+const GameModeSelector = ({ vsAI, onModeChange, onDifficultyChange }: GameModeSelectorProps) => {
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
@@ -18,11 +18,15 @@ const GameModeSelector = ({ vsAI, onModeChange }: GameModeSelectorProps) => {
       <motion.button 
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
-        onClick={() => onModeChange(true)}
-        className={cn(
-          "mode-button",
-          vsAI && "mode-button-selected"
-        )}
+        onClick={() => {
+          onModeChange(true);
+          if (onDifficultyChange) {
+            onDifficultyChange('medium');
+          }
+        }}
+        className={`flex items-center justify-center gap-2 px-6 py-3 rounded-lg w-full transition-colors duration-200 ${
+          vsAI ? 'bg-primary text-primary-foreground' : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
+        }`}
       >
         <Bot className="w-4 h-4" />
         <span>vs AI</span>
@@ -32,10 +36,9 @@ const GameModeSelector = ({ vsAI, onModeChange }: GameModeSelectorProps) => {
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
         onClick={() => onModeChange(false)}
-        className={cn(
-          "mode-button",
-          !vsAI && "mode-button-selected"
-        )}
+        className={`flex items-center justify-center gap-2 px-6 py-3 rounded-lg w-full transition-colors duration-200 ${
+          !vsAI ? 'bg-primary text-primary-foreground' : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
+        }`}
       >
         <User2 className="w-4 h-4" />
         <span>vs Player</span>
