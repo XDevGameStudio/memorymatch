@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import Board from './Board';
 import { getBestMove } from './aiUtils';
 import { useTheme } from '@/hooks/use-theme';
 import StartScreen from './StartScreen';
 import WinnerDialog from './WinnerDialog';
-import GameControls from './GameControls';
-import PlayerStats from './PlayerStats';
 import ThemeSelector from './ThemeSelector';
-import GameModeSelector from './GameModeSelector';
 import GameHeader from './GameHeader';
-import DifficultySelector from './DifficultySelector';
-import { motion, AnimatePresence } from 'framer-motion';
+import GameBoard from './GameBoard';
+import GameInterface from './GameInterface';
+import { motion } from 'framer-motion';
 
 const calculateWinner = (squares: (string | null)[]): { winner: string | null; line: number[] | null } => {
   const lines = [
@@ -37,8 +34,8 @@ const Game = () => {
   const [showWinnerDialog, setShowWinnerDialog] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const { theme, setTheme } = useTheme();
-  const { winner, line } = calculateWinner(squares);
 
+  const { winner, line } = calculateWinner(squares);
   const isBoardFull = squares.every(square => square !== null);
   const isDraw = !winner && isBoardFull;
 
@@ -86,12 +83,6 @@ const Game = () => {
     setIsXNext(!isXNext);
   };
 
-  const handlePauseOverlayClick = () => {
-    if (isPaused) {
-      setIsPaused(false);
-    }
-  };
-
   const resetGame = () => {
     setSquares(Array(9).fill(null));
     setIsXNext(true);
@@ -122,55 +113,22 @@ const Game = () => {
           <StartScreen onStart={handleStartGame} />
         ) : (
           <>
-            <div className="w-full flex flex-col gap-4">
-              <GameModeSelector vsAI={vsAI} onModeChange={(isAI) => {
+            <GameInterface
+              vsAI={vsAI}
+              difficulty={difficulty}
+              wins={wins}
+              losses={losses}
+              isXNext={isXNext}
+              winner={winner}
+              isDraw={isDraw}
+              isPaused={isPaused}
+              onDifficultyChange={setDifficulty}
+              onModeChange={(isAI) => {
                 setVsAI(isAI);
                 resetGame();
                 setWins(0);
                 setLosses(0);
-              }} />
-              
-              {vsAI && (
-                <DifficultySelector
-                  currentDifficulty={difficulty}
-                  onSelect={setDifficulty}
-                />
-              )}
-            </div>
-
-            <PlayerStats wins={wins} losses={losses} vsAI={vsAI} />
-
-            <AnimatePresence>
-              {!winner && !isDraw && !isPaused && (
-                <motion.div 
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="flex items-center gap-2 bg-primary/5 px-4 py-2 rounded-lg"
-                >
-                  Turn: <span className="font-bold">{isXNext ? 'X' : 'O'}</span>
-                </motion.div>
-              )}
-              {isPaused && (
-                <motion.div 
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="fixed inset-0 bg-background/80 backdrop-blur-md z-10 flex items-center justify-center cursor-pointer"
-                  onClick={handlePauseOverlayClick}
-                >
-                  <div className="text-2xl font-bold">Game Paused</div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            <Board
-              squares={squares}
-              winningLine={line}
-              onClick={handleClick}
-            />
-
-            <GameControls
+              }}
               onReset={resetGame}
               onPause={() => setIsPaused(!isPaused)}
               onHome={() => {
@@ -179,6 +137,14 @@ const Game = () => {
                 setWins(0);
                 setLosses(0);
               }}
+            />
+
+            <GameBoard
+              squares={squares}
+              winningLine={line}
+              isPaused={isPaused}
+              onCellClick={handleClick}
+              onResume={() => setIsPaused(false)}
             />
 
             <WinnerDialog
