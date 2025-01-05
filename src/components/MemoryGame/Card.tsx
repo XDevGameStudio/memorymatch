@@ -20,27 +20,41 @@ const Card: React.FC<CardProps> = ({ value, isFlipped, isMatched, onClick }) => 
   const Icon = icons[parseInt(value)];
 
   return (
-    <motion.button
+    <motion.div
+      className="relative w-full aspect-square cursor-pointer"
+      onClick={onClick}
       whileHover={{ scale: isFlipped ? 1 : 1.05 }}
       whileTap={{ scale: 0.95 }}
-      className={cn(
-        "w-full aspect-square rounded-lg text-4xl font-bold flex items-center justify-center",
-        "transition-all duration-200",
-        "border-2 border-primary/40",
-        isFlipped ? "bg-primary/10" : "bg-background hover:bg-primary/5",
-        isMatched && "opacity-50"
-      )}
-      onClick={onClick}
     >
       <motion.div
+        className="w-full h-full"
         initial={false}
         animate={{ rotateY: isFlipped ? 180 : 0 }}
-        transition={{ duration: 0.6 }}
-        className="w-full h-full flex items-center justify-center"
+        transition={{ duration: 0.6, type: "spring", stiffness: 300, damping: 20 }}
+        style={{ transformStyle: "preserve-3d" }}
       >
-        {isFlipped && <Icon className="w-6 h-6" />}
+        {/* Front of card */}
+        <div
+          className={cn(
+            "absolute w-full h-full rounded-lg border-4 border-primary/40",
+            "backface-hidden bg-background",
+            isMatched && "opacity-50"
+          )}
+        />
+        
+        {/* Back of card */}
+        <div
+          className={cn(
+            "absolute w-full h-full rounded-lg border-4 border-primary/40",
+            "backface-hidden bg-secondary flex items-center justify-center",
+            "rotate-y-180",
+            isMatched && "opacity-50"
+          )}
+        >
+          <Icon className="w-8 h-8 text-secondary-foreground" />
+        </div>
       </motion.div>
-    </motion.button>
+    </motion.div>
   );
 };
 

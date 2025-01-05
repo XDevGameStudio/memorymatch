@@ -23,6 +23,12 @@ const Game = () => {
   const [showWinnerDialog, setShowWinnerDialog] = useState(false);
   const { theme, setTheme } = useTheme();
 
+  const maxMoves = {
+    easy: 15,
+    medium: 25,
+    hard: 40
+  };
+
   useEffect(() => {
     if (gameStarted) {
       setCards(createDeck(difficulty));
@@ -36,10 +42,13 @@ const Game = () => {
     if (matchedPairs > 0 && matchedPairs === cards.length / 2) {
       setShowWinnerDialog(true);
     }
-  }, [matchedPairs, cards.length]);
+    if (moves >= maxMoves[difficulty] && matchedPairs < cards.length / 2) {
+      setShowWinnerDialog(true);
+    }
+  }, [matchedPairs, cards.length, moves, difficulty]);
 
   const handleCardClick = (index: number) => {
-    if (isPaused) {
+    if (isPaused || moves >= maxMoves[difficulty]) {
       setIsPaused(false);
       return;
     }
@@ -84,6 +93,12 @@ const Game = () => {
     setIsPaused(false);
   };
 
+  const gridSizeClass = {
+    easy: "grid-cols-4 max-w-[400px]",
+    medium: "grid-cols-4 max-w-[400px]",
+    hard: "grid-cols-6 max-w-[600px]"
+  };
+
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center gap-8 p-4 bg-background text-foreground relative">
       <ThemeSelector theme={theme} setTheme={setTheme} />
@@ -109,7 +124,7 @@ const Game = () => {
             <div className="flex items-center gap-6 bg-primary/10 px-6 py-3 rounded-lg">
               <div className="flex items-center gap-2">
                 <Move className="w-5 h-5" />
-                <span className="font-bold">{moves}</span>
+                <span className="font-bold">{moves}/{maxMoves[difficulty]}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Trophy className="w-5 h-5" />
@@ -132,10 +147,8 @@ const Game = () => {
             </AnimatePresence>
 
             <div className={cn(
-              "grid gap-2 w-full",
-              difficulty === 'easy' ? "grid-cols-4 max-w-[500px]" : 
-              difficulty === 'medium' ? "grid-cols-4 max-w-[600px]" :
-              "grid-cols-6 max-w-[800px]"
+              "grid gap-2 w-full mx-auto",
+              gridSizeClass[difficulty]
             )}>
               {cards.map((card, index) => (
                 <Card
@@ -161,7 +174,9 @@ const Game = () => {
       </motion.div>
 
       <WinnerDialog
-        winner={`Congratulations! You completed the game in ${moves} moves!`}
+        winner={moves >= maxMoves[difficulty] && matchedPairs < cards.length / 2 
+          ? `Game Over! You ran out of moves.` 
+          : `Congratulations! You completed the game in ${moves} moves!`}
         isDraw={false}
         onReset={resetGame}
         open={showWinnerDialog}
