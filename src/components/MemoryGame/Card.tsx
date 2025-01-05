@@ -1,7 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import * as LucideIcons from 'lucide-react';
+import { 
+  Cpu, Ghost, Heart, Star,
+  Sun, Moon, Cloud, ArrowRight,
+  Music, Coffee, Pizza, Camera 
+} from 'lucide-react';
 
 interface CardProps {
   value: string;
@@ -11,14 +15,23 @@ interface CardProps {
 }
 
 const Card: React.FC<CardProps> = ({ value, isFlipped, isMatched, onClick }) => {
-  const icons = [
-    LucideIcons.Cpu, LucideIcons.Ghost, LucideIcons.Heart, LucideIcons.Star,
-    LucideIcons.Sun, LucideIcons.Moon, LucideIcons.Cloud, LucideIcons.ArrowRight,
-    LucideIcons.Music, LucideIcons.Coffee, LucideIcons.Pizza, LucideIcons.Camera
-  ];
-  
-  const Icon = icons[parseInt(value)];
+  const iconMap = {
+    '0': Cpu,
+    '1': Ghost,
+    '2': Heart,
+    '3': Star,
+    '4': Sun,
+    '5': Moon,
+    '6': Cloud,
+    '7': ArrowRight,
+    '8': Music,
+    '9': Coffee,
+    '10': Pizza,
+    '11': Camera
+  };
 
+  const Icon = iconMap[value as keyof typeof iconMap];
+  
   return (
     <motion.div
       className="relative w-full aspect-square cursor-pointer"
@@ -51,7 +64,7 @@ const Card: React.FC<CardProps> = ({ value, isFlipped, isMatched, onClick }) => 
             isMatched && "opacity-50"
           )}
         >
-          <Icon className="w-8 h-8 text-secondary-foreground" />
+          {Icon && <Icon className="w-8 h-8 text-secondary-foreground" />}
         </div>
       </motion.div>
     </motion.div>
