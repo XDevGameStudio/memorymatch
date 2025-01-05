@@ -10,6 +10,7 @@ import DifficultySelector from '../TicTacToe/DifficultySelector';
 import GameControls from '../TicTacToe/GameControls';
 import WinnerDialog from '../TicTacToe/WinnerDialog';
 import { Trophy, Move } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 const Game = () => {
   const [cards, setCards] = useState<CardType[]>([]);
