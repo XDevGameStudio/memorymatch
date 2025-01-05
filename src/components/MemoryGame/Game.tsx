@@ -94,9 +94,22 @@ const Game = () => {
   };
 
   const gridSizeClass = {
-    easy: "grid-cols-4 max-w-[400px]",
-    medium: "grid-cols-4 max-w-[400px]",
-    hard: "grid-cols-6 max-w-[600px]"
+    easy: "grid-cols-3 max-w-[300px]", // 4x3 grid
+    medium: "grid-cols-5 max-w-[500px]", // 4x5 grid
+    hard: "grid-cols-7 max-w-[700px]" // 4x7 grid
+  };
+
+  const getGridHeight = (difficulty: Difficulty) => {
+    switch (difficulty) {
+      case 'easy':
+        return 'grid-rows-4';
+      case 'medium':
+        return 'grid-rows-4';
+      case 'hard':
+        return 'grid-rows-4';
+      default:
+        return 'grid-rows-4';
+    }
   };
 
   return (
@@ -148,7 +161,8 @@ const Game = () => {
 
             <div className={cn(
               "grid gap-2 w-full mx-auto",
-              gridSizeClass[difficulty]
+              gridSizeClass[difficulty],
+              getGridHeight(difficulty)
             )}>
               {cards.map((card, index) => (
                 <Card

@@ -1,31 +1,29 @@
-import { Card } from './types';
-import { Cpu, Ghost, Heart, Star, Sun, Moon, Cloud, ArrowRight, Music, Coffee, Pizza, Camera } from 'lucide-react';
+import { Card, Difficulty } from './types';
 
-const icons = [Cpu, Ghost, Heart, Star, Sun, Moon, Cloud, ArrowRight, Music, Coffee, Pizza, Camera];
+const getDeckSize = (difficulty: Difficulty): number => {
+  switch (difficulty) {
+    case 'easy':
+      return 12; // 4x3 grid = 12 cards
+    case 'medium':
+      return 20; // 4x5 grid = 20 cards
+    case 'hard':
+      return 28; // 4x7 grid = 28 cards
+    default:
+      return 12;
+  }
+};
 
-export const createDeck = (difficulty: 'easy' | 'medium' | 'hard'): Card[] => {
-  const pairCounts = {
-    easy: 6,
-    medium: 8,
-    hard: 12
-  };
-
-  const pairs = pairCounts[difficulty];
-  const selectedIcons = icons.slice(0, pairs);
+export const createDeck = (difficulty: Difficulty): Card[] => {
+  const deckSize = getDeckSize(difficulty);
+  const pairs = deckSize / 2;
   
-  const cards: Card[] = [];
-  selectedIcons.forEach((_, index) => {
-    // Create pairs of cards
-    for (let i = 0; i < 2; i++) {
-      cards.push({
-        id: cards.length,
-        value: index.toString(),
-        isFlipped: false,
-        isMatched: false
-      });
-    }
-  });
+  const values = Array.from({ length: pairs }, (_, i) => i.toString());
+  const deck = [...values, ...values].map((value, index) => ({
+    id: index,
+    value,
+    isMatched: false
+  }));
 
-  // Shuffle the cards
-  return cards.sort(() => Math.random() - 0.5);
+  // Shuffle the deck
+  return deck.sort(() => Math.random() - 0.5);
 };
