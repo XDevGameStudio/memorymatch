@@ -13,7 +13,7 @@ interface CardProps {
 const Card: React.FC<CardProps> = ({ value, isFlipped, isMatched, onClick }) => {
   const icons = [
     LucideIcons.Cpu, LucideIcons.Ghost, LucideIcons.Heart, LucideIcons.Star,
-    LucideIcons.Sun, LucideIcons.Moon, LucideIcons.Cloud, LucideIcons.Lightning,
+    LucideIcons.Sun, LucideIcons.Moon, LucideIcons.Cloud, LucideIcons.ArrowRight,
     LucideIcons.Music, LucideIcons.Coffee, LucideIcons.Pizza, LucideIcons.Camera
   ];
   
