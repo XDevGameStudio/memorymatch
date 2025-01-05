@@ -21,6 +21,7 @@ export const createDeck = (difficulty: Difficulty): Card[] => {
   const deck = [...values, ...values].map((value, index) => ({
     id: index,
     value,
+    isFlipped: false,
     isMatched: false
   }));
 
