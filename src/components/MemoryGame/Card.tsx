@@ -46,25 +46,25 @@ const Card: React.FC<CardProps> = ({ value, isFlipped, isMatched, onClick }) => 
         transition={{ duration: 0.6, type: "spring", stiffness: 300, damping: 20 }}
         style={{ transformStyle: "preserve-3d" }}
       >
-        {/* Front of card */}
+        {/* Front of card (face down) */}
         <div
           className={cn(
-            "absolute w-full h-full rounded-lg border-4 border-primary/40",
+            "absolute w-full h-full rounded-lg border-2 border-border",
             "backface-hidden bg-background",
             isMatched && "opacity-50"
           )}
         />
         
-        {/* Back of card */}
+        {/* Back of card (face up) */}
         <div
           className={cn(
-            "absolute w-full h-full rounded-lg border-4 border-primary/40",
-            "backface-hidden bg-secondary flex items-center justify-center",
+            "absolute w-full h-full rounded-lg border-2 border-border",
+            "backface-hidden bg-primary flex items-center justify-center",
             "rotate-y-180",
             isMatched && "opacity-50"
           )}
         >
-          {Icon && <Icon className="w-8 h-8 text-secondary-foreground" />}
+          {Icon && <Icon className="w-8 h-8 text-primary-foreground" />}
         </div>
       </motion.div>
     </motion.div>
