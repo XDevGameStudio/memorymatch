@@ -1,9 +1,9 @@
-import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { Bot, User2 } from "lucide-react";
+import { Play } from "lucide-react";
 
 interface StartScreenProps {
-  onStart: (vsAI: boolean) => void;
+  onStart: () => void;
 }
 
 const StartScreen = ({ onStart }: StartScreenProps) => {
@@ -13,29 +13,14 @@ const StartScreen = ({ onStart }: StartScreenProps) => {
       animate={{ opacity: 1, y: 0 }}
       className="flex flex-col items-center gap-8 w-full max-w-[800px] p-4"
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-        <Card 
-          className="p-8 hover:border-primary transition-colors cursor-pointer flex flex-col items-center gap-6 rounded-lg hover:bg-primary/5"
-          onClick={() => onStart(true)}
-        >
-          <Bot className="w-16 h-16" />
-          <div className="text-center">
-            <h3 className="text-xl font-semibold mb-2">Play vs AI</h3>
-            <p className="text-sm text-muted-foreground">Challenge our AI opponent with adjustable difficulty</p>
-          </div>
-        </Card>
-
-        <Card 
-          className="p-8 hover:border-primary transition-colors cursor-pointer flex flex-col items-center gap-6 rounded-lg hover:bg-primary/5"
-          onClick={() => onStart(false)}
-        >
-          <User2 className="w-16 h-16" />
-          <div className="text-center">
-            <h3 className="text-xl font-semibold mb-2">Play vs Player</h3>
-            <p className="text-sm text-muted-foreground">Challenge a friend in a multiplayer match</p>
-          </div>
-        </Card>
-      </div>
+      <Button 
+        onClick={() => onStart()}
+        size="lg"
+        className="w-48 h-48 rounded-2xl text-2xl font-bold hover:scale-105 transition-transform"
+      >
+        <Play className="w-12 h-12 mr-2" />
+        Play
+      </Button>
     </motion.div>
   );
 };

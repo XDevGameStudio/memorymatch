@@ -100,15 +100,19 @@ const ThemeSelector = ({ theme, setTheme }: ThemeSelectorProps) => {
       </DropdownMenu>
 
       <Dialog open={showHelp} onOpenChange={setShowHelp}>
-        <DialogContent className="sm:max-w-[425px] fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-          <DialogTitle>How to Play Tic Tac Toe X</DialogTitle>
-          <ol className="list-decimal pl-4 space-y-2">
-            <li>Choose to play against AI or another player</li>
-            <li>Take turns placing X's and O's on the board</li>
-            <li>Get three in a row to win</li>
-            <li>Block your opponent from getting three in a row</li>
-            <li>Have fun!</li>
-          </ol>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogTitle>How to Play Memory Game</DialogTitle>
+          <div className="space-y-4">
+            <p className="text-sm text-muted-foreground">Match pairs of cards by remembering their positions:</p>
+            <ol className="list-decimal pl-4 space-y-2 text-sm">
+              <li>Click on any card to reveal its symbol</li>
+              <li>Click on another card to find its match</li>
+              <li>If the cards match, they'll stay face up</li>
+              <li>If they don't match, they'll flip back over</li>
+              <li>Match all pairs to win the game</li>
+              <li>Try to complete the game in as few moves as possible!</li>
+            </ol>
+          </div>
         </DialogContent>
       </Dialog>
     </motion.div>

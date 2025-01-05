@@ -9,6 +9,7 @@ import ThemeSelector from '../TicTacToe/ThemeSelector';
 import DifficultySelector from '../TicTacToe/DifficultySelector';
 import GameControls from '../TicTacToe/GameControls';
 import WinnerDialog from '../TicTacToe/WinnerDialog';
+import { Trophy, Move } from 'lucide-react';
 
 const Game = () => {
   const [cards, setCards] = useState<CardType[]>([]);
@@ -90,7 +91,7 @@ const Game = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
-        className="flex flex-col items-center gap-8 w-full max-w-[600px]"
+        className="flex flex-col items-center gap-6 w-full max-w-[800px]"
       >
         {!gameStarted ? (
           <StartScreen onStart={() => setGameStarted(true)} />
@@ -104,9 +105,15 @@ const Game = () => {
               }}
             />
 
-            <div className="flex items-center gap-4 bg-primary/5 px-4 py-2 rounded-lg">
-              <span>Moves: {moves}</span>
-              <span>Matches: {matchedPairs}</span>
+            <div className="flex items-center gap-6 bg-primary/10 px-6 py-3 rounded-lg">
+              <div className="flex items-center gap-2">
+                <Move className="w-5 h-5" />
+                <span className="font-bold">{moves}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Trophy className="w-5 h-5" />
+                <span className="font-bold">{matchedPairs}</span>
+              </div>
             </div>
 
             <AnimatePresence>
@@ -123,7 +130,12 @@ const Game = () => {
               )}
             </AnimatePresence>
 
-            <div className="grid grid-cols-4 gap-2 w-full">
+            <div className={cn(
+              "grid gap-2 w-full",
+              difficulty === 'easy' ? "grid-cols-4 max-w-[500px]" : 
+              difficulty === 'medium' ? "grid-cols-4 max-w-[600px]" :
+              "grid-cols-6 max-w-[800px]"
+            )}>
               {cards.map((card, index) => (
                 <Card
                   key={card.id}
@@ -143,17 +155,17 @@ const Game = () => {
                 resetGame();
               }}
             />
-
-            <WinnerDialog
-              winner="You"
-              isDraw={false}
-              onReset={resetGame}
-              open={showWinnerDialog}
-              onOpenChange={setShowWinnerDialog}
-            />
           </>
         )}
       </motion.div>
+
+      <WinnerDialog
+        winner={`Congratulations! You completed the game in ${moves} moves!`}
+        isDraw={false}
+        onReset={resetGame}
+        open={showWinnerDialog}
+        onOpenChange={setShowWinnerDialog}
+      />
 
       <div className="fixed bottom-4 right-4">
         <p className="text-sm text-muted-foreground font-bold">created by x dev</p>

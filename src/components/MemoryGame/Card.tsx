@@ -26,7 +26,7 @@ const Card: React.FC<CardProps> = ({ value, isFlipped, isMatched, onClick }) => 
       className={cn(
         "w-full aspect-square rounded-lg text-4xl font-bold flex items-center justify-center",
         "transition-all duration-200",
-        "border border-primary/20",
+        "border-2 border-primary/40",
         isFlipped ? "bg-primary/10" : "bg-background hover:bg-primary/5",
         isMatched && "opacity-50"
       )}
@@ -38,7 +38,7 @@ const Card: React.FC<CardProps> = ({ value, isFlipped, isMatched, onClick }) => 
         transition={{ duration: 0.6 }}
         className="w-full h-full flex items-center justify-center"
       >
-        {isFlipped && <Icon className="w-8 h-8" />}
+        {isFlipped && <Icon className="w-6 h-6" />}
       </motion.div>
     </motion.button>
   );
