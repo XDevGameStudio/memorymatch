@@ -41,6 +41,7 @@ const Game = () => {
 
   const isBoardFull = squares.every(square => square !== null);
   const isDraw = !winner && isBoardFull;
+  const isWin = winner === 'X';
 
   useEffect(() => {
     if (!isXNext && !winner && !isDraw && vsAI && !isPaused) {
@@ -187,6 +188,7 @@ const Game = () => {
               onReset={resetGame}
               open={showWinnerDialog}
               onOpenChange={setShowWinnerDialog}
+              isWin={isWin}
             />
           </>
         )}
