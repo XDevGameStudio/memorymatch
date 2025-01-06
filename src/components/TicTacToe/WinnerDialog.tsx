@@ -6,7 +6,8 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Home, RotateCcw } from 'lucide-react';
-import useConfetti from 'react-confetti';
+import Confetti from 'react-confetti';
+import { useWindowSize } from 'react-confetti';
 
 interface WinnerDialogProps {
   winner: string | null;
@@ -18,13 +19,14 @@ interface WinnerDialogProps {
 }
 
 const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome }: WinnerDialogProps) => {
-  const { width, height } = useConfetti();
+  const { width, height } = useWindowSize();
 
   if (!winner && !isDraw) return null;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
+        {!isDraw && <Confetti width={width} height={height} recycle={false} numberOfPieces={200} />}
         <DialogHeader>
           <div className="flex flex-col items-center gap-4 py-4">
             <h2 className="text-4xl font-bold">Congratulations!</h2>
