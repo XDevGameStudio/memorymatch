@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -7,7 +7,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Home, RotateCcw } from 'lucide-react';
 import Confetti from 'react-confetti';
-import useWindowSize from 'react-confetti/dist/useWindowSize';
 
 interface WinnerDialogProps {
   winner: string | null;
@@ -19,14 +18,36 @@ interface WinnerDialogProps {
 }
 
 const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome }: WinnerDialogProps) => {
-  const { width, height } = useWindowSize();
+  const [windowSize, setWindowSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   if (!winner && !isDraw) return null;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
-        {!isDraw && <Confetti width={width} height={height} recycle={false} numberOfPieces={200} />}
+        {!isDraw && (
+          <Confetti
+            width={windowSize.width}
+            height={windowSize.height}
+            recycle={false}
+            numberOfPieces={200}
+          />
+        )}
         <DialogHeader>
           <div className="flex flex-col items-center gap-4 py-4">
             <h2 className="text-4xl font-bold">Congratulations!</h2>
