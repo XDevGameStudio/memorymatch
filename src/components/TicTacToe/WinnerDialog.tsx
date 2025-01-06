@@ -7,7 +7,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Home, RotateCcw } from 'lucide-react';
 import Confetti from 'react-confetti';
-import { useWindowSize } from 'react-confetti';
+import useWindowSize from 'react-confetti/dist/useWindowSize';
 
 interface WinnerDialogProps {
   winner: string | null;
@@ -31,7 +31,7 @@ const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome }: W
           <div className="flex flex-col items-center gap-4 py-4">
             <h2 className="text-4xl font-bold">Congratulations!</h2>
             <p className="text-lg text-muted-foreground text-center">
-              {winner}
+              {isDraw ? "It's a draw!" : `Player ${winner} wins!`}
             </p>
           </div>
         </DialogHeader>
