@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Play } from "lucide-react";
 
 interface StartScreenProps {
-  onStart: () => void;
+  onStart: (mode: boolean) => void;  // Updated type signature to match usage
 }
 
 const StartScreen = ({ onStart }: StartScreenProps) => {
@@ -14,7 +14,7 @@ const StartScreen = ({ onStart }: StartScreenProps) => {
       className="flex flex-col items-center gap-8 w-full max-w-[800px] p-4"
     >
       <Button 
-        onClick={() => onStart()}
+        onClick={() => onStart(true)}  // Pass true for AI mode by default
         size="lg"
         className="w-48 h-48 rounded-2xl text-2xl font-bold hover:scale-105 transition-transform"
       >

@@ -119,7 +119,7 @@ const Game = () => {
         <GameHeader />
         
         {vsAI === null ? (
-          <StartScreen onStart={(mode: boolean) => handleStartGame(mode)} />
+          <StartScreen onStart={handleStartGame} />
         ) : (
           <>
             <div className="w-full flex flex-col gap-4">
