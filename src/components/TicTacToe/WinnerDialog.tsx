@@ -12,9 +12,10 @@ interface WinnerDialogProps {
   onOpenChange: (open: boolean) => void;
   onHome?: () => void;
   moves?: number;
+  isWin?: boolean;
 }
 
-const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, moves }: WinnerDialogProps) => {
+const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, moves, isWin }: WinnerDialogProps) => {
   const [windowSize, setWindowSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
@@ -37,7 +38,7 @@ const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, mov
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
-        {!isDraw && winner && (
+        {isWin && (
           <Confetti
             width={windowSize.width}
             height={windowSize.height}
@@ -48,18 +49,14 @@ const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, mov
         <DialogHeader>
           <div className="flex flex-col items-center gap-4 py-4">
             <h2 className="text-4xl font-bold">
-              {moves !== undefined 
+              {isWin 
                 ? "Congratulations!" 
-                : isDraw 
-                  ? "It's a Draw!" 
-                  : "Game Over!"}
+                : "Game Over"}
             </h2>
             <p className="text-lg text-muted-foreground text-center">
-              {moves !== undefined 
-                ? `You completed in ${moves} moves!`
-                : isDraw 
-                  ? "Nobody wins this time" 
-                  : "Better luck next time"}
+              {isWin 
+                ? `Completed in ${moves} moves!`
+                : "Ran out of moves. Better luck next time!"}
             </p>
           </div>
         </DialogHeader>
