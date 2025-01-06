@@ -190,9 +190,13 @@ const Game = () => {
       <WinnerDialog
         winner={moves >= maxMoves[difficulty] && matchedPairs < cards.length / 2 
           ? `Game Over! You ran out of moves.` 
-          : `Congratulations! You completed the game in ${moves} moves!`}
+          : `You completed the game in ${moves} moves!`}
         isDraw={false}
         onReset={resetGame}
+        onHome={() => {
+          setGameStarted(false);
+          resetGame();
+        }}
         open={showWinnerDialog}
         onOpenChange={setShowWinnerDialog}
       />

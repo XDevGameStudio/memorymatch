@@ -2,9 +2,13 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { 
-  Cpu, Ghost, Heart, Star,
-  Sun, Moon, Cloud, ArrowRight,
-  Music, Coffee, Pizza, Camera 
+  Heart, Star, Sun, Moon, 
+  Cloud, Music, Coffee, Pizza,
+  Camera, Ghost, Gamepad, Trophy,
+  Rocket, Bird, Crown, Diamond,
+  Flower, Gift, Globe, Headphones,
+  IceCream, Key, Laptop, Map,
+  Palette, Rainbow, Umbrella, Zap
 } from 'lucide-react';
 
 interface CardProps {
@@ -16,18 +20,34 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ value, isFlipped, isMatched, onClick }) => {
   const iconMap = {
-    '0': Cpu,
-    '1': Ghost,
-    '2': Heart,
-    '3': Star,
-    '4': Sun,
-    '5': Moon,
-    '6': Cloud,
-    '7': ArrowRight,
-    '8': Music,
-    '9': Coffee,
-    '10': Pizza,
-    '11': Camera
+    '0': Heart,
+    '1': Star,
+    '2': Sun,
+    '3': Moon,
+    '4': Cloud,
+    '5': Music,
+    '6': Coffee,
+    '7': Pizza,
+    '8': Camera,
+    '9': Ghost,
+    '10': Gamepad,
+    '11': Trophy,
+    '12': Rocket,
+    '13': Bird,
+    '14': Crown,
+    '15': Diamond,
+    '16': Flower,
+    '17': Gift,
+    '18': Globe,
+    '19': Headphones,
+    '20': IceCream,
+    '21': Key,
+    '22': Laptop,
+    '23': Map,
+    '24': Palette,
+    '25': Rainbow,
+    '26': Umbrella,
+    '27': Zap
   };
 
   const Icon = iconMap[value as keyof typeof iconMap];
