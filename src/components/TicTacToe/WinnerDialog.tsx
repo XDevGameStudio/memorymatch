@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Home, RotateCcw } from 'lucide-react';
 import Confetti from 'react-confetti';
@@ -15,9 +11,10 @@ interface WinnerDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onHome?: () => void;
+  moves?: number;
 }
 
-const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome }: WinnerDialogProps) => {
+const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, moves }: WinnerDialogProps) => {
   const [windowSize, setWindowSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
@@ -40,7 +37,7 @@ const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome }: W
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
-        {!isDraw && (
+        {!isDraw && winner && (
           <Confetti
             width={windowSize.width}
             height={windowSize.height}
@@ -50,9 +47,19 @@ const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome }: W
         )}
         <DialogHeader>
           <div className="flex flex-col items-center gap-4 py-4">
-            <h2 className="text-4xl font-bold">Congratulations!</h2>
+            <h2 className="text-4xl font-bold">
+              {moves !== undefined 
+                ? "Congratulations!" 
+                : isDraw 
+                  ? "It's a Draw!" 
+                  : "Game Over!"}
+            </h2>
             <p className="text-lg text-muted-foreground text-center">
-              {isDraw ? "It's a draw!" : `Player ${winner} wins!`}
+              {moves !== undefined 
+                ? `You completed in ${moves} moves!`
+                : isDraw 
+                  ? "Nobody wins this time" 
+                  : "Better luck next time"}
             </p>
           </div>
         </DialogHeader>

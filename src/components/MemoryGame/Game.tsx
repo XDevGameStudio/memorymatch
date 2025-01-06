@@ -85,7 +85,8 @@ const Game = () => {
   };
 
   const resetGame = () => {
-    setCards(createDeck(difficulty));
+    const newDeck = createDeck(difficulty);
+    setCards(newDeck);
     setFlippedIndexes([]);
     setMatchedPairs(0);
     setMoves(0);
