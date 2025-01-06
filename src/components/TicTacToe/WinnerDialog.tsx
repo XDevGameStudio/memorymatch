@@ -51,12 +51,16 @@ const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, mov
             <h2 className="text-4xl font-bold">
               {isWin 
                 ? "Congratulations!" 
-                : "Game Over"}
+                : isDraw 
+                  ? "It's a Draw!"
+                  : "Game Over"}
             </h2>
             <p className="text-lg text-muted-foreground text-center">
               {isWin 
-                ? `Completed in ${moves} moves!`
-                : "Ran out of moves. Better luck next time!"}
+                ? "You've won!"
+                : isDraw
+                  ? "It's a tie game!"
+                  : "Better luck next time!"}
             </p>
           </div>
         </DialogHeader>

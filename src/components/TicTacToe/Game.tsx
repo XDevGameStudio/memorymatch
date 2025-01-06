@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Board from './Board';
 import { getBestMove } from './aiUtils';
 import { useTheme } from '@/hooks/use-theme';
@@ -11,102 +11,77 @@ import GameModeSelector from './GameModeSelector';
 import GameHeader from './GameHeader';
 import DifficultySelector from './DifficultySelector';
 import { motion, AnimatePresence } from 'framer-motion';
-
-const calculateWinner = (squares: (string | null)[]): { winner: string | null; line: number[] | null } => {
-  const lines = [
-    [0, 1, 2], [3, 4, 5], [6, 7, 8],
-    [0, 3, 6], [1, 4, 7], [2, 5, 8],
-    [0, 4, 8], [2, 4, 6]
-  ];
-
-  for (const [a, b, c] of lines) {
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return { winner: squares[a], line: [a, b, c] };
-    }
-  }
-  return { winner: null, line: null };
-};
+import { useGameState } from './hooks/useGameState';
+import { calculateWinner, isBoardFull } from './utils/gameCalculations';
 
 const Game = () => {
-  const [squares, setSquares] = useState<(string | null)[]>(Array(9).fill(null));
-  const [isXNext, setIsXNext] = useState(true);
-  const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('medium');
-  const [wins, setWins] = useState(0);
-  const [losses, setLosses] = useState(0);
-  const [vsAI, setVsAI] = useState<boolean | null>(null);
-  const [showWinnerDialog, setShowWinnerDialog] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
+  const { state, setters } = useGameState();
   const { theme, setTheme } = useTheme();
-  const { winner, line } = calculateWinner(squares);
-
-  const isBoardFull = squares.every(square => square !== null);
-  const isDraw = !winner && isBoardFull;
+  
+  const { winner, line } = calculateWinner(state.squares);
+  const boardIsFull = isBoardFull(state.squares);
+  const isDraw = !winner && boardIsFull;
   const isWin = winner === 'X';
 
   useEffect(() => {
-    if (!isXNext && !winner && !isDraw && vsAI && !isPaused) {
+    if (!state.isXNext && !winner && !isDraw && state.vsAI && !state.isPaused) {
       const timer = setTimeout(() => {
-        const aiMove = getBestMove(squares, difficulty);
-        const newSquares = squares.slice();
+        const aiMove = getBestMove(state.squares, state.difficulty);
+        const newSquares = state.squares.slice();
         newSquares[aiMove] = 'O';
-        setSquares(newSquares);
-        setIsXNext(true);
+        setters.setSquares(newSquares);
+        setters.setIsXNext(true);
       }, 500);
 
       return () => clearTimeout(timer);
     }
-  }, [isXNext, squares, winner, isDraw, difficulty, vsAI, isPaused]);
+  }, [state.isXNext, state.squares, winner, isDraw, state.difficulty, state.vsAI, state.isPaused]);
 
   useEffect(() => {
     if (winner || isDraw) {
-      setShowWinnerDialog(true);
+      setters.setShowWinnerDialog(true);
     }
   }, [winner, isDraw]);
 
   useEffect(() => {
     if (winner) {
-      if ((vsAI && winner === 'X') || (!vsAI && winner === 'X')) {
-        setWins(prev => prev + 1);
+      if ((state.vsAI && winner === 'X') || (!state.vsAI && winner === 'X')) {
+        setters.setWins(prev => prev + 1);
       } else {
-        setLosses(prev => prev + 1);
+        setters.setLosses(prev => prev + 1);
       }
     }
-  }, [winner, vsAI]);
+  }, [winner, state.vsAI]);
 
   const handleClick = (i: number) => {
-    if (isPaused) {
-      setIsPaused(false);
+    if (state.isPaused) {
+      setters.setIsPaused(false);
       return;
     }
 
-    if (winner || squares[i] || (!isXNext && vsAI)) return;
+    if (winner || state.squares[i] || (!state.isXNext && state.vsAI)) return;
 
-    const newSquares = squares.slice();
-    newSquares[i] = isXNext ? 'X' : 'O';
-    setSquares(newSquares);
-    setIsXNext(!isXNext);
-  };
-
-  const handlePauseOverlayClick = () => {
-    if (isPaused) {
-      setIsPaused(false);
-    }
+    const newSquares = state.squares.slice();
+    newSquares[i] = state.isXNext ? 'X' : 'O';
+    setters.setSquares(newSquares);
+    setters.setIsXNext(!state.isXNext);
   };
 
   const resetGame = () => {
-    setSquares(Array(9).fill(null));
-    setIsXNext(true);
-    setShowWinnerDialog(false);
-    setIsPaused(false);
+    setters.setSquares(Array(9).fill(null));
+    setters.setIsXNext(true);
+    setters.setShowWinnerDialog(false);
+    setters.setIsPaused(false);
   };
 
   const handleStartGame = (againstAI: boolean) => {
-    setVsAI(againstAI);
+    setters.setVsAI(againstAI);
     resetGame();
-    setWins(0);
-    setLosses(0);
+    setters.setWins(0);
+    setters.setLosses(0);
   };
 
+  // ... keep existing code (JSX return statement)
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center gap-8 p-4 bg-background text-foreground relative">
       <ThemeSelector theme={theme} setTheme={setTheme} />
@@ -119,66 +94,58 @@ const Game = () => {
       >
         <GameHeader />
         
-        {vsAI === null ? (
+        {state.vsAI === null ? (
           <StartScreen onStart={handleStartGame} />
         ) : (
           <>
             <div className="w-full flex flex-col gap-4">
-              <GameModeSelector vsAI={vsAI} onModeChange={(isAI) => {
-                setVsAI(isAI);
-                resetGame();
-                setWins(0);
-                setLosses(0);
-              }} />
+              <GameModeSelector 
+                vsAI={state.vsAI} 
+                onModeChange={(isAI) => {
+                  setters.setVsAI(isAI);
+                  resetGame();
+                  setters.setWins(0);
+                  setters.setLosses(0);
+                }} 
+              />
               
-              {vsAI && (
+              {state.vsAI && (
                 <DifficultySelector
-                  currentDifficulty={difficulty}
-                  onSelect={setDifficulty}
+                  currentDifficulty={state.difficulty}
+                  onSelect={setters.setDifficulty}
                 />
               )}
             </div>
 
-            <PlayerStats wins={wins} losses={losses} vsAI={vsAI} />
+            <PlayerStats wins={state.wins} losses={state.losses} vsAI={state.vsAI} />
 
             <AnimatePresence>
-              {!winner && !isDraw && !isPaused && (
+              {!winner && !isDraw && !state.isPaused && (
                 <motion.div 
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   className="flex items-center gap-2 bg-primary/5 px-4 py-2 rounded-lg"
                 >
-                  Turn: <span className="font-bold">{isXNext ? 'X' : 'O'}</span>
-                </motion.div>
-              )}
-              {isPaused && (
-                <motion.div 
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="fixed inset-0 bg-background/80 backdrop-blur-md z-10 flex items-center justify-center cursor-pointer"
-                  onClick={handlePauseOverlayClick}
-                >
-                  <div className="text-2xl font-bold">Game Paused</div>
+                  Turn: <span className="font-bold">{state.isXNext ? 'X' : 'O'}</span>
                 </motion.div>
               )}
             </AnimatePresence>
 
             <Board
-              squares={squares}
+              squares={state.squares}
               winningLine={line}
               onClick={handleClick}
             />
 
             <GameControls
               onReset={resetGame}
-              onPause={() => setIsPaused(!isPaused)}
+              onPause={() => setters.setIsPaused(!state.isPaused)}
               onHome={() => {
-                setVsAI(null);
+                setters.setVsAI(null);
                 resetGame();
-                setWins(0);
-                setLosses(0);
+                setters.setWins(0);
+                setters.setLosses(0);
               }}
             />
 
@@ -186,8 +153,8 @@ const Game = () => {
               winner={winner}
               isDraw={isDraw}
               onReset={resetGame}
-              open={showWinnerDialog}
-              onOpenChange={setShowWinnerDialog}
+              open={state.showWinnerDialog}
+              onOpenChange={setters.setShowWinnerDialog}
               isWin={isWin}
             />
           </>
