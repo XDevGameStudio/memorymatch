@@ -1,4 +1,5 @@
 import { Card, Difficulty } from './types';
+import { iconCategories } from './iconCategories';
 
 const getDeckSize = (difficulty: Difficulty): number => {
   switch (difficulty) {
@@ -17,10 +18,18 @@ export const createDeck = (difficulty: Difficulty): Card[] => {
   const deckSize = getDeckSize(difficulty);
   const pairs = deckSize / 2;
   
-  const values = Array.from({ length: pairs }, (_, i) => i.toString());
-  const deck = [...values, ...values].map((value, index) => ({
+  // Get random category if none selected
+  const category = iconCategories[Math.floor(Math.random() * iconCategories.length)];
+  
+  // Get random icons from the category
+  const selectedIcons = [...category.icons]
+    .sort(() => Math.random() - 0.5)
+    .slice(0, pairs);
+  
+  // Create pairs of cards
+  const deck = [...selectedIcons, ...selectedIcons].map((Icon, index) => ({
     id: index,
-    value,
+    value: Icon.name, // Use icon name as value
     isFlipped: false,
     isMatched: false
   }));

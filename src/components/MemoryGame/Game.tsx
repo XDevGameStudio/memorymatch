@@ -4,13 +4,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Card from './Card';
 import { Card as CardType, Difficulty } from './types';
 import { createDeck } from './gameUtils';
-import StartScreen from '../TicTacToe/StartScreen';
 import ThemeSelector from '../TicTacToe/ThemeSelector';
 import DifficultySelector from '../TicTacToe/DifficultySelector';
 import GameControls from '../TicTacToe/GameControls';
 import WinnerDialog from '../TicTacToe/WinnerDialog';
 import { Trophy, Move } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import CategorySelector from './CategorySelector';
+import { iconCategories, IconCategory } from './iconCategories';
 
 const Game = () => {
   const [cards, setCards] = useState<CardType[]>([]);
@@ -21,6 +22,7 @@ const Game = () => {
   const [gameStarted, setGameStarted] = useState<boolean>(false);
   const [isPaused, setIsPaused] = useState(false);
   const [showWinnerDialog, setShowWinnerDialog] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<IconCategory | null>(null);
   const { theme, setTheme } = useTheme();
 
   const maxMoves = {
@@ -30,13 +32,13 @@ const Game = () => {
   };
 
   useEffect(() => {
-    if (gameStarted) {
+    if (gameStarted && selectedCategory) {
       setCards(createDeck(difficulty));
       setFlippedIndexes([]);
       setMatchedPairs(0);
       setMoves(0);
     }
-  }, [gameStarted, difficulty]);
+  }, [gameStarted, difficulty, selectedCategory]);
 
   useEffect(() => {
     if (matchedPairs > 0 && matchedPairs === cards.length / 2) {
@@ -87,19 +89,28 @@ const Game = () => {
   };
 
   const resetGame = () => {
-    const newDeck = createDeck(difficulty);
-    setCards(newDeck);
-    setFlippedIndexes([]);
-    setMatchedPairs(0);
-    setMoves(0);
-    setShowWinnerDialog(false);
-    setIsPaused(false);
+    if (selectedCategory) {
+      const newDeck = createDeck(difficulty);
+      setCards(newDeck);
+      setFlippedIndexes([]);
+      setMatchedPairs(0);
+      setMoves(0);
+      setShowWinnerDialog(false);
+      setIsPaused(false);
+    } else {
+      setGameStarted(false);
+    }
+  };
+
+  const handleCategorySelect = (category: IconCategory) => {
+    setSelectedCategory(category);
+    setGameStarted(true);
   };
 
   const gridSizeClass = {
-    easy: "grid-cols-3 max-w-[300px]", // 4x3 grid
-    medium: "grid-cols-5 max-w-[500px]", // 4x5 grid
-    hard: "grid-cols-7 max-w-[700px]" // 4x7 grid
+    easy: "grid-cols-3 max-w-[300px]",
+    medium: "grid-cols-5 max-w-[500px]",
+    hard: "grid-cols-7 max-w-[700px]"
   };
 
   const getGridHeight = (difficulty: Difficulty) => {
@@ -115,6 +126,18 @@ const Game = () => {
     }
   };
 
+  if (!gameStarted || !selectedCategory) {
+    return (
+      <div className="min-h-screen w-full flex flex-col items-center justify-center gap-8 p-4 bg-background text-foreground">
+        <ThemeSelector theme={theme} setTheme={setTheme} />
+        <CategorySelector 
+          categories={iconCategories}
+          onSelectCategory={handleCategorySelect}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center gap-8 p-4 bg-background text-foreground relative">
       <ThemeSelector theme={theme} setTheme={setTheme} />
@@ -125,69 +148,64 @@ const Game = () => {
         transition={{ duration: 0.3 }}
         className="flex flex-col items-center gap-6 w-full max-w-[800px]"
       >
-        {!gameStarted ? (
-          <StartScreen onStart={() => setGameStarted(true)} />
-        ) : (
-          <>
-            <DifficultySelector
-              currentDifficulty={difficulty}
-              onSelect={(d) => {
-                setDifficulty(d as Difficulty);
-                resetGame();
-              }}
+        <DifficultySelector
+          currentDifficulty={difficulty}
+          onSelect={(d) => {
+            setDifficulty(d as Difficulty);
+            resetGame();
+          }}
+        />
+
+        <div className="flex items-center gap-6 bg-primary/10 px-6 py-3 rounded-lg">
+          <div className="flex items-center gap-2">
+            <Move className="w-5 h-5" />
+            <span className="font-bold">{moves}/{maxMoves[difficulty]}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Trophy className="w-5 h-5" />
+            <span className="font-bold">{matchedPairs}</span>
+          </div>
+        </div>
+
+        <AnimatePresence>
+          {isPaused && (
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-background/80 backdrop-blur-md z-10 flex items-center justify-center cursor-pointer"
+              onClick={() => setIsPaused(false)}
+            >
+              <div className="text-2xl font-bold">Game Paused</div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <div className={cn(
+          "grid gap-2 w-full mx-auto",
+          gridSizeClass[difficulty],
+          getGridHeight(difficulty)
+        )}>
+          {cards.map((card, index) => (
+            <Card
+              key={card.id}
+              value={card.value}
+              isFlipped={flippedIndexes.includes(index) || card.isMatched}
+              isMatched={card.isMatched}
+              onClick={() => handleCardClick(index)}
             />
+          ))}
+        </div>
 
-            <div className="flex items-center gap-6 bg-primary/10 px-6 py-3 rounded-lg">
-              <div className="flex items-center gap-2">
-                <Move className="w-5 h-5" />
-                <span className="font-bold">{moves}/{maxMoves[difficulty]}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Trophy className="w-5 h-5" />
-                <span className="font-bold">{matchedPairs}</span>
-              </div>
-            </div>
-
-            <AnimatePresence>
-              {isPaused && (
-                <motion.div 
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="fixed inset-0 bg-background/80 backdrop-blur-md z-10 flex items-center justify-center cursor-pointer"
-                  onClick={() => setIsPaused(false)}
-                >
-                  <div className="text-2xl font-bold">Game Paused</div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            <div className={cn(
-              "grid gap-2 w-full mx-auto",
-              gridSizeClass[difficulty],
-              getGridHeight(difficulty)
-            )}>
-              {cards.map((card, index) => (
-                <Card
-                  key={card.id}
-                  value={card.value}
-                  isFlipped={flippedIndexes.includes(index) || card.isMatched}
-                  isMatched={card.isMatched}
-                  onClick={() => handleCardClick(index)}
-                />
-              ))}
-            </div>
-
-            <GameControls
-              onReset={resetGame}
-              onPause={() => setIsPaused(!isPaused)}
-              onHome={() => {
-                setGameStarted(false);
-                resetGame();
-              }}
-            />
-          </>
-        )}
+        <GameControls
+          onReset={resetGame}
+          onPause={() => setIsPaused(!isPaused)}
+          onHome={() => {
+            setGameStarted(false);
+            setSelectedCategory(null);
+            resetGame();
+          }}
+        />
       </motion.div>
 
       <WinnerDialog
@@ -196,6 +214,7 @@ const Game = () => {
         onReset={resetGame}
         onHome={() => {
           setGameStarted(false);
+          setSelectedCategory(null);
           resetGame();
         }}
         open={showWinnerDialog}
