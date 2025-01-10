@@ -33,7 +33,7 @@ const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, mov
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  if (!winner && !isDraw) return null;
+  if (!winner && !isDraw && !open) return null;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -51,16 +51,12 @@ const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, mov
             <h2 className="text-4xl font-bold">
               {isWin 
                 ? "Congratulations!" 
-                : isDraw 
-                  ? "It's a Draw!"
-                  : "Game Over"}
+                : "Game Over"}
             </h2>
             <p className="text-lg text-muted-foreground text-center">
               {isWin 
                 ? `You've won in ${moves} moves!`
-                : isDraw
-                  ? "It's a tie game!"
-                  : "Better luck next time!"}
+                : "You've run out of moves! Try again?"}
             </p>
           </div>
         </DialogHeader>
