@@ -201,6 +201,7 @@ const Game = () => {
         open={showWinnerDialog}
         onOpenChange={setShowWinnerDialog}
         isWin={matchedPairs === cards.length / 2}
+        moves={moves}
       />
 
       <div className="fixed bottom-4 right-4">
