@@ -33,23 +33,13 @@ const Game = () => {
 
   useEffect(() => {
     if (gameStarted && selectedCategory) {
-      setCards(createDeck(difficulty));
+      const newDeck = createDeck(difficulty, selectedCategory);
+      setCards(newDeck);
       setFlippedIndexes([]);
       setMatchedPairs(0);
       setMoves(0);
     }
   }, [gameStarted, difficulty, selectedCategory]);
-
-  useEffect(() => {
-    if (matchedPairs > 0 && matchedPairs === cards.length / 2) {
-      console.log('Game won! Matched pairs:', matchedPairs, 'Total cards:', cards.length);
-      setShowWinnerDialog(true);
-    }
-    if (moves >= maxMoves[difficulty] && matchedPairs < cards.length / 2) {
-      console.log('Game lost! Moves:', moves, 'Max moves:', maxMoves[difficulty]);
-      setShowWinnerDialog(true);
-    }
-  }, [matchedPairs, cards.length, moves, difficulty]);
 
   const handleCardClick = (index: number) => {
     if (isPaused || moves >= maxMoves[difficulty]) {
@@ -90,7 +80,7 @@ const Game = () => {
 
   const resetGame = () => {
     if (selectedCategory) {
-      const newDeck = createDeck(difficulty);
+      const newDeck = createDeck(difficulty, selectedCategory);
       setCards(newDeck);
       setFlippedIndexes([]);
       setMatchedPairs(0);
@@ -103,12 +93,13 @@ const Game = () => {
   };
 
   const handleCategorySelect = (category: IconCategory) => {
+    console.log('Selected category:', category);
     setSelectedCategory(category);
     setGameStarted(true);
   };
 
   const gridSizeClass = {
-    easy: "grid-cols-3 max-w-[300px]",
+    easy: "grid-cols-4 max-w-[400px]",
     medium: "grid-cols-5 max-w-[500px]",
     hard: "grid-cols-7 max-w-[700px]"
   };
@@ -116,7 +107,7 @@ const Game = () => {
   const getGridHeight = (difficulty: Difficulty) => {
     switch (difficulty) {
       case 'easy':
-        return 'grid-rows-4';
+        return 'grid-rows-3';
       case 'medium':
         return 'grid-rows-4';
       case 'hard':
@@ -167,22 +158,8 @@ const Game = () => {
           </div>
         </div>
 
-        <AnimatePresence>
-          {isPaused && (
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-background/80 backdrop-blur-md z-10 flex items-center justify-center cursor-pointer"
-              onClick={() => setIsPaused(false)}
-            >
-              <div className="text-2xl font-bold">Game Paused</div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
         <div className={cn(
-          "grid gap-2 w-full mx-auto",
+          "grid gap-4 w-full mx-auto p-4",
           gridSizeClass[difficulty],
           getGridHeight(difficulty)
         )}>
@@ -222,10 +199,6 @@ const Game = () => {
         isWin={matchedPairs === cards.length / 2}
         moves={moves}
       />
-
-      <div className="fixed bottom-4 right-4">
-        <p className="text-sm text-muted-foreground font-bold">created by x dev</p>
-      </div>
     </div>
   );
 };

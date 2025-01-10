@@ -1,10 +1,10 @@
 import { Card, Difficulty } from './types';
-import { iconCategories } from './iconCategories';
+import { IconCategory } from './iconCategories';
 
 const getDeckSize = (difficulty: Difficulty): number => {
   switch (difficulty) {
     case 'easy':
-      return 12; // 4x3 grid = 12 cards
+      return 12; // 3x4 grid = 12 cards
     case 'medium':
       return 20; // 4x5 grid = 20 cards
     case 'hard':
@@ -14,12 +14,9 @@ const getDeckSize = (difficulty: Difficulty): number => {
   }
 };
 
-export const createDeck = (difficulty: Difficulty): Card[] => {
+export const createDeck = (difficulty: Difficulty, category: IconCategory): Card[] => {
   const deckSize = getDeckSize(difficulty);
   const pairs = deckSize / 2;
-  
-  // Get random category if none selected
-  const category = iconCategories[Math.floor(Math.random() * iconCategories.length)];
   
   // Get random icons from the category
   const selectedIcons = [...category.icons]
@@ -27,12 +24,15 @@ export const createDeck = (difficulty: Difficulty): Card[] => {
     .slice(0, pairs);
   
   // Create pairs of cards
-  const deck = [...selectedIcons, ...selectedIcons].map((Icon, index) => ({
-    id: index,
-    value: Icon.name, // Use icon name as value
-    isFlipped: false,
-    isMatched: false
-  }));
+  const deck = [...Array(deckSize)].map((_, index) => {
+    const iconIndex = Math.floor(index / 2);
+    return {
+      id: index,
+      value: iconIndex.toString(), // Use index as value for matching pairs
+      isFlipped: false,
+      isMatched: false
+    };
+  });
 
   // Shuffle the deck
   return deck.sort(() => Math.random() - 0.5);
