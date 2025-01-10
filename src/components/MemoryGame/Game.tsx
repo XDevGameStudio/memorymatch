@@ -40,9 +40,11 @@ const Game = () => {
 
   useEffect(() => {
     if (matchedPairs > 0 && matchedPairs === cards.length / 2) {
+      console.log('Game won! Matched pairs:', matchedPairs, 'Total cards:', cards.length);
       setShowWinnerDialog(true);
     }
     if (moves >= maxMoves[difficulty] && matchedPairs < cards.length / 2) {
+      console.log('Game lost! Moves:', moves, 'Max moves:', maxMoves[difficulty]);
       setShowWinnerDialog(true);
     }
   }, [matchedPairs, cards.length, moves, difficulty]);
@@ -189,9 +191,7 @@ const Game = () => {
       </motion.div>
 
       <WinnerDialog
-        winner={moves >= maxMoves[difficulty] && matchedPairs < cards.length / 2 
-          ? `Game Over! You ran out of moves.` 
-          : `You completed the game in ${moves} moves!`}
+        winner={matchedPairs === cards.length / 2 ? 'X' : null}
         isDraw={false}
         onReset={resetGame}
         onHome={() => {
@@ -200,6 +200,7 @@ const Game = () => {
         }}
         open={showWinnerDialog}
         onOpenChange={setShowWinnerDialog}
+        isWin={matchedPairs === cards.length / 2}
       />
 
       <div className="fixed bottom-4 right-4">
