@@ -9,7 +9,7 @@ import {
   Leaf, TreeDeciduous, Flower,
   Sailboat, Waves,
   Sprout, LeafyGreen,
-  Sun, Moon, Cloud, Rain, Snow, Tornado,
+  Sun, Moon, Cloud, CloudRain, CloudSnow, Tornado,
   Atom, Beaker, TestTube,
   Smile, Frown, Angry, Laugh,
   GraduationCap, Book,
@@ -57,7 +57,7 @@ export const iconCategories: IconCategory[] = [
   },
   {
     name: "Weather",
-    icons: [Sun, Moon, Cloud, Rain, Snow, Tornado]
+    icons: [Sun, Moon, Cloud, CloudRain, CloudSnow, Tornado]
   },
   {
     name: "Science",
