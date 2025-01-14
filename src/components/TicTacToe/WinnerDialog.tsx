@@ -38,6 +38,8 @@ const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, mov
   const dialogCenter = {
     x: windowSize.width / 2,
     y: windowSize.height / 2,
+    w: 0,
+    h: 0
   };
 
   return (
