@@ -8,7 +8,6 @@ import DifficultySelector from '../TicTacToe/DifficultySelector';
 import GameControls from '../TicTacToe/GameControls';
 import WinnerDialog from '../TicTacToe/WinnerDialog';
 import CategorySelector from './CategorySelector';
-import { iconCategories, IconCategory } from './iconCategories';
 import GameBoard from './GameBoard';
 import GameStats from './GameStats';
 import { useToast } from "@/hooks/use-toast";
@@ -22,7 +21,6 @@ const Game = () => {
   const [gameStarted, setGameStarted] = useState<boolean>(false);
   const [isPaused, setIsPaused] = useState(false);
   const [showWinnerDialog, setShowWinnerDialog] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<IconCategory | null>(null);
   const { theme, setTheme } = useTheme();
   const { toast } = useToast();
 
@@ -33,14 +31,14 @@ const Game = () => {
   };
 
   useEffect(() => {
-    if (gameStarted && selectedCategory) {
-      const newDeck = createDeck(difficulty, selectedCategory);
+    if (gameStarted) {
+      const newDeck = createDeck(difficulty);
       setCards(newDeck);
       setFlippedIndexes([]);
       setMatchedPairs(0);
       setMoves(0);
     }
-  }, [gameStarted, difficulty, selectedCategory]);
+  }, [gameStarted, difficulty]);
 
   useEffect(() => {
     if (matchedPairs > 0 && matchedPairs === cards.length / 2) {
@@ -91,32 +89,20 @@ const Game = () => {
   };
 
   const resetGame = () => {
-    if (selectedCategory) {
-      const newDeck = createDeck(difficulty, selectedCategory);
-      setCards(newDeck);
-      setFlippedIndexes([]);
-      setMatchedPairs(0);
-      setMoves(0);
-      setShowWinnerDialog(false);
-      setIsPaused(false);
-    } else {
-      setGameStarted(false);
-    }
+    const newDeck = createDeck(difficulty);
+    setCards(newDeck);
+    setFlippedIndexes([]);
+    setMatchedPairs(0);
+    setMoves(0);
+    setShowWinnerDialog(false);
+    setIsPaused(false);
   };
 
-  const handleCategorySelect = (category: IconCategory) => {
-    setSelectedCategory(category);
-    setGameStarted(true);
-  };
-
-  if (!gameStarted || !selectedCategory) {
+  if (!gameStarted) {
     return (
       <div className="min-h-screen w-full flex flex-col items-center justify-center gap-8 p-4 bg-background text-foreground">
         <ThemeSelector theme={theme} setTheme={setTheme} />
-        <CategorySelector 
-          categories={iconCategories}
-          onSelectCategory={handleCategorySelect}
-        />
+        <CategorySelector onStart={() => setGameStarted(true)} />
       </div>
     );
   }
@@ -158,7 +144,6 @@ const Game = () => {
           onPause={() => setIsPaused(!isPaused)}
           onHome={() => {
             setGameStarted(false);
-            setSelectedCategory(null);
             resetGame();
           }}
         />
@@ -170,7 +155,6 @@ const Game = () => {
         onReset={resetGame}
         onHome={() => {
           setGameStarted(false);
-          setSelectedCategory(null);
           resetGame();
         }}
         open={showWinnerDialog}

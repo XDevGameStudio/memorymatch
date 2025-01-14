@@ -1,5 +1,5 @@
 import { Card, Difficulty } from './types';
-import { IconCategory } from './iconCategories';
+import { genericIcons } from './iconCategories';
 
 const getDeckSize = (difficulty: Difficulty): number => {
   switch (difficulty) {
@@ -14,12 +14,12 @@ const getDeckSize = (difficulty: Difficulty): number => {
   }
 };
 
-export const createDeck = (difficulty: Difficulty, category: IconCategory): Card[] => {
+export const createDeck = (difficulty: Difficulty): Card[] => {
   const deckSize = getDeckSize(difficulty);
   const pairs = deckSize / 2;
   
-  // Get random icons from the category
-  const selectedIcons = [...category.icons]
+  // Get random icons from the generic icons
+  const selectedIcons = [...genericIcons]
     .sort(() => Math.random() - 0.5)
     .slice(0, pairs);
   
