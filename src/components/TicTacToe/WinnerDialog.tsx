@@ -53,9 +53,8 @@ const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, mov
             recycle={false}
             numberOfPieces={200}
             gravity={0.3}
-            initialVelocityY={-15}
+            initialVelocityY={-10}
             wind={0}
-            colors={['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff']}
           />
         )}
         <DialogHeader>

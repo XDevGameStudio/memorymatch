@@ -30,23 +30,23 @@ const Card: React.FC<CardProps> = ({ value, isFlipped, isMatched, onClick, icon:
         <div
           className={cn(
             "absolute w-full h-full rounded-lg border-2 border-border",
-            "backface-hidden bg-primary flex items-center justify-center",
+            "backface-hidden bg-background flex items-center justify-center",
             isMatched && "opacity-50"
           )}
         >
-          <div className="w-8 h-8 text-primary-foreground" />
+          <div className="w-8 h-8" />
         </div>
         
         {/* Back of card (face up) */}
         <div
           className={cn(
             "absolute w-full h-full rounded-lg border-2 border-border",
-            "backface-hidden bg-background flex items-center justify-center",
+            "backface-hidden bg-primary flex items-center justify-center",
             "rotate-y-180",
             isMatched && "opacity-50"
           )}
         >
-          {Icon && <Icon className="w-8 h-8 text-foreground" />}
+          {Icon && <Icon className="w-8 h-8 text-primary-foreground" />}
         </div>
       </motion.div>
     </motion.div>
