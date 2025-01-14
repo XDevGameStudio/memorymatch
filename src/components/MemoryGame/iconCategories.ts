@@ -1,28 +1,28 @@
 import { LucideIcon } from 'lucide-react';
 import { 
   // Food icons
-  Pizza, Apple, Coffee, Beer, Wine, Soup,
+  Pizza, Sandwich, Cake, IceCream, Apple, Cookie, Coffee, Beer, Wine, Soup,
   
   // Tech icons
   Smartphone, Laptop, Monitor, Keyboard, Mouse, Printer, Wifi, Bluetooth, Battery, Cpu,
   
   // Entertainment icons
-  Music, Headphones, Radio, Tv, Film, Camera, Gamepad, Dice1, Palette,
+  Music, Headphones, Radio, Tv, Film, Camera, GamepadTwo, Dice, Cards, Palette,
   
   // Space icons
-  Rocket, Star, Moon, Sun, Satellite,
+  Rocket, Star, Moon, Sun, Satellite, Telescope, Atom, Comet,
   
   // Nature icons
-  Trees, Flower, Leaf, Cloud, Mountain, Waves, Wind, Rainbow,
+  Tree, Flower, Leaf, Cloud, Mountain, Waves, Wind, Rainbow,
   
   // Ocean icons
-  Anchor, Ship, Fish, Compass, Map,
+  Anchor, Ship, Fish, Shell, Compass, Map,
   
   // Weather icons
-  CloudSun, CloudMoon, CloudRain, CloudSnow, CloudLightning, 
+  CloudSun, CloudMoon, CloudRain, CloudSnow, CloudLightning, Wind as WindIcon,
   
   // Science icons
-  TestTubes, Microscope, Dna, Brain,
+  Flask, TestTubes, Microscope, Dna, Brain, Virus,
   
   // Emotions icons
   Smile, Laugh, Frown, Angry, Meh, Heart,
@@ -31,10 +31,10 @@ import {
   GraduationCap, Book, Library, Pencil, Ruler, Calculator,
   
   // Tools icons
-  Hammer, Wrench, Drill, Scissors,
+  Hammer, Wrench, Screwdriver, Drill, Saw, Scissors,
   
   // Clothes icons
-  Shirt, Watch, Glasses
+  Shirt, Shoes, Hat, Glasses, Watch, Ring
 } from 'lucide-react';
 
 export interface IconCategory {
@@ -45,7 +45,7 @@ export interface IconCategory {
 export const iconCategories: IconCategory[] = [
   {
     name: "Food & Drinks",
-    icons: [Pizza, Apple, Coffee, Beer, Wine, Soup]
+    icons: [Pizza, Sandwich, Cake, IceCream, Apple, Cookie, Coffee, Beer, Wine, Soup]
   },
   {
     name: "Technology",
@@ -53,27 +53,27 @@ export const iconCategories: IconCategory[] = [
   },
   {
     name: "Entertainment",
-    icons: [Music, Headphones, Radio, Tv, Film, Camera, Gamepad, Dice1, Palette]
+    icons: [Music, Headphones, Radio, Tv, Film, Camera, GamepadTwo, Dice, Cards, Palette]
   },
   {
     name: "Space",
-    icons: [Rocket, Star, Moon, Sun, Satellite]
+    icons: [Rocket, Star, Moon, Sun, Satellite, Telescope, Atom, Comet]
   },
   {
     name: "Nature",
-    icons: [Trees, Flower, Leaf, Cloud, Mountain, Waves, Wind, Rainbow]
+    icons: [Tree, Flower, Leaf, Cloud, Mountain, Waves, Wind, Rainbow]
   },
   {
     name: "Ocean",
-    icons: [Anchor, Ship, Fish, Compass, Map]
+    icons: [Anchor, Ship, Fish, Shell, Compass, Map]
   },
   {
     name: "Weather",
-    icons: [CloudSun, CloudMoon, CloudRain, CloudSnow, CloudLightning]
+    icons: [CloudSun, CloudMoon, CloudRain, CloudSnow, CloudLightning, WindIcon]
   },
   {
     name: "Science",
-    icons: [TestTubes, Microscope, Dna, Brain]
+    icons: [Flask, TestTubes, Microscope, Dna, Brain, Virus]
   },
   {
     name: "Emotions",
@@ -85,10 +85,10 @@ export const iconCategories: IconCategory[] = [
   },
   {
     name: "Tools",
-    icons: [Hammer, Wrench, Drill, Scissors]
+    icons: [Hammer, Wrench, Screwdriver, Drill, Saw, Scissors]
   },
   {
     name: "Fashion",
-    icons: [Shirt, Watch, Glasses]
+    icons: [Shirt, Shoes, Hat, Glasses, Watch, Ring]
   }
 ];
