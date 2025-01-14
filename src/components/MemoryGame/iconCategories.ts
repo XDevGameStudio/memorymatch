@@ -14,13 +14,35 @@ import {
   Square,
   Triangle,
   Leaf,
-  Flower
+  Flower,
+  Gamepad,
+  Music,
+  Camera,
+  Tv,
+  Film,
+  Palette,
+  Umbrella,
+  Coffee,
+  Pizza,
+  Apple,
+  Book,
+  Pencil,
+  Globe,
+  Map,
+  Compass,
+  Clock,
+  Bell,
+  Gift,
+  Home,
+  Key,
+  Lock,
+  Mail,
+  Phone,
+  Printer,
+  Radio,
+  Trash,
+  Zap
 } from 'lucide-react';
-
-export interface IconCategory {
-  name: string;
-  icons: LucideIcon[];
-}
 
 export const genericIcons: LucideIcon[] = [
   Heart,
@@ -37,5 +59,32 @@ export const genericIcons: LucideIcon[] = [
   Square,
   Triangle,
   Leaf,
-  Flower
+  Flower,
+  Gamepad,
+  Music,
+  Camera,
+  Tv,
+  Film,
+  Palette,
+  Umbrella,
+  Coffee,
+  Pizza,
+  Apple,
+  Book,
+  Pencil,
+  Globe,
+  Map,
+  Compass,
+  Clock,
+  Bell,
+  Gift,
+  Home,
+  Key,
+  Lock,
+  Mail,
+  Phone,
+  Printer,
+  Radio,
+  Trash,
+  Zap
 ];

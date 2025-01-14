@@ -7,10 +7,8 @@ import ThemeSelector from '../TicTacToe/ThemeSelector';
 import DifficultySelector from '../TicTacToe/DifficultySelector';
 import GameControls from '../TicTacToe/GameControls';
 import WinnerDialog from '../TicTacToe/WinnerDialog';
-import CategorySelector from './CategorySelector';
 import GameBoard from './GameBoard';
 import GameStats from './GameStats';
-import { useToast } from "@/hooks/use-toast";
 
 const Game = () => {
   const [cards, setCards] = useState<CardType[]>([]);
@@ -22,7 +20,6 @@ const Game = () => {
   const [isPaused, setIsPaused] = useState(false);
   const [showWinnerDialog, setShowWinnerDialog] = useState(false);
   const { theme, setTheme } = useTheme();
-  const { toast } = useToast();
 
   const maxMoves = {
     easy: 15,
@@ -42,14 +39,9 @@ const Game = () => {
 
   useEffect(() => {
     if (matchedPairs > 0 && matchedPairs === cards.length / 2) {
-      toast({
-        title: "Congratulations! 🎉",
-        description: `You won in ${moves} moves!`,
-        duration: 5000,
-      });
       setShowWinnerDialog(true);
     }
-  }, [matchedPairs, cards.length, moves]);
+  }, [matchedPairs, cards.length]);
 
   const handleCardClick = (index: number) => {
     if (isPaused || moves >= maxMoves[difficulty]) {
@@ -102,7 +94,15 @@ const Game = () => {
     return (
       <div className="min-h-screen w-full flex flex-col items-center justify-center gap-8 p-4 bg-background text-foreground">
         <ThemeSelector theme={theme} setTheme={setTheme} />
-        <CategorySelector onStart={() => setGameStarted(true)} />
+        <div className="text-center">
+          <h1 className="text-4xl font-bold mb-8">Memory Match X</h1>
+          <button
+            onClick={() => setGameStarted(true)}
+            className="px-8 py-4 bg-primary text-primary-foreground rounded-lg text-xl font-semibold hover:opacity-90 transition-opacity"
+          >
+            Play
+          </button>
+        </div>
       </div>
     );
   }

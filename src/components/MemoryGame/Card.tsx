@@ -33,7 +33,11 @@ const Card: React.FC<CardProps> = ({ value, isFlipped, isMatched, onClick, icon:
             "backface-hidden bg-background",
             isMatched && "opacity-50"
           )}
-        />
+        >
+          <div className="w-full h-full flex items-center justify-center">
+            <div className="w-8 h-8 rounded-full bg-primary/10" />
+          </div>
+        </div>
         
         {/* Back of card (face up) */}
         <div
