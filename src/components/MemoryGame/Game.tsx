@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '@/hooks/use-theme';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import Card from './Card';
 import { Card as CardType, Difficulty } from './types';
 import { createDeck } from './gameUtils';
 import ThemeSelector from '../TicTacToe/ThemeSelector';
 import DifficultySelector from '../TicTacToe/DifficultySelector';
 import GameControls from '../TicTacToe/GameControls';
 import WinnerDialog from '../TicTacToe/WinnerDialog';
-import GameBoard from './GameBoard';
-import GameStats from './GameStats';
+import { Trophy, Move } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import CategorySelector from './CategorySelector';
+import { iconCategories, IconCategory } from './iconCategories';
 
 const Game = () => {
   const [cards, setCards] = useState<CardType[]>([]);
@@ -19,6 +22,7 @@ const Game = () => {
   const [gameStarted, setGameStarted] = useState<boolean>(false);
   const [isPaused, setIsPaused] = useState(false);
   const [showWinnerDialog, setShowWinnerDialog] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<IconCategory | null>(null);
   const { theme, setTheme } = useTheme();
 
   const maxMoves = {
@@ -28,20 +32,14 @@ const Game = () => {
   };
 
   useEffect(() => {
-    if (gameStarted) {
-      const newDeck = createDeck(difficulty);
+    if (gameStarted && selectedCategory) {
+      const newDeck = createDeck(difficulty, selectedCategory);
       setCards(newDeck);
       setFlippedIndexes([]);
       setMatchedPairs(0);
       setMoves(0);
     }
-  }, [gameStarted, difficulty]);
-
-  useEffect(() => {
-    if (matchedPairs > 0 && matchedPairs === cards.length / 2) {
-      setShowWinnerDialog(true);
-    }
-  }, [matchedPairs, cards.length]);
+  }, [gameStarted, difficulty, selectedCategory]);
 
   const handleCardClick = (index: number) => {
     if (isPaused || moves >= maxMoves[difficulty]) {
@@ -81,28 +79,52 @@ const Game = () => {
   };
 
   const resetGame = () => {
-    const newDeck = createDeck(difficulty);
-    setCards(newDeck);
-    setFlippedIndexes([]);
-    setMatchedPairs(0);
-    setMoves(0);
-    setShowWinnerDialog(false);
-    setIsPaused(false);
+    if (selectedCategory) {
+      const newDeck = createDeck(difficulty, selectedCategory);
+      setCards(newDeck);
+      setFlippedIndexes([]);
+      setMatchedPairs(0);
+      setMoves(0);
+      setShowWinnerDialog(false);
+      setIsPaused(false);
+    } else {
+      setGameStarted(false);
+    }
   };
 
-  if (!gameStarted) {
+  const handleCategorySelect = (category: IconCategory) => {
+    console.log('Selected category:', category);
+    setSelectedCategory(category);
+    setGameStarted(true);
+  };
+
+  const gridSizeClass = {
+    easy: "grid-cols-4 max-w-[400px]",
+    medium: "grid-cols-5 max-w-[500px]",
+    hard: "grid-cols-7 max-w-[700px]"
+  };
+
+  const getGridHeight = (difficulty: Difficulty) => {
+    switch (difficulty) {
+      case 'easy':
+        return 'grid-rows-3';
+      case 'medium':
+        return 'grid-rows-4';
+      case 'hard':
+        return 'grid-rows-4';
+      default:
+        return 'grid-rows-4';
+    }
+  };
+
+  if (!gameStarted || !selectedCategory) {
     return (
       <div className="min-h-screen w-full flex flex-col items-center justify-center gap-8 p-4 bg-background text-foreground">
         <ThemeSelector theme={theme} setTheme={setTheme} />
-        <div className="text-center">
-          <h1 className="text-4xl font-bold mb-8">Memory Match X</h1>
-          <button
-            onClick={() => setGameStarted(true)}
-            className="px-8 py-4 bg-primary text-primary-foreground rounded-lg text-xl font-semibold hover:opacity-90 transition-opacity"
-          >
-            Play
-          </button>
-        </div>
+        <CategorySelector 
+          categories={iconCategories}
+          onSelectCategory={handleCategorySelect}
+        />
       </div>
     );
   }
@@ -125,25 +147,39 @@ const Game = () => {
           }}
         />
 
-        <GameStats
-          moves={moves}
-          matchedPairs={matchedPairs}
-          difficulty={difficulty}
-          maxMoves={maxMoves}
-        />
+        <div className="flex items-center gap-6 bg-primary/10 px-6 py-3 rounded-lg">
+          <div className="flex items-center gap-2">
+            <Move className="w-5 h-5" />
+            <span className="font-bold">{moves}/{maxMoves[difficulty]}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Trophy className="w-5 h-5" />
+            <span className="font-bold">{matchedPairs}</span>
+          </div>
+        </div>
 
-        <GameBoard
-          cards={cards}
-          difficulty={difficulty}
-          flippedIndexes={flippedIndexes}
-          handleCardClick={handleCardClick}
-        />
+        <div className={cn(
+          "grid gap-4 w-full mx-auto p-4",
+          gridSizeClass[difficulty],
+          getGridHeight(difficulty)
+        )}>
+          {cards.map((card, index) => (
+            <Card
+              key={card.id}
+              value={card.value}
+              isFlipped={flippedIndexes.includes(index) || card.isMatched}
+              isMatched={card.isMatched}
+              onClick={() => handleCardClick(index)}
+            />
+          ))}
+        </div>
 
         <GameControls
           onReset={resetGame}
           onPause={() => setIsPaused(!isPaused)}
           onHome={() => {
             setGameStarted(false);
+            setSelectedCategory(null);
             resetGame();
           }}
         />
@@ -155,6 +191,7 @@ const Game = () => {
         onReset={resetGame}
         onHome={() => {
           setGameStarted(false);
+          setSelectedCategory(null);
           resetGame();
         }}
         open={showWinnerDialog}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Home, RotateCw } from 'lucide-react';
+import { Home, RotateCcw } from 'lucide-react';
 import Confetti from 'react-confetti';
 
 interface WinnerDialogProps {
@@ -35,13 +35,6 @@ const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, mov
 
   if (!winner && !isDraw && !open) return null;
 
-  const dialogCenter = {
-    x: windowSize.width / 2,
-    y: windowSize.height / 2,
-    w: 0,
-    h: 0
-  };
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
@@ -49,12 +42,8 @@ const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, mov
           <Confetti
             width={windowSize.width}
             height={windowSize.height}
-            confettiSource={dialogCenter}
             recycle={false}
             numberOfPieces={200}
-            gravity={0.3}
-            initialVelocityY={-10}
-            wind={0}
           />
         )}
         <DialogHeader>
@@ -92,7 +81,7 @@ const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, mov
             }}
             className="gap-2"
           >
-            <RotateCw className="w-4 h-4" />
+            <RotateCcw className="w-4 h-4" />
             Play Again
           </Button>
         </div>
