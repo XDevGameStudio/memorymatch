@@ -1,20 +1,40 @@
 import { LucideIcon } from 'lucide-react';
 import { 
-  Cat, Dog, Rabbit, Fish, Bird, Turtle, Squirrel,
-  Banana, Cake, Pizza, Sandwich,
-  Computer, Smartphone, Tablet,
-  Clapperboard,
-  Guitar, Headphones,
-  Rocket, Satellite,
-  Leaf, TreeDeciduous, Flower,
-  Sailboat, Waves,
-  Sprout, LeafyGreen,
-  Sun, Moon, Cloud, CloudRain, CloudSnow, Tornado,
-  Atom, Beaker, TestTube,
-  Smile, Frown, Angry, Laugh,
-  GraduationCap, Book,
-  Hammer, Wrench, Scissors,
-  Shirt
+  // Food icons
+  Pizza, Sandwich, Cake, IceCream, Apple, Cookie, Coffee, Beer, Wine, Soup,
+  
+  // Tech icons
+  Smartphone, Laptop, Monitor, Keyboard, Mouse, Printer, Wifi, Bluetooth, Battery, Cpu,
+  
+  // Entertainment icons
+  Music, Headphones, Radio, Tv, Film, Camera, GamepadTwo, Dice, Cards, Palette,
+  
+  // Space icons
+  Rocket, Star, Moon, Sun, Satellite, Telescope, Atom, Comet,
+  
+  // Nature icons
+  Tree, Flower, Leaf, Cloud, Mountain, Waves, Wind, Rainbow,
+  
+  // Ocean icons
+  Anchor, Ship, Fish, Shell, Compass, Map,
+  
+  // Weather icons
+  CloudSun, CloudMoon, CloudRain, CloudSnow, CloudLightning, Wind as WindIcon,
+  
+  // Science icons
+  Flask, TestTubes, Microscope, Dna, Brain, Virus,
+  
+  // Emotions icons
+  Smile, Laugh, Frown, Angry, Meh, Heart,
+  
+  // Education icons
+  GraduationCap, Book, Library, Pencil, Ruler, Calculator,
+  
+  // Tools icons
+  Hammer, Wrench, Screwdriver, Drill, Saw, Scissors,
+  
+  // Clothes icons
+  Shirt, Shoes, Hat, Glasses, Watch, Ring
 } from 'lucide-react';
 
 export interface IconCategory {
@@ -24,59 +44,51 @@ export interface IconCategory {
 
 export const iconCategories: IconCategory[] = [
   {
-    name: "Animals",
-    icons: [Cat, Dog, Rabbit, Fish, Bird, Turtle, Squirrel]
+    name: "Food & Drinks",
+    icons: [Pizza, Sandwich, Cake, IceCream, Apple, Cookie, Coffee, Beer, Wine, Soup]
   },
   {
-    name: "Food",
-    icons: [Banana, Cake, Pizza, Sandwich]
-  },
-  {
-    name: "Tech",
-    icons: [Computer, Smartphone, Tablet]
+    name: "Technology",
+    icons: [Smartphone, Laptop, Monitor, Keyboard, Mouse, Printer, Wifi, Bluetooth, Battery, Cpu]
   },
   {
     name: "Entertainment",
-    icons: [Clapperboard, Guitar, Headphones]
+    icons: [Music, Headphones, Radio, Tv, Film, Camera, GamepadTwo, Dice, Cards, Palette]
   },
   {
     name: "Space",
-    icons: [Rocket, Satellite]
+    icons: [Rocket, Star, Moon, Sun, Satellite, Telescope, Atom, Comet]
   },
   {
     name: "Nature",
-    icons: [Leaf, TreeDeciduous, Flower]
+    icons: [Tree, Flower, Leaf, Cloud, Mountain, Waves, Wind, Rainbow]
   },
   {
     name: "Ocean",
-    icons: [Sailboat, Waves, Fish]
-  },
-  {
-    name: "Plants",
-    icons: [Sprout, LeafyGreen]
+    icons: [Anchor, Ship, Fish, Shell, Compass, Map]
   },
   {
     name: "Weather",
-    icons: [Sun, Moon, Cloud, CloudRain, CloudSnow, Tornado]
+    icons: [CloudSun, CloudMoon, CloudRain, CloudSnow, CloudLightning, WindIcon]
   },
   {
     name: "Science",
-    icons: [Atom, Beaker, TestTube]
+    icons: [Flask, TestTubes, Microscope, Dna, Brain, Virus]
   },
   {
     name: "Emotions",
-    icons: [Smile, Frown, Angry, Laugh]
+    icons: [Smile, Laugh, Frown, Angry, Meh, Heart]
   },
   {
     name: "Education",
-    icons: [GraduationCap, Book]
+    icons: [GraduationCap, Book, Library, Pencil, Ruler, Calculator]
   },
   {
     name: "Tools",
-    icons: [Hammer, Wrench, Scissors]
+    icons: [Hammer, Wrench, Screwdriver, Drill, Saw, Scissors]
   },
   {
-    name: "Clothes",
-    icons: [Shirt]
+    name: "Fashion",
+    icons: [Shirt, Shoes, Hat, Glasses, Watch, Ring]
   }
 ];

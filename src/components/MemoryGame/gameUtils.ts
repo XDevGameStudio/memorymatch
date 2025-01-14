@@ -23,16 +23,14 @@ export const createDeck = (difficulty: Difficulty, category: IconCategory): Card
     .sort(() => Math.random() - 0.5)
     .slice(0, pairs);
   
-  // Create pairs of cards
-  const deck = [...Array(deckSize)].map((_, index) => {
-    const iconIndex = Math.floor(index / 2);
-    return {
-      id: index,
-      value: iconIndex.toString(), // Use index as value for matching pairs
-      isFlipped: false,
-      isMatched: false
-    };
-  });
+  // Create pairs of cards with icon components
+  const deck = [...selectedIcons, ...selectedIcons].map((Icon, index) => ({
+    id: index,
+    value: Icon.name,
+    icon: Icon,
+    isFlipped: false,
+    isMatched: false
+  }));
 
   // Shuffle the deck
   return deck.sort(() => Math.random() - 0.5);
