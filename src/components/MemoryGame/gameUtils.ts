@@ -1,25 +1,50 @@
 import { Card, Difficulty } from './types';
-import { IconCategory } from './iconCategories';
+import { 
+  Heart, Star, Sun, Moon, 
+  Cloud, Music, Coffee, Pizza,
+  Camera, Ghost, Gamepad, Trophy,
+  Rocket, Bird, Crown, Diamond,
+  Flower, Gift, Globe, Headphones,
+  IceCream, Key, Laptop, Map,
+  Palette, Rainbow, Umbrella, Zap,
+  Anchor, Apple, Award, Baby,
+  Banana, Bell, Book, Bookmark,
+  Brain, Brush, Bug, Cake,
+  Car, Cat, Clock, Compass,
+  Cookie, Cpu, Dice, Dog,
+  Drum, Eye, Fan, Fish,
+  Flag, Flame, Gem, Guitar
+} from 'lucide-react';
+
+const allIcons = [
+  Heart, Star, Sun, Moon, Cloud, Music, Coffee, Pizza,
+  Camera, Ghost, Gamepad, Trophy, Rocket, Bird, Crown, Diamond,
+  Flower, Gift, Globe, Headphones, IceCream, Key, Laptop, Map,
+  Palette, Rainbow, Umbrella, Zap, Anchor, Apple, Award, Baby,
+  Banana, Bell, Book, Bookmark, Brain, Brush, Bug, Cake,
+  Car, Cat, Clock, Compass, Cookie, Cpu, Dice, Dog,
+  Drum, Eye, Fan, Fish, Flag, Flame, Gem, Guitar
+];
 
 const getDeckSize = (difficulty: Difficulty): number => {
   switch (difficulty) {
     case 'easy':
-      return 12; // 3x4 grid = 12 cards
+      return 12;
     case 'medium':
-      return 20; // 4x5 grid = 20 cards
+      return 20;
     case 'hard':
-      return 28; // 4x7 grid = 28 cards
+      return 28;
     default:
       return 12;
   }
 };
 
-export const createDeck = (difficulty: Difficulty, category: IconCategory): Card[] => {
+export const createDeck = (difficulty: Difficulty): Card[] => {
   const deckSize = getDeckSize(difficulty);
   const pairs = deckSize / 2;
   
-  // Get random icons from the category
-  const selectedIcons = [...category.icons]
+  // Shuffle and select random icons
+  const shuffledIcons = [...allIcons]
     .sort(() => Math.random() - 0.5)
     .slice(0, pairs);
   
@@ -28,7 +53,7 @@ export const createDeck = (difficulty: Difficulty, category: IconCategory): Card
     const iconIndex = Math.floor(index / 2);
     return {
       id: index,
-      value: iconIndex.toString(), // Use index as value for matching pairs
+      value: iconIndex.toString(),
       isFlipped: false,
       isMatched: false
     };

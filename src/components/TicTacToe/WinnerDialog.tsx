@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Home, RotateCcw } from 'lucide-react';
@@ -16,34 +16,25 @@ interface WinnerDialogProps {
 }
 
 const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, moves, isWin }: WinnerDialogProps) => {
-  const [windowSize, setWindowSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
-
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  if (!winner && !isDraw && !open) return null;
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         {isWin && (
           <Confetti
-            width={windowSize.width}
-            height={windowSize.height}
+            width={window.innerWidth}
+            height={window.innerHeight}
             recycle={false}
             numberOfPieces={200}
+            gravity={0.2}
+            initialVelocityY={20}
+            wind={0}
+            colors={['#FFD700', '#FFA500', '#FF69B4', '#00CED1', '#98FB98']}
+            confettiSource={{
+              x: window.innerWidth / 2,
+              y: window.innerHeight,
+              w: 0,
+              h: 0
+            }}
           />
         )}
         <DialogHeader>
