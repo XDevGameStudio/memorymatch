@@ -2,11 +2,11 @@ import { Card, Difficulty } from './types';
 import { 
   Heart, Star, Sun, Moon, Cloud, Music, Coffee, Pizza,
   Camera, Ghost, Gamepad, Trophy, Rocket, Bird, 
-  Flower, Gift, Globe, Headphones, IceCream, Key, Laptop, Map,
-  Palette, Rainbow, Umbrella, Zap, Anchor, Apple, Award, Baby,
+  Flower, Globe, Headphones, IceCream, Key, Laptop, Map,
+  Palette, Rainbow, Umbrella, Anchor, Apple, Award, Baby,
   Banana, Bell, Book, Bookmark, Brain, Brush, Bug, Cake,
   Car, Cat, Clock, Cookie, Cpu, Dice1, Dog,
-  Drum, Eye, Fan, Fish, Flag, Flame, Gem, Guitar,
+  Drum, Eye, Fan, Fish, Flag, Gem, Guitar,
   AlarmClock, Aperture, Archive, Axe, Backpack, Box, Briefcase, Building,
   Bus, Calculator, Calendar, CandlestickChart, ChefHat, Cherry, Church,
   Citrus, Clover, Codesandbox, Coins, Cog,
@@ -20,8 +20,8 @@ import {
   Carrot, ChevronDown, ChevronUp, CircleDot,
   CloudRain, CloudSnow, Compass, Construction,
   DollarSign, Download, Feather, FileLock,
-  Fingerprint, Flame, Footprints, Gift,
-  Hammer, Heart, Hexagon, Home,
+  Fingerprint, Footprints, 
+  Hammer, Hexagon, Home,
   Infinity, Joystick, Keyboard, Leaf,
   Lightbulb, Lock, Magnet, MessageCircle,
   Mail, Monitor, Mountain, Mouse,
@@ -34,17 +34,17 @@ import {
   ThumbsUp, Timer, Trash, Truck,
   Tv, Unlock, Upload, User,
   Variable, Video, Wallet, Watch,
-  Wifi, Wind, Wrench, Zap
+  Wifi, Wind, Wrench
 } from 'lucide-react';
 
 const allIcons = [
   Heart, Star, Sun, Moon, Cloud, Music, Coffee, Pizza,
   Camera, Ghost, Gamepad, Trophy, Rocket, Bird,
-  Flower, Gift, Globe, Headphones, IceCream, Key, Laptop, Map,
-  Palette, Rainbow, Umbrella, Zap, Anchor, Apple, Award, Baby,
+  Flower, Globe, Headphones, IceCream, Key, Laptop, Map,
+  Palette, Rainbow, Umbrella, Anchor, Apple, Award, Baby,
   Banana, Bell, Book, Bookmark, Brain, Brush, Bug, Cake,
   Car, Cat, Clock, Cookie, Cpu, Dice1, Dog,
-  Drum, Eye, Fan, Fish, Flag, Flame, Gem, Guitar,
+  Drum, Eye, Fan, Fish, Flag, Gem, Guitar,
   AlarmClock, Aperture, Archive, Axe, Backpack, Box, Briefcase, Building,
   Bus, Calculator, Calendar, CandlestickChart, ChefHat, Cherry, Church,
   Citrus, Clover, Codesandbox, Coins, Cog,
@@ -58,8 +58,8 @@ const allIcons = [
   Carrot, ChevronDown, ChevronUp, CircleDot,
   CloudRain, CloudSnow, Compass, Construction,
   DollarSign, Download, Feather, FileLock,
-  Fingerprint, Flame, Footprints, Gift,
-  Hammer, Heart, Hexagon, Home,
+  Fingerprint, Footprints,
+  Hammer, Hexagon, Home,
   Infinity, Joystick, Keyboard, Leaf,
   Lightbulb, Lock, Magnet, MessageCircle,
   Mail, Monitor, Mountain, Mouse,
@@ -72,7 +72,7 @@ const allIcons = [
   ThumbsUp, Timer, Trash, Truck,
   Tv, Unlock, Upload, User,
   Variable, Video, Wallet, Watch,
-  Wifi, Wind, Wrench, Zap
+  Wifi, Wind, Wrench
 ];
 
 const getDeckSize = (difficulty: Difficulty): number => {
