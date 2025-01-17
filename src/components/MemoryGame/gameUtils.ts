@@ -1,19 +1,18 @@
 import { Card, Difficulty } from './types';
 import { 
-  Heart, Star, Sun, Moon, 
-  Cloud, Music, Coffee, Pizza,
-  Camera, Ghost, Gamepad, Trophy,
-  Rocket, Bird, Crown, Diamond,
-  Flower, Gift, Globe, Headphones,
-  IceCream, Key, Laptop, Map,
-  Palette, Rainbow, Umbrella, Zap,
-  Anchor, Apple, Award, Baby,
-  Banana, Bell, Book, Bookmark,
-  Brain, Brush, Bug, Cake,
-  Car, Cat, Clock, Compass,
-  Cookie, Cpu, Dice1, Dog,
-  Drum, Eye, Fan, Fish,
-  Flag, Flame, Gem, Guitar
+  Heart, Star, Sun, Moon, Cloud, Music, Coffee, Pizza,
+  Camera, Ghost, Gamepad, Trophy, Rocket, Bird, Crown, Diamond,
+  Flower, Gift, Globe, Headphones, IceCream, Key, Laptop, Map,
+  Palette, Rainbow, Umbrella, Zap, Anchor, Apple, Award, Baby,
+  Banana, Bell, Book, Bookmark, Brain, Brush, Bug, Cake,
+  Car, Cat, Clock, Compass, Cookie, Cpu, Dice1, Dog,
+  Drum, Eye, Fan, Fish, Flag, Flame, Gem, Guitar,
+  AlarmClock, Aperture, Archive, Axe, Backpack, Baggage, Balloon, Bandage,
+  Bed, Beef, Bike, Bone, Boot, Box, Briefcase, Building,
+  Bus, Calculator, Calendar, CandlestickChart, ChefHat, Cherry, ChocolateBar, Church,
+  Circus, Citrus, Clover, Codesandbox, Coins, Cog, Coins, Compass,
+  CreditCard, Croissant, Crown, Cube, Database, Dessert, Diamond, Dice,
+  Dna, Donut, Door, Droplet, Egg, Eraser, Euro, Factory
 } from 'lucide-react';
 
 const allIcons = [
@@ -23,7 +22,13 @@ const allIcons = [
   Palette, Rainbow, Umbrella, Zap, Anchor, Apple, Award, Baby,
   Banana, Bell, Book, Bookmark, Brain, Brush, Bug, Cake,
   Car, Cat, Clock, Compass, Cookie, Cpu, Dice1, Dog,
-  Drum, Eye, Fan, Fish, Flag, Flame, Gem, Guitar
+  Drum, Eye, Fan, Fish, Flag, Flame, Gem, Guitar,
+  AlarmClock, Aperture, Archive, Axe, Backpack, Baggage, Balloon, Bandage,
+  Bed, Beef, Bike, Bone, Boot, Box, Briefcase, Building,
+  Bus, Calculator, Calendar, CandlestickChart, ChefHat, Cherry, ChocolateBar, Church,
+  Circus, Citrus, Clover, Codesandbox, Coins, Cog, Coins, Compass,
+  CreditCard, Croissant, Crown, Cube, Database, Dessert, Diamond, Dice,
+  Dna, Donut, Door, Droplet, Egg, Eraser, Euro, Factory
 ];
 
 const getDeckSize = (difficulty: Difficulty): number => {
