@@ -1,3 +1,4 @@
+import { Card, Difficulty } from './types';
 import { 
   Heart, Star, Sun, Moon, 
   Cloud, Music, Coffee, Pizza,
