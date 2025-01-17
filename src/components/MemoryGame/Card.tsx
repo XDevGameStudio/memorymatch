@@ -46,7 +46,7 @@ interface CardProps {
 }
 
 const Card: React.FC<CardProps> = ({ value, isFlipped, isMatched, onClick }) => {
-  const iconMap: { [key: string]: React.ComponentType } = {
+  const iconMap: { [key: string]: React.ComponentType<any> } = {
     '0': Heart, '1': Star, '2': Sun, '3': Moon, '4': Cloud, '5': Music, '6': Coffee, '7': Pizza,
     '8': Camera, '9': Ghost, '10': Gamepad, '11': Trophy, '12': Rocket, '13': Bird,
     '14': Flower, '15': Globe, '16': Headphones, '17': IceCream, '18': Key, '19': Laptop, '20': Map,
@@ -112,7 +112,7 @@ const Card: React.FC<CardProps> = ({ value, isFlipped, isMatched, onClick }) => 
             isMatched && "opacity-50"
           )}
         >
-          {Icon && <Icon className="w-8 h-8 text-primary-foreground" />}
+          {Icon && <Icon strokeWidth={2} size={32} color="currentColor" className="text-primary-foreground" />}
         </div>
       </motion.div>
     </motion.div>
