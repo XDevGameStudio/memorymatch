@@ -5,14 +5,14 @@ import {
   Flower, Gift, Globe, Headphones, IceCream, Key, Laptop, Map,
   Palette, Rainbow, Umbrella, Zap, Anchor, Apple, Award, Baby,
   Banana, Bell, Book, Bookmark, Brain, Brush, Bug, Cake,
-  Car, Cat, Clock, Compass, Cookie, Cpu, Dice1, Dog,
+  Car, Cat, Clock, Cookie, Cpu, Dice1, Dog,
   Drum, Eye, Fan, Fish, Flag, Flame, Gem, Guitar,
-  AlarmClock, Aperture, Archive, Axe, Backpack, Baggage, Balloon, Bandage,
-  Bed, Beef, Bike, Bone, Boot, Box, Briefcase, Building,
-  Bus, Calculator, Calendar, CandlestickChart, ChefHat, Cherry, ChocolateBar, Church,
-  Circus, Citrus, Clover, Codesandbox, Coins, Cog, Coins, Compass,
-  CreditCard, Croissant, Crown, Cube, Database, Dessert, Diamond, Dice,
-  Dna, Donut, Door, Droplet, Egg, Eraser, Euro, Factory
+  AlarmClock, Aperture, Archive, Axe, Backpack, Box, Briefcase, Building,
+  Bus, Calculator, Calendar, CandlestickChart, ChefHat, Cherry, Church,
+  Citrus, Clover, Codesandbox, Coins, Cog, 
+  CreditCard, Croissant, Database, Dessert,
+  Dna, Donut, Droplet, Egg, Eraser, Euro, Factory,
+  Bot, Bike, Bone, Bed, Beef
 } from 'lucide-react';
 
 const allIcons = [
@@ -21,14 +21,14 @@ const allIcons = [
   Flower, Gift, Globe, Headphones, IceCream, Key, Laptop, Map,
   Palette, Rainbow, Umbrella, Zap, Anchor, Apple, Award, Baby,
   Banana, Bell, Book, Bookmark, Brain, Brush, Bug, Cake,
-  Car, Cat, Clock, Compass, Cookie, Cpu, Dice1, Dog,
+  Car, Cat, Clock, Cookie, Cpu, Dice1, Dog,
   Drum, Eye, Fan, Fish, Flag, Flame, Gem, Guitar,
-  AlarmClock, Aperture, Archive, Axe, Backpack, Baggage, Balloon, Bandage,
-  Bed, Beef, Bike, Bone, Boot, Box, Briefcase, Building,
-  Bus, Calculator, Calendar, CandlestickChart, ChefHat, Cherry, ChocolateBar, Church,
-  Circus, Citrus, Clover, Codesandbox, Coins, Cog, Coins, Compass,
-  CreditCard, Croissant, Crown, Cube, Database, Dessert, Diamond, Dice,
-  Dna, Donut, Door, Droplet, Egg, Eraser, Euro, Factory
+  AlarmClock, Aperture, Archive, Axe, Backpack, Box, Briefcase, Building,
+  Bus, Calculator, Calendar, CandlestickChart, ChefHat, Cherry, Church,
+  Citrus, Clover, Codesandbox, Coins, Cog,
+  CreditCard, Croissant, Database, Dessert,
+  Dna, Donut, Droplet, Egg, Eraser, Euro, Factory,
+  Bot, Bike, Bone, Bed, Beef
 ];
 
 const getDeckSize = (difficulty: Difficulty): number => {
