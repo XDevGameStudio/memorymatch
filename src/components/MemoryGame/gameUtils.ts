@@ -13,18 +13,18 @@ import {
   CreditCard, Croissant, Database, Dessert,
   Dna, Donut, Droplet, Egg, Eraser, Euro, Factory,
   Bot, Bike, Bone, Bed, Beef,
-  // Adding more icons
+  // Adding more icons (only valid ones)
   Airplay, Album, AlertCircle, AlertTriangle, 
   Armchair, ArrowDown, ArrowUp, AtSign,
   BatteryCharging, BellRing, Bluetooth, Bomb,
   Carrot, ChevronDown, ChevronUp, CircleDot,
   CloudRain, CloudSnow, Compass, Construction,
   DollarSign, Download, Feather, FileLock,
-  Fingerprint, Fire, Footprints, Glasses,
-  Hammer, HandMetal, Hexagon, HourglassIcon,
+  Fingerprint, Flame, Footprints, Gift,
+  Hammer, Heart, Hexagon, Home,
   Infinity, Joystick, Keyboard, Leaf,
   Lightbulb, Lock, Magnet, MessageCircle,
-  Microphone, Monitor, Mountain, Mouse,
+  Mail, Monitor, Mountain, Mouse,
   Navigation, Newspaper, Octagon, Package,
   PaintBucket, Pencil, Phone, Printer,
   Puzzle, Radio, Ruler, Scissors,
@@ -32,9 +32,9 @@ import {
   ShoppingBag, ShoppingCart, Smartphone, Snowflake,
   SunMoon, Syringe, Target, Terminal,
   ThumbsUp, Timer, Trash, Truck,
-  Tv, Unlock, Upload, UsbStick,
+  Tv, Unlock, Upload, User,
   Variable, Video, Wallet, Watch,
-  Wifi, Wind, Wrench, Yoga
+  Wifi, Wind, Wrench, Zap
 } from 'lucide-react';
 
 const allIcons = [
@@ -58,11 +58,11 @@ const allIcons = [
   Carrot, ChevronDown, ChevronUp, CircleDot,
   CloudRain, CloudSnow, Compass, Construction,
   DollarSign, Download, Feather, FileLock,
-  Fingerprint, Fire, Footprints, Glasses,
-  Hammer, HandMetal, Hexagon, HourglassIcon,
+  Fingerprint, Flame, Footprints, Gift,
+  Hammer, Heart, Hexagon, Home,
   Infinity, Joystick, Keyboard, Leaf,
   Lightbulb, Lock, Magnet, MessageCircle,
-  Microphone, Monitor, Mountain, Mouse,
+  Mail, Monitor, Mountain, Mouse,
   Navigation, Newspaper, Octagon, Package,
   PaintBucket, Pencil, Phone, Printer,
   Puzzle, Radio, Ruler, Scissors,
@@ -70,9 +70,9 @@ const allIcons = [
   ShoppingBag, ShoppingCart, Smartphone, Snowflake,
   SunMoon, Syringe, Target, Terminal,
   ThumbsUp, Timer, Trash, Truck,
-  Tv, Unlock, Upload, UsbStick,
+  Tv, Unlock, Upload, User,
   Variable, Video, Wallet, Watch,
-  Wifi, Wind, Wrench, Yoga
+  Wifi, Wind, Wrench, Zap
 ];
 
 const getDeckSize = (difficulty: Difficulty): number => {
