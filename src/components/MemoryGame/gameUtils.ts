@@ -1,4 +1,3 @@
-import { Card, Difficulty } from './types';
 import { 
   Heart, Star, Sun, Moon, 
   Cloud, Music, Coffee, Pizza,
@@ -11,7 +10,7 @@ import {
   Banana, Bell, Book, Bookmark,
   Brain, Brush, Bug, Cake,
   Car, Cat, Clock, Compass,
-  Cookie, Cpu, Dice, Dog,
+  Cookie, Cpu, Dice1, Dog,
   Drum, Eye, Fan, Fish,
   Flag, Flame, Gem, Guitar
 } from 'lucide-react';
@@ -22,7 +21,7 @@ const allIcons = [
   Flower, Gift, Globe, Headphones, IceCream, Key, Laptop, Map,
   Palette, Rainbow, Umbrella, Zap, Anchor, Apple, Award, Baby,
   Banana, Bell, Book, Bookmark, Brain, Brush, Bug, Cake,
-  Car, Cat, Clock, Compass, Cookie, Cpu, Dice, Dog,
+  Car, Cat, Clock, Compass, Cookie, Cpu, Dice1, Dog,
   Drum, Eye, Fan, Fish, Flag, Flame, Gem, Guitar
 ];
 
