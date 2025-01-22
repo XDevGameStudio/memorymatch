@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '@/hooks/use-theme';
-import { motion, AnimatePresence } from 'framer-motion';
-import Card from './Card';
+import { motion } from 'framer-motion';
 import { Card as CardType, Difficulty } from './types';
 import { createDeck } from './gameUtils';
 import ThemeSelector from '../TicTacToe/ThemeSelector';
 import DifficultySelector from '../TicTacToe/DifficultySelector';
 import GameControls from '../TicTacToe/GameControls';
 import WinnerDialog from '../TicTacToe/WinnerDialog';
+import GameGrid from './GameGrid';
 import { Trophy, Move } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Button } from '../ui/button';
 
 const Game = () => {
   const [cards, setCards] = useState<CardType[]>([]);
@@ -95,28 +94,9 @@ const Game = () => {
       setShowWinnerDialog(false);
       setIsPaused(false);
       setIsShuffling(false);
-    }, 500);
+    }, 300);
     
     return () => clearTimeout(timer);
-  };
-
-  const gridSizeClass = {
-    easy: "grid-cols-4 max-w-[400px]",
-    medium: "grid-cols-5 max-w-[500px]",
-    hard: "grid-cols-7 max-w-[700px]"
-  };
-
-  const getGridHeight = (difficulty: Difficulty) => {
-    switch (difficulty) {
-      case 'easy':
-        return 'grid-rows-3';
-      case 'medium':
-        return 'grid-rows-4';
-      case 'hard':
-        return 'grid-rows-4';
-      default:
-        return 'grid-rows-4';
-    }
   };
 
   if (!gameStarted) {
@@ -170,40 +150,13 @@ const Game = () => {
           </div>
         </div>
 
-        <div 
-          className={cn(
-            "grid gap-4 w-full mx-auto p-4",
-            gridSizeClass[difficulty],
-            getGridHeight(difficulty)
-          )}
-        >
-          {cards.map((card, index) => (
-            <motion.div
-              key={card.id}
-              initial={isShuffling ? { scale: 0, rotateY: 180 } : false}
-              animate={{ 
-                scale: 1, 
-                rotateY: 0,
-                transition: {
-                  duration: 0.4,
-                  delay: isShuffling ? index * 0.05 : 0,
-                  ease: "easeOut"
-                }
-              }}
-              style={{ 
-                transformStyle: "preserve-3d",
-                backfaceVisibility: "hidden"
-              }}
-            >
-              <Card
-                value={card.value}
-                isFlipped={flippedIndexes.includes(index) || card.isMatched}
-                isMatched={card.isMatched}
-                onClick={() => handleCardClick(index)}
-              />
-            </motion.div>
-          ))}
-        </div>
+        <GameGrid
+          cards={cards}
+          difficulty={difficulty}
+          isShuffling={isShuffling}
+          flippedIndexes={flippedIndexes}
+          onCardClick={handleCardClick}
+        />
 
         <GameControls
           onReset={resetGame}
