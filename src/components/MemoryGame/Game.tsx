@@ -32,17 +32,12 @@ const Game = () => {
 
   useEffect(() => {
     if (gameStarted) {
-      setIsShuffling(true);
-      const timer = setTimeout(() => {
-        const newDeck = createDeck(difficulty);
-        setCards(newDeck);
-        setFlippedIndexes([]);
-        setMatchedPairs(0);
-        setMoves(0);
-        setIsShuffling(false);
-      }, 500); // Increased duration for smoother transition
-      
-      return () => clearTimeout(timer);
+      const newDeck = createDeck(difficulty);
+      setCards(newDeck);
+      setFlippedIndexes([]);
+      setMatchedPairs(0);
+      setMoves(0);
+      setIsShuffling(false);
     }
   }, [gameStarted, difficulty]);
 
@@ -100,7 +95,7 @@ const Game = () => {
       setShowWinnerDialog(false);
       setIsPaused(false);
       setIsShuffling(false);
-    }, 500); // Increased duration for smoother transition
+    }, 500);
     
     return () => clearTimeout(timer);
   };
@@ -156,7 +151,11 @@ const Game = () => {
           currentDifficulty={difficulty}
           onSelect={(d) => {
             setDifficulty(d as Difficulty);
-            resetGame();
+            const newDeck = createDeck(d as Difficulty);
+            setCards(newDeck);
+            setFlippedIndexes([]);
+            setMatchedPairs(0);
+            setMoves(0);
           }}
         />
 
@@ -171,67 +170,40 @@ const Game = () => {
           </div>
         </div>
 
-        <AnimatePresence mode="wait">
-          <motion.div 
-            key={difficulty} // This ensures full re-render on difficulty change
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ 
-              opacity: 1, 
-              scale: 1,
-              transition: {
-                duration: 0.5,
-                ease: "easeOut"
-              }
-            }}
-            exit={{ 
-              opacity: 0, 
-              scale: 0.8,
-              transition: {
-                duration: 0.3
-              }
-            }}
-            className={cn(
-              "grid gap-4 w-full mx-auto p-4",
-              gridSizeClass[difficulty],
-              getGridHeight(difficulty)
-            )}
-          >
-            {cards.map((card, index) => (
-              <motion.div
-                key={card.id}
-                initial={isShuffling ? { scale: 0, rotateY: 180 } : false}
-                animate={{ 
-                  scale: 1, 
-                  rotateY: 0,
-                  transition: {
-                    duration: 0.4,
-                    delay: isShuffling ? index * 0.05 : 0,
-                    ease: "easeOut"
-                  }
-                }}
-                exit={{ 
-                  scale: 0, 
-                  rotateY: -180,
-                  transition: {
-                    duration: 0.3,
-                    delay: index * 0.03
-                  }
-                }}
-                style={{ 
-                  transformStyle: "preserve-3d",
-                  backfaceVisibility: "hidden"
-                }}
-              >
-                <Card
-                  value={card.value}
-                  isFlipped={flippedIndexes.includes(index) || card.isMatched}
-                  isMatched={card.isMatched}
-                  onClick={() => handleCardClick(index)}
-                />
-              </motion.div>
-            ))}
-          </motion.div>
-        </AnimatePresence>
+        <div 
+          className={cn(
+            "grid gap-4 w-full mx-auto p-4",
+            gridSizeClass[difficulty],
+            getGridHeight(difficulty)
+          )}
+        >
+          {cards.map((card, index) => (
+            <motion.div
+              key={card.id}
+              initial={isShuffling ? { scale: 0, rotateY: 180 } : false}
+              animate={{ 
+                scale: 1, 
+                rotateY: 0,
+                transition: {
+                  duration: 0.4,
+                  delay: isShuffling ? index * 0.05 : 0,
+                  ease: "easeOut"
+                }
+              }}
+              style={{ 
+                transformStyle: "preserve-3d",
+                backfaceVisibility: "hidden"
+              }}
+            >
+              <Card
+                value={card.value}
+                isFlipped={flippedIndexes.includes(index) || card.isMatched}
+                isMatched={card.isMatched}
+                onClick={() => handleCardClick(index)}
+              />
+            </motion.div>
+          ))}
+        </div>
 
         <GameControls
           onReset={resetGame}
