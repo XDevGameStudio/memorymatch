@@ -1,113 +1,46 @@
 import { Card, Difficulty } from './types';
-import { 
-  Heart, Star, Sun, Moon, Cloud, Music, Coffee, Pizza,
-  Camera, Ghost, Gamepad, Trophy, Rocket, Bird, 
-  Flower, Globe, Headphones, IceCream, Key, Laptop, Map,
-  Palette, Rainbow, Umbrella, Anchor, Apple, Award, Baby,
-  Banana, Bell, Book, Bookmark, Brain, Brush, Bug, Cake,
-  Car, Cat, Clock, Cookie, Cpu, Dice1, Dog,
-  Drum, Eye, Fan, Fish, Flag, Gem, Guitar,
-  AlarmClock, Aperture, Archive, Axe, Backpack, Box, Briefcase, Building,
-  Bus, Calculator, Calendar, CandlestickChart, ChefHat, Cherry, Church,
-  Citrus, Clover, Codesandbox, Coins, Cog,
-  CreditCard, Croissant, Database, Dessert,
-  Dna, Donut, Droplet, Egg, Eraser, Euro, Factory,
-  Bot, Bike, Bone, Bed, Beef,
-  // Adding more icons (only valid ones)
-  Airplay, Album, AlertCircle, AlertTriangle, 
-  Armchair, ArrowDown, ArrowUp, AtSign,
-  BatteryCharging, BellRing, Bluetooth, Bomb,
-  Carrot, ChevronDown, ChevronUp, CircleDot,
-  CloudRain, CloudSnow, Compass, Construction,
-  DollarSign, Download, Feather, FileLock,
-  Fingerprint, Footprints, 
-  Hammer, Hexagon, Home,
-  Infinity, Joystick, Keyboard, Leaf,
-  Lightbulb, Lock, Magnet, MessageCircle,
-  Mail, Monitor, Mountain, Mouse,
-  Navigation, Newspaper, Octagon, Package,
-  PaintBucket, Pencil, Phone, Printer,
-  Puzzle, Radio, Ruler, Scissors,
-  Send, Settings, Share, Shield,
-  ShoppingBag, ShoppingCart, Smartphone, Snowflake,
-  SunMoon, Syringe, Target, Terminal,
-  ThumbsUp, Timer, Trash, Truck,
-  Tv, Unlock, Upload, User,
-  Variable, Video, Wallet, Watch,
-  Wifi, Wind, Wrench
-} from 'lucide-react';
 
-const allIcons = [
-  Heart, Star, Sun, Moon, Cloud, Music, Coffee, Pizza,
-  Camera, Ghost, Gamepad, Trophy, Rocket, Bird,
-  Flower, Globe, Headphones, IceCream, Key, Laptop, Map,
-  Palette, Rainbow, Umbrella, Anchor, Apple, Award, Baby,
-  Banana, Bell, Book, Bookmark, Brain, Brush, Bug, Cake,
-  Car, Cat, Clock, Cookie, Cpu, Dice1, Dog,
-  Drum, Eye, Fan, Fish, Flag, Gem, Guitar,
-  AlarmClock, Aperture, Archive, Axe, Backpack, Box, Briefcase, Building,
-  Bus, Calculator, Calendar, CandlestickChart, ChefHat, Cherry, Church,
-  Citrus, Clover, Codesandbox, Coins, Cog,
-  CreditCard, Croissant, Database, Dessert,
-  Dna, Donut, Droplet, Egg, Eraser, Euro, Factory,
-  Bot, Bike, Bone, Bed, Beef,
-  // Adding the new icons to the array
-  Airplay, Album, AlertCircle, AlertTriangle,
-  Armchair, ArrowDown, ArrowUp, AtSign,
-  BatteryCharging, BellRing, Bluetooth, Bomb,
-  Carrot, ChevronDown, ChevronUp, CircleDot,
-  CloudRain, CloudSnow, Compass, Construction,
-  DollarSign, Download, Feather, FileLock,
-  Fingerprint, Footprints,
-  Hammer, Hexagon, Home,
-  Infinity, Joystick, Keyboard, Leaf,
-  Lightbulb, Lock, Magnet, MessageCircle,
-  Mail, Monitor, Mountain, Mouse,
-  Navigation, Newspaper, Octagon, Package,
-  PaintBucket, Pencil, Phone, Printer,
-  Puzzle, Radio, Ruler, Scissors,
-  Send, Settings, Share, Shield,
-  ShoppingBag, ShoppingCart, Smartphone, Snowflake,
-  SunMoon, Syringe, Target, Terminal,
-  ThumbsUp, Timer, Trash, Truck,
-  Tv, Unlock, Upload, User,
-  Variable, Video, Wallet, Watch,
-  Wifi, Wind, Wrench
+const iconValues = [
+  // Original icons
+  '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13',
+  '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25',
+  // Adding more icons
+  '26', '27', '28', '29', '30', '31', '32', '33', '34', '35', '36', '37',
+  '38', '39', '40', '41', '42', '43', '44', '45', '46', '47', '48', '49',
+  '50', '51', '52', '53', '54', '55', '56', '57', '58', '59', '60', '61',
+  '62', '63', '64', '65', '66', '67', '68', '69', '70', '71', '72', '73',
+  '74', '75', '76', '77', '78', '79', '80', '81', '82', '83', '84', '85',
+  '86', '87', '88', '89', '90', '91', '92', '93', '94', '95', '96', '97',
+  '98', '99', '100', '101', '102', '103', '104', '105', '106', '107', '108',
+  '109', '110', '111', '112', '113', '114', '115', '116', '117', '118', '119',
+  '120', '121', '122', '123', '124', '125', '126', '127', '128', '129', '130'
 ];
 
-const getDeckSize = (difficulty: Difficulty): number => {
-  switch (difficulty) {
-    case 'easy':
-      return 12;
-    case 'medium':
-      return 20;
-    case 'hard':
-      return 28;
-    default:
-      return 12;
-  }
-};
-
 export const createDeck = (difficulty: Difficulty): Card[] => {
-  const deckSize = getDeckSize(difficulty);
-  const pairs = deckSize / 2;
-  
-  // Shuffle and select random icons
-  const shuffledIcons = [...allIcons]
-    .sort(() => Math.random() - 0.5)
-    .slice(0, pairs);
-  
-  // Create pairs of cards
-  const deck = [...Array(deckSize)].map((_, index) => {
-    const iconIndex = Math.floor(index / 2);
-    return {
-      id: index,
-      value: iconIndex.toString(),
-      isFlipped: false,
-      isMatched: false
-    };
-  });
+  const getDeckSize = (difficulty: Difficulty): number => {
+    switch (difficulty) {
+      case 'easy':
+        return 12;
+      case 'medium':
+        return 20;
+      case 'hard':
+        return 28;
+      default:
+        return 12;
+    }
+  };
 
-  // Shuffle the deck
+  const deckSize = getDeckSize(difficulty);
+  const shuffledIcons = [...iconValues]
+    .sort(() => Math.random() - 0.5)
+    .slice(0, deckSize / 2);
+
+  const deck = [...Array(deckSize)].map((_, index) => ({
+    id: index,
+    value: shuffledIcons[Math.floor(index / 2)],
+    isFlipped: false,
+    isMatched: false
+  }));
+
   return deck.sort(() => Math.random() - 0.5);
 };
