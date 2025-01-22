@@ -10,6 +10,7 @@ import WinnerDialog from '../TicTacToe/WinnerDialog';
 import GameGrid from './GameGrid';
 import { Trophy, Move } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 
 const Game = () => {
   const [cards, setCards] = useState<CardType[]>([]);
