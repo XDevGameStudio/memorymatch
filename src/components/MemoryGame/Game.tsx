@@ -33,14 +33,16 @@ const Game = () => {
   useEffect(() => {
     if (gameStarted) {
       setIsShuffling(true);
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         const newDeck = createDeck(difficulty);
         setCards(newDeck);
         setFlippedIndexes([]);
         setMatchedPairs(0);
         setMoves(0);
         setIsShuffling(false);
-      }, 300);
+      }, 500); // Increased duration for smoother transition
+      
+      return () => clearTimeout(timer);
     }
   }, [gameStarted, difficulty]);
 
@@ -89,7 +91,7 @@ const Game = () => {
 
   const resetGame = () => {
     setIsShuffling(true);
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       const newDeck = createDeck(difficulty);
       setCards(newDeck);
       setFlippedIndexes([]);
@@ -98,7 +100,9 @@ const Game = () => {
       setShowWinnerDialog(false);
       setIsPaused(false);
       setIsShuffling(false);
-    }, 300);
+    }, 500); // Increased duration for smoother transition
+    
+    return () => clearTimeout(timer);
   };
 
   const gridSizeClass = {
@@ -167,28 +171,55 @@ const Game = () => {
           </div>
         </div>
 
-        <motion.div 
-          className={cn(
-            "grid gap-4 w-full mx-auto p-4",
-            gridSizeClass[difficulty],
-            getGridHeight(difficulty)
-          )}
-          animate={isShuffling ? {
-            scale: [1, 0.9, 1],
-            rotate: [0, 5, -5, 0],
-          } : {}}
-          transition={{ duration: 0.3 }}
-        >
-          <AnimatePresence mode="wait">
+        <AnimatePresence mode="wait">
+          <motion.div 
+            key={difficulty} // This ensures full re-render on difficulty change
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ 
+              opacity: 1, 
+              scale: 1,
+              transition: {
+                duration: 0.5,
+                ease: "easeOut"
+              }
+            }}
+            exit={{ 
+              opacity: 0, 
+              scale: 0.8,
+              transition: {
+                duration: 0.3
+              }
+            }}
+            className={cn(
+              "grid gap-4 w-full mx-auto p-4",
+              gridSizeClass[difficulty],
+              getGridHeight(difficulty)
+            )}
+          >
             {cards.map((card, index) => (
               <motion.div
                 key={card.id}
-                initial={isShuffling ? { scale: 0, rotate: 180 } : false}
-                animate={{ scale: 1, rotate: 0 }}
-                exit={{ scale: 0, rotate: -180 }}
-                transition={{ 
-                  duration: 0.3,
-                  delay: isShuffling ? index * 0.02 : 0
+                initial={isShuffling ? { scale: 0, rotateY: 180 } : false}
+                animate={{ 
+                  scale: 1, 
+                  rotateY: 0,
+                  transition: {
+                    duration: 0.4,
+                    delay: isShuffling ? index * 0.05 : 0,
+                    ease: "easeOut"
+                  }
+                }}
+                exit={{ 
+                  scale: 0, 
+                  rotateY: -180,
+                  transition: {
+                    duration: 0.3,
+                    delay: index * 0.03
+                  }
+                }}
+                style={{ 
+                  transformStyle: "preserve-3d",
+                  backfaceVisibility: "hidden"
                 }}
               >
                 <Card
@@ -199,8 +230,8 @@ const Game = () => {
                 />
               </motion.div>
             ))}
-          </AnimatePresence>
-        </motion.div>
+          </motion.div>
+        </AnimatePresence>
 
         <GameControls
           onReset={resetGame}
