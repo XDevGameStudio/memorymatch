@@ -21,6 +21,7 @@ const Game = () => {
   const [gameStarted, setGameStarted] = useState<boolean>(false);
   const [isPaused, setIsPaused] = useState(false);
   const [showWinnerDialog, setShowWinnerDialog] = useState(false);
+  const [isShuffling, setIsShuffling] = useState(false);
   const { theme, setTheme } = useTheme();
 
   const maxMoves = {
@@ -31,11 +32,15 @@ const Game = () => {
 
   useEffect(() => {
     if (gameStarted) {
-      const newDeck = createDeck(difficulty);
-      setCards(newDeck);
-      setFlippedIndexes([]);
-      setMatchedPairs(0);
-      setMoves(0);
+      setIsShuffling(true);
+      setTimeout(() => {
+        const newDeck = createDeck(difficulty);
+        setCards(newDeck);
+        setFlippedIndexes([]);
+        setMatchedPairs(0);
+        setMoves(0);
+        setIsShuffling(false);
+      }, 300);
     }
   }, [gameStarted, difficulty]);
 
@@ -83,13 +88,17 @@ const Game = () => {
   };
 
   const resetGame = () => {
-    const newDeck = createDeck(difficulty);
-    setCards(newDeck);
-    setFlippedIndexes([]);
-    setMatchedPairs(0);
-    setMoves(0);
-    setShowWinnerDialog(false);
-    setIsPaused(false);
+    setIsShuffling(true);
+    setTimeout(() => {
+      const newDeck = createDeck(difficulty);
+      setCards(newDeck);
+      setFlippedIndexes([]);
+      setMatchedPairs(0);
+      setMoves(0);
+      setShowWinnerDialog(false);
+      setIsPaused(false);
+      setIsShuffling(false);
+    }, 300);
   };
 
   const gridSizeClass = {
@@ -158,21 +167,40 @@ const Game = () => {
           </div>
         </div>
 
-        <div className={cn(
-          "grid gap-4 w-full mx-auto p-4",
-          gridSizeClass[difficulty],
-          getGridHeight(difficulty)
-        )}>
-          {cards.map((card, index) => (
-            <Card
-              key={card.id}
-              value={card.value}
-              isFlipped={flippedIndexes.includes(index) || card.isMatched}
-              isMatched={card.isMatched}
-              onClick={() => handleCardClick(index)}
-            />
-          ))}
-        </div>
+        <motion.div 
+          className={cn(
+            "grid gap-4 w-full mx-auto p-4",
+            gridSizeClass[difficulty],
+            getGridHeight(difficulty)
+          )}
+          animate={isShuffling ? {
+            scale: [1, 0.9, 1],
+            rotate: [0, 5, -5, 0],
+          } : {}}
+          transition={{ duration: 0.3 }}
+        >
+          <AnimatePresence mode="wait">
+            {cards.map((card, index) => (
+              <motion.div
+                key={card.id}
+                initial={isShuffling ? { scale: 0, rotate: 180 } : false}
+                animate={{ scale: 1, rotate: 0 }}
+                exit={{ scale: 0, rotate: -180 }}
+                transition={{ 
+                  duration: 0.3,
+                  delay: isShuffling ? index * 0.02 : 0
+                }}
+              >
+                <Card
+                  value={card.value}
+                  isFlipped={flippedIndexes.includes(index) || card.isMatched}
+                  isMatched={card.isMatched}
+                  onClick={() => handleCardClick(index)}
+                />
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
 
         <GameControls
           onReset={resetGame}
