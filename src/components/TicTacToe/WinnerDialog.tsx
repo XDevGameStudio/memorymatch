@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Home, RotateCcw } from 'lucide-react';
@@ -16,9 +16,19 @@ interface WinnerDialogProps {
 }
 
 const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, moves, isWin }: WinnerDialogProps) => {
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const [dialogPosition, setDialogPosition] = React.useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    if (open && dialogRef.current) {
+      const rect = dialogRef.current.getBoundingClientRect();
+      setDialogPosition({ x: rect.x + rect.width / 2, y: rect.y });
+    }
+  }, [open]);
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent ref={dialogRef} className="sm:max-w-md">
         {isWin && (
           <Confetti
             width={window.innerWidth}
@@ -30,8 +40,8 @@ const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, mov
             wind={0}
             colors={['#FFD700', '#FFA500', '#FF69B4', '#00CED1', '#98FB98']}
             confettiSource={{
-              x: window.innerWidth / 2,
-              y: window.innerHeight,
+              x: dialogPosition.x,
+              y: dialogPosition.y,
               w: 0,
               h: 0
             }}

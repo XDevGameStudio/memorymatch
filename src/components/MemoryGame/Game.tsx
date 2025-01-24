@@ -38,14 +38,17 @@ const Game = () => {
       setMatchedPairs(0);
       setMoves(0);
       setIsShuffling(false);
+      setShowWinnerDialog(false); // Reset winner dialog when game starts
     }
   }, [gameStarted, difficulty]);
 
   useEffect(() => {
-    if (matchedPairs === cards.length / 2 && cards.length > 0) {
-      setShowWinnerDialog(true);
-    } else if (moves >= maxMoves[difficulty] && !showWinnerDialog) {
-      setShowWinnerDialog(true);
+    if (!showWinnerDialog) { // Only check for win/lose conditions if dialog isn't already shown
+      if (matchedPairs === cards.length / 2 && cards.length > 0) {
+        setShowWinnerDialog(true);
+      } else if (moves >= maxMoves[difficulty]) {
+        setShowWinnerDialog(true);
+      }
     }
   }, [matchedPairs, cards.length, moves, maxMoves, difficulty, showWinnerDialog]);
 
