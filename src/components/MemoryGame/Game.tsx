@@ -44,8 +44,10 @@ const Game = () => {
   useEffect(() => {
     if (matchedPairs === cards.length / 2 && cards.length > 0) {
       setShowWinnerDialog(true);
+    } else if (moves >= maxMoves[difficulty] && !showWinnerDialog) {
+      setShowWinnerDialog(true);
     }
-  }, [matchedPairs, cards.length]);
+  }, [matchedPairs, cards.length, moves, maxMoves, difficulty, showWinnerDialog]);
 
   const handleCardClick = (index: number) => {
     if (isPaused || moves >= maxMoves[difficulty]) {

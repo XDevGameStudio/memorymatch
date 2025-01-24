@@ -43,33 +43,13 @@ const GameGrid: React.FC<GameGridProps> = ({
           gridSizeClass[difficulty],
           getGridHeight(difficulty)
         )}
-        initial={isShuffling ? { 
-          scale: 0.95,
-          opacity: 0.8,
-          rotateX: -15,
-          rotateY: -15,
-          z: -100
-        } : false}
+        initial={false}
         animate={{ 
-          scale: 1, 
-          opacity: 1,
-          rotateX: 0,
+          scale: 1,
           rotateY: 0,
-          z: 0,
           transition: {
-            duration: 0.8,
-            ease: [0.4, 0, 0.2, 1]
-          }
-        }}
-        exit={{ 
-          scale: 0.95, 
-          opacity: 0.8,
-          rotateX: 15,
-          rotateY: 15,
-          z: -100,
-          transition: {
-            duration: 0.6,
-            ease: [0.4, 0, 1, 1]
+            duration: 0.5,
+            ease: "easeOut"
           }
         }}
         style={{
@@ -81,30 +61,27 @@ const GameGrid: React.FC<GameGridProps> = ({
           <motion.div
             key={card.id}
             initial={isShuffling ? { 
-              scale: 0,
-              rotateY: -180,
-              rotateX: Math.random() * 360 - 180,
-              opacity: 0,
-              z: -200
-            } : false}
-            animate={{ 
               scale: 1,
               rotateY: 0,
-              rotateX: 0,
-              opacity: 1,
+              z: 0
+            } : false}
+            animate={isShuffling ? {
+              scale: [1, 0.8, 1],
+              rotateY: [0, 360, 720],
+              z: [0, 100, 0],
+              transition: {
+                duration: 1,
+                delay: index * 0.03,
+                times: [0, 0.5, 1],
+                ease: "easeInOut"
+              }
+            } : {
+              scale: 1,
+              rotateY: 0,
               z: 0,
               transition: {
-                duration: 0.8,
-                delay: isShuffling ? index * 0.06 : 0,
-                ease: [0.34, 1.56, 0.64, 1],
-                rotateY: {
-                  duration: 1,
-                  ease: [0.34, 1.56, 0.64, 1]
-                },
-                rotateX: {
-                  duration: 1,
-                  ease: [0.34, 1.56, 0.64, 1]
-                }
+                duration: 0.3,
+                ease: "easeOut"
               }
             }}
             style={{ 
