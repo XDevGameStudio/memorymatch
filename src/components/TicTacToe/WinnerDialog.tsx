@@ -22,7 +22,7 @@ const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, mov
   useEffect(() => {
     if (open && dialogRef.current) {
       const rect = dialogRef.current.getBoundingClientRect();
-      setDialogPosition({ x: rect.x + rect.width / 2, y: rect.y });
+      setDialogPosition({ x: rect.x + rect.width / 2, y: rect.y - window.innerHeight });
     }
   }, [open]);
 
@@ -35,9 +35,9 @@ const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, mov
             height={window.innerHeight}
             recycle={false}
             numberOfPieces={200}
-            gravity={0.2}
-            initialVelocityY={20}
-            wind={0}
+            gravity={0.3}
+            initialVelocityY={30}
+            wind={0.5}
             colors={['#FFD700', '#FFA500', '#FF69B4', '#00CED1', '#98FB98']}
             confettiSource={{
               x: dialogPosition.x,

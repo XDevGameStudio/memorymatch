@@ -17,6 +17,7 @@ const Game = () => {
   const [flippedIndexes, setFlippedIndexes] = useState<number[]>([]);
   const [matchedPairs, setMatchedPairs] = useState<number>(0);
   const [moves, setMoves] = useState<number>(0);
+  const [totalWins, setTotalWins] = useState<number>(0);
   const [difficulty, setDifficulty] = useState<Difficulty>('medium');
   const [gameStarted, setGameStarted] = useState<boolean>(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -38,13 +39,14 @@ const Game = () => {
       setMatchedPairs(0);
       setMoves(0);
       setIsShuffling(false);
-      setShowWinnerDialog(false); // Reset winner dialog when game starts
+      setShowWinnerDialog(false);
     }
   }, [gameStarted, difficulty]);
 
   useEffect(() => {
-    if (!showWinnerDialog) { // Only check for win/lose conditions if dialog isn't already shown
+    if (!showWinnerDialog) {
       if (matchedPairs === cards.length / 2 && cards.length > 0) {
+        setTotalWins(prev => prev + 1);
         setShowWinnerDialog(true);
       } else if (moves >= maxMoves[difficulty]) {
         setShowWinnerDialog(true);
@@ -152,7 +154,7 @@ const Game = () => {
           </div>
           <div className="flex items-center gap-2">
             <Trophy className="w-5 h-5" />
-            <span className="font-bold">{matchedPairs}</span>
+            <span className="font-bold">{totalWins}</span>
           </div>
         </div>
 

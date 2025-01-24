@@ -66,14 +66,13 @@ const GameGrid: React.FC<GameGridProps> = ({
               z: 0
             } : false}
             animate={isShuffling ? {
-              scale: [1, 0.8, 1],
-              rotateY: [0, 360, 720],
+              scale: [1, 0.9, 1],
+              rotateY: [0, 360 + Math.random() * 360],
               z: [0, 100, 0],
               transition: {
-                duration: 1,
-                delay: index * 0.03,
-                times: [0, 0.5, 1],
-                ease: "easeInOut"
+                duration: 0.8,
+                delay: index * 0.05,
+                ease: [0.4, 0, 0.2, 1]
               }
             } : {
               scale: 1,
