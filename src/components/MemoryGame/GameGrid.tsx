@@ -43,20 +43,26 @@ const GameGrid: React.FC<GameGridProps> = ({
           gridSizeClass[difficulty],
           getGridHeight(difficulty)
         )}
-        initial={isShuffling ? { scale: 0.8, opacity: 0 } : false}
+        initial={isShuffling ? { 
+          scale: 0.9,
+          opacity: 0.5,
+          rotateY: -15
+        } : false}
         animate={{ 
           scale: 1, 
           opacity: 1,
+          rotateY: 0,
           transition: {
-            duration: 0.4,
+            duration: 0.5,
             ease: [0.4, 0, 0.2, 1]
           }
         }}
         exit={{ 
-          scale: 0.8, 
-          opacity: 0,
+          scale: 0.9, 
+          opacity: 0.5,
+          rotateY: 15,
           transition: {
-            duration: 0.3,
+            duration: 0.4,
             ease: [0.4, 0, 1, 1]
           }
         }}
@@ -65,19 +71,27 @@ const GameGrid: React.FC<GameGridProps> = ({
           <motion.div
             key={card.id}
             initial={isShuffling ? { 
-              scale: 0, 
-              rotateY: 180,
-              opacity: 0 
+              scale: 0,
+              rotateY: -180,
+              opacity: 0
             } : false}
             animate={{ 
-              scale: 1, 
+              scale: 1,
               rotateY: 0,
-              opacity: 1
+              opacity: 1,
+              transition: {
+                duration: 0.6,
+                delay: isShuffling ? index * 0.04 : 0,
+                ease: [0.34, 1.56, 0.64, 1],
+                rotateY: {
+                  duration: 0.8,
+                  ease: [0.34, 1.56, 0.64, 1]
+                }
+              }
             }}
-            transition={{
-              duration: 0.4,
-              delay: isShuffling ? index * 0.03 : 0,
-              ease: [0.34, 1.56, 0.64, 1]
+            style={{ 
+              perspective: 1000,
+              transformStyle: "preserve-3d"
             }}
           >
             <Card
