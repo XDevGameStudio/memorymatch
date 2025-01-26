@@ -46,8 +46,8 @@ const Game = () => {
     const hasWon = matchedPairs === cards.length / 2 && cards.length > 0;
     const hasLost = moves >= maxMoves[difficulty];
     
-    if (hasWon || hasLost) {
-      if (hasWon && !showWinnerDialog) {
+    if ((hasWon || hasLost) && !showWinnerDialog) {
+      if (hasWon) {
         setTotalWins(prev => prev + 1);
       }
       setShowWinnerDialog(true);
@@ -189,6 +189,10 @@ const Game = () => {
         isWin={matchedPairs === cards.length / 2}
         moves={moves}
       />
+
+      <div className="absolute bottom-4 right-4 text-sm text-muted-foreground">
+        Created by Lovable Dev
+      </div>
     </div>
   );
 };
