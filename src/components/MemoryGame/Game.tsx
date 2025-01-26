@@ -9,7 +9,6 @@ import GameControls from '../TicTacToe/GameControls';
 import WinnerDialog from '../TicTacToe/WinnerDialog';
 import GameGrid from './GameGrid';
 import { Trophy, Move } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
 const Game = () => {
@@ -47,8 +46,8 @@ const Game = () => {
     const hasWon = matchedPairs === cards.length / 2 && cards.length > 0;
     const hasLost = moves >= maxMoves[difficulty];
     
-    if (!showWinnerDialog && (hasWon || hasLost)) {
-      if (hasWon) {
+    if (hasWon || hasLost) {
+      if (hasWon && !showWinnerDialog) {
         setTotalWins(prev => prev + 1);
       }
       setShowWinnerDialog(true);

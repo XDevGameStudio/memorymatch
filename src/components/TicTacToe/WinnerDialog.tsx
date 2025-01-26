@@ -17,18 +17,29 @@ interface WinnerDialogProps {
 
 const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, moves, isWin }: WinnerDialogProps) => {
   const dialogRef = useRef<HTMLDivElement>(null);
-  const [dialogPosition, setDialogPosition] = React.useState({ x: 0, y: 0, width: 0 });
+  const [dialogPosition, setDialogPosition] = React.useState({ x: 0, y: 0 });
 
   useEffect(() => {
     if (open && dialogRef.current) {
       const rect = dialogRef.current.getBoundingClientRect();
       setDialogPosition({ 
-        x: rect.x,
-        y: rect.y,
-        width: rect.width
+        x: rect.x + (rect.width / 2), 
+        y: rect.y 
       });
     }
   }, [open]);
+
+  const handleReset = () => {
+    onReset();
+    onOpenChange(false);
+  };
+
+  const handleHome = () => {
+    if (onHome) {
+      onHome();
+      onOpenChange(false);
+    }
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -38,19 +49,18 @@ const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, mov
             width={window.innerWidth}
             height={window.innerHeight}
             recycle={false}
-            numberOfPieces={500}
-            gravity={0.15}
-            initialVelocityY={-20}
+            numberOfPieces={200}
+            gravity={0.1}
+            initialVelocityY={-15}
             wind={0}
+            friction={0.99}
             colors={['#FFD700', '#FFA500', '#FF69B4', '#00CED1', '#98FB98', '#FF1493', '#7B68EE']}
             confettiSource={{
-              x: dialogPosition.x + (dialogPosition.width / 2),
+              x: dialogPosition.x,
               y: dialogPosition.y,
               w: 0,
               h: 0
             }}
-            tweenDuration={5000}
-            dragFriction={0.1}
           />
         )}
         <DialogHeader>
@@ -71,10 +81,7 @@ const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, mov
           {onHome && (
             <Button 
               variant="outline" 
-              onClick={() => {
-                onHome();
-                onOpenChange(false);
-              }}
+              onClick={handleHome}
               className="gap-2"
             >
               <Home className="w-4 h-4" />
@@ -82,10 +89,7 @@ const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, mov
             </Button>
           )}
           <Button 
-            onClick={() => {
-              onReset();
-              onOpenChange(false);
-            }}
+            onClick={handleReset}
             className="gap-2"
           >
             <RotateCcw className="w-4 h-4" />
