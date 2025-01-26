@@ -44,13 +44,14 @@ const Game = () => {
   }, [gameStarted, difficulty]);
 
   useEffect(() => {
-    if (!showWinnerDialog) {
-      if (matchedPairs === cards.length / 2 && cards.length > 0) {
+    const hasWon = matchedPairs === cards.length / 2 && cards.length > 0;
+    const hasLost = moves >= maxMoves[difficulty];
+    
+    if (!showWinnerDialog && (hasWon || hasLost)) {
+      if (hasWon) {
         setTotalWins(prev => prev + 1);
-        setShowWinnerDialog(true);
-      } else if (moves >= maxMoves[difficulty]) {
-        setShowWinnerDialog(true);
       }
+      setShowWinnerDialog(true);
     }
   }, [matchedPairs, cards.length, moves, maxMoves, difficulty, showWinnerDialog]);
 

@@ -17,12 +17,16 @@ interface WinnerDialogProps {
 
 const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, moves, isWin }: WinnerDialogProps) => {
   const dialogRef = useRef<HTMLDivElement>(null);
-  const [dialogPosition, setDialogPosition] = React.useState({ x: 0, y: 0 });
+  const [dialogPosition, setDialogPosition] = React.useState({ x: 0, y: 0, width: 0 });
 
   useEffect(() => {
     if (open && dialogRef.current) {
       const rect = dialogRef.current.getBoundingClientRect();
-      setDialogPosition({ x: rect.x + rect.width / 2, y: rect.y - window.innerHeight });
+      setDialogPosition({ 
+        x: rect.x,
+        y: rect.y,
+        width: rect.width
+      });
     }
   }, [open]);
 
@@ -34,17 +38,19 @@ const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, mov
             width={window.innerWidth}
             height={window.innerHeight}
             recycle={false}
-            numberOfPieces={200}
-            gravity={0.3}
-            initialVelocityY={30}
-            wind={0.5}
-            colors={['#FFD700', '#FFA500', '#FF69B4', '#00CED1', '#98FB98']}
+            numberOfPieces={500}
+            gravity={0.15}
+            initialVelocityY={-20}
+            wind={0}
+            colors={['#FFD700', '#FFA500', '#FF69B4', '#00CED1', '#98FB98', '#FF1493', '#7B68EE']}
             confettiSource={{
-              x: dialogPosition.x,
+              x: dialogPosition.x + (dialogPosition.width / 2),
               y: dialogPosition.y,
               w: 0,
               h: 0
             }}
+            tweenDuration={5000}
+            dragFriction={0.1}
           />
         )}
         <DialogHeader>
