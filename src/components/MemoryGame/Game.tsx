@@ -122,14 +122,14 @@ const Game = () => {
           </Button>
         </div>
         <div className="absolute bottom-4 right-4">
-          <p className="text-sm text-muted-foreground font-mono">created by x dev</p>
+          <p className="text-sm text-muted-foreground font-bold font-sans">created by x dev</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-center gap-8 p-4 bg-background text-foreground relative">
+    <div className="min-h-screen w-full flex flex-col items-center justify-center gap-6 p-4 bg-background text-foreground relative">
       <ThemeSelector theme={theme} setTheme={setTheme} />
       
       <motion.div 
@@ -194,7 +194,7 @@ const Game = () => {
       />
 
       <div className="absolute bottom-4 right-4">
-        <p className="text-sm text-muted-foreground font-mono">created by x dev</p>
+        <p className="text-sm text-muted-foreground font-bold font-sans">created by x dev</p>
       </div>
     </div>
   );
