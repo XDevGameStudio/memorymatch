@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '@/hooks/use-theme';
-import { motion } from 'framer-motion';
 import { Card as CardType, Difficulty } from './types';
 import { createDeck } from './gameUtils';
-import ThemeSelector from '../TicTacToe/ThemeSelector';
 import DifficultySelector from '../TicTacToe/DifficultySelector';
 import GameControls from '../TicTacToe/GameControls';
 import WinnerDialog from '../TicTacToe/WinnerDialog';
 import GameGrid from './GameGrid';
-import { Trophy, Move } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import GameLayout from './GameLayout';
+import GameStats from './GameStats';
+import GameStart from './GameStart';
 
 const Game = () => {
   const [cards, setCards] = useState<CardType[]>([]);
@@ -46,13 +45,13 @@ const Game = () => {
     const hasWon = matchedPairs === cards.length / 2 && cards.length > 0;
     const hasLost = moves >= maxMoves[difficulty];
     
-    if ((hasWon || hasLost) && !showWinnerDialog) {
+    if ((hasWon || hasLost) && gameStarted && !showWinnerDialog) {
       if (hasWon) {
         setTotalWins(prev => prev + 1);
       }
       setShowWinnerDialog(true);
     }
-  }, [matchedPairs, cards.length, moves, maxMoves, difficulty, showWinnerDialog]);
+  }, [matchedPairs, cards.length, moves, maxMoves, difficulty, showWinnerDialog, gameStarted]);
 
   const handleCardClick = (index: number) => {
     if (isPaused || moves >= maxMoves[difficulty]) {
@@ -93,7 +92,7 @@ const Game = () => {
 
   const resetGame = () => {
     setIsShuffling(true);
-    const timer = setTimeout(() => {
+    setTimeout(() => {
       const newDeck = createDeck(difficulty);
       setCards(newDeck);
       setFlippedIndexes([]);
@@ -103,100 +102,74 @@ const Game = () => {
       setIsPaused(false);
       setIsShuffling(false);
     }, 300);
-    
-    return () => clearTimeout(timer);
   };
 
   if (!gameStarted) {
     return (
-      <div className="min-h-screen w-full flex flex-col items-center justify-center gap-8 p-4 bg-background text-foreground">
-        <ThemeSelector theme={theme} setTheme={setTheme} />
-        <div className="text-center">
-          <h1 className="text-4xl font-bold mb-8">Memory Match X</h1>
-          <Button 
-            onClick={() => setGameStarted(true)}
-            size="lg"
-            className="text-xl px-8 py-6"
-          >
-            Play Game
-          </Button>
-        </div>
-        <div className="absolute bottom-4 right-4">
-          <p className="text-sm text-muted-foreground font-bold font-sans">created by x dev</p>
-        </div>
-      </div>
+      <GameStart 
+        theme={theme} 
+        setTheme={setTheme} 
+        onStart={() => setGameStarted(true)} 
+      />
     );
   }
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-center gap-6 p-4 bg-background text-foreground relative">
-      <ThemeSelector theme={theme} setTheme={setTheme} />
-      
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-        className="flex flex-col items-center gap-6 w-full max-w-[800px]"
-      >
-        <DifficultySelector
-          currentDifficulty={difficulty}
-          onSelect={(d) => {
-            setDifficulty(d as Difficulty);
-            const newDeck = createDeck(d as Difficulty);
-            setCards(newDeck);
-            setFlippedIndexes([]);
-            setMatchedPairs(0);
-            setMoves(0);
-          }}
-        />
+    <GameLayout theme={theme} setTheme={setTheme}>
+      <DifficultySelector
+        currentDifficulty={difficulty}
+        onSelect={(d) => {
+          setDifficulty(d as Difficulty);
+          const newDeck = createDeck(d as Difficulty);
+          setCards(newDeck);
+          setFlippedIndexes([]);
+          setMatchedPairs(0);
+          setMoves(0);
+        }}
+      />
 
-        <div className="flex items-center gap-6 bg-primary/10 px-6 py-3 rounded-lg">
-          <div className="flex items-center gap-2">
-            <Move className="w-5 h-5" />
-            <span className="font-bold">{moves}/{maxMoves[difficulty]}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Trophy className="w-5 h-5" />
-            <span className="font-bold">{totalWins}</span>
-          </div>
-        </div>
+      <GameStats 
+        moves={moves}
+        maxMoves={maxMoves}
+        difficulty={difficulty}
+        totalWins={totalWins}
+      />
 
-        <GameGrid
-          cards={cards}
-          difficulty={difficulty}
-          isShuffling={isShuffling}
-          flippedIndexes={flippedIndexes}
-          onCardClick={handleCardClick}
-        />
+      <GameGrid
+        cards={cards}
+        difficulty={difficulty}
+        isShuffling={isShuffling}
+        flippedIndexes={flippedIndexes}
+        onCardClick={handleCardClick}
+      />
 
-        <GameControls
-          onReset={resetGame}
-          onPause={() => setIsPaused(!isPaused)}
-          onHome={() => {
-            setGameStarted(false);
-            resetGame();
-          }}
-        />
-      </motion.div>
+      <GameControls
+        onReset={resetGame}
+        onPause={() => setIsPaused(!isPaused)}
+        onHome={() => {
+          setGameStarted(false);
+          resetGame();
+        }}
+      />
 
       <WinnerDialog
         winner={matchedPairs === cards.length / 2 ? 'X' : null}
         isDraw={false}
-        onReset={resetGame}
+        onReset={() => {
+          resetGame();
+          setShowWinnerDialog(false);
+        }}
         onHome={() => {
           setGameStarted(false);
           resetGame();
+          setShowWinnerDialog(false);
         }}
         open={showWinnerDialog}
         onOpenChange={setShowWinnerDialog}
         isWin={matchedPairs === cards.length / 2}
         moves={moves}
       />
-
-      <div className="absolute bottom-4 right-4">
-        <p className="text-sm text-muted-foreground font-bold font-sans">created by x dev</p>
-      </div>
-    </div>
+    </GameLayout>
   );
 };
 
