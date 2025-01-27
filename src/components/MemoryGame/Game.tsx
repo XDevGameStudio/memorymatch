@@ -109,7 +109,7 @@ const Game = () => {
 
   if (!gameStarted) {
     return (
-      <div className="h-screen w-full flex flex-col items-center justify-center gap-8 p-4 bg-background text-foreground">
+      <div className="h-screen w-full flex flex-col items-center justify-center gap-6 p-4 bg-background text-foreground">
         <ThemeSelector theme={theme} setTheme={setTheme} />
         <div className="text-center">
           <h1 className="text-4xl font-bold mb-8">Memory Match X</h1>
@@ -121,8 +121,8 @@ const Game = () => {
             Play Game
           </Button>
         </div>
-        <div className="absolute bottom-6 right-4">
-          <p className="text-sm text-muted-foreground font-bold font-mono">created by x dev</p>
+        <div className="absolute bottom-4 right-4">
+          <p className="font-bold">created by x dev</p>
         </div>
       </div>
     );
@@ -193,8 +193,8 @@ const Game = () => {
         moves={moves}
       />
 
-      <div className="absolute bottom-6 right-4">
-        <p className="text-sm text-muted-foreground font-bold font-mono">created by x dev</p>
+      <div className="absolute bottom-4 right-4">
+        <p className="font-bold">created by x dev</p>
       </div>
     </div>
   );
