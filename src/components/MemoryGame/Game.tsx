@@ -109,7 +109,7 @@ const Game = () => {
 
   if (!gameStarted) {
     return (
-      <div className="min-h-screen w-full flex flex-col items-center justify-center gap-8 p-4 bg-background text-foreground">
+      <div className="h-screen w-full flex flex-col items-center justify-center gap-8 p-4 bg-background text-foreground">
         <ThemeSelector theme={theme} setTheme={setTheme} />
         <div className="text-center">
           <h1 className="text-4xl font-bold mb-8">Memory Match X</h1>
@@ -121,7 +121,7 @@ const Game = () => {
             Play Game
           </Button>
         </div>
-        <div className="absolute bottom-8 right-4">
+        <div className="absolute bottom-6 right-4">
           <p className="text-sm text-muted-foreground font-bold font-mono">created by x dev</p>
         </div>
       </div>
@@ -129,14 +129,14 @@ const Game = () => {
   }
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-center gap-6 p-4 bg-background text-foreground relative">
+    <div className="h-screen w-full flex flex-col items-center justify-center gap-4 p-4 bg-background text-foreground relative">
       <ThemeSelector theme={theme} setTheme={setTheme} />
       
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
-        className="flex flex-col items-center gap-6 w-full max-w-[800px]"
+        className="flex flex-col items-center gap-4 w-full max-w-[800px]"
       >
         <DifficultySelector
           currentDifficulty={difficulty}
@@ -193,7 +193,7 @@ const Game = () => {
         moves={moves}
       />
 
-      <div className="absolute bottom-8 right-4">
+      <div className="absolute bottom-6 right-4">
         <p className="text-sm text-muted-foreground font-bold font-mono">created by x dev</p>
       </div>
     </div>
