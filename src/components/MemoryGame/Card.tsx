@@ -1,7 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import { Card as CardType } from './types';
 import { 
   Heart, Star, Sun, Moon, Cloud, Music, Coffee, Pizza,
   Camera, Ghost, Gamepad, Trophy, Rocket, Bird,
@@ -40,12 +39,13 @@ import {
 } from 'lucide-react';
 
 interface CardProps {
-  card: CardType;
+  value: string;
   isFlipped: boolean;
+  isMatched: boolean;
   onClick: () => void;
 }
 
-const Card: React.FC<CardProps> = ({ card, isFlipped, onClick }) => {
+const Card: React.FC<CardProps> = ({ value, isFlipped, isMatched, onClick }) => {
   const iconMap: { [key: string]: React.ComponentType<any> } = {
     '0': Heart, '1': Star, '2': Sun, '3': Moon, '4': Cloud, '5': Music, '6': Coffee, '7': Pizza,
     '8': Camera, '9': Ghost, '10': Gamepad, '11': Trophy, '12': Rocket, '13': Bird,
@@ -78,7 +78,7 @@ const Card: React.FC<CardProps> = ({ card, isFlipped, onClick }) => {
     '163': Wifi, '164': Wind, '165': Wrench
   };
   
-  const Icon = iconMap[card.value];
+  const Icon = iconMap[value];
   
   return (
     <motion.div
@@ -99,7 +99,7 @@ const Card: React.FC<CardProps> = ({ card, isFlipped, onClick }) => {
           className={cn(
             "absolute w-full h-full rounded-lg border-2 border-border",
             "backface-hidden bg-background",
-            card.isMatched && "opacity-50"
+            isMatched && "opacity-50"
           )}
         />
         
@@ -109,7 +109,7 @@ const Card: React.FC<CardProps> = ({ card, isFlipped, onClick }) => {
             "absolute w-full h-full rounded-lg border-2 border-border",
             "backface-hidden bg-primary flex items-center justify-center",
             "rotate-y-180",
-            card.isMatched && "opacity-50"
+            isMatched && "opacity-50"
           )}
         >
           {Icon && <Icon strokeWidth={2} size={32} color="currentColor" className="text-primary-foreground" />}
