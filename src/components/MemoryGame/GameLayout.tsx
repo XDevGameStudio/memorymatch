@@ -1,11 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import ThemeSelector from '../TicTacToe/ThemeSelector';
+import { Theme } from '@/hooks/use-theme';
 
 interface GameLayoutProps {
   children: React.ReactNode;
-  theme: string;
-  setTheme: (theme: string) => void;
+  theme: Theme;
+  setTheme: (theme: Theme) => void;
 }
 
 const GameLayout = ({ children, theme, setTheme }: GameLayoutProps) => {
