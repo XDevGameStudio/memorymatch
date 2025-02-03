@@ -109,10 +109,10 @@ const Game = () => {
 
   if (!gameStarted) {
     return (
-      <div className="h-screen w-full flex flex-col items-center justify-center gap-6 p-4 bg-background text-foreground">
+      <div className="h-screen w-full flex flex-col items-center justify-center gap-4 p-4 bg-background text-foreground">
         <ThemeSelector theme={theme} setTheme={setTheme} />
         <div className="text-center">
-          <h1 className="text-4xl font-bold mb-8">Memory Match X</h1>
+          <h1 className="text-4xl font-bold mb-6">Memory Match X</h1>
           <Button 
             onClick={() => setGameStarted(true)}
             size="lg"
@@ -129,14 +129,14 @@ const Game = () => {
   }
 
   return (
-    <div className="h-screen w-full flex flex-col items-center justify-center gap-4 p-4 bg-background text-foreground relative">
+    <div className="h-screen w-full flex flex-col items-center justify-center gap-2 p-4 bg-background text-foreground relative">
       <ThemeSelector theme={theme} setTheme={setTheme} />
       
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
-        className="flex flex-col items-center gap-4 w-full max-w-[800px]"
+        className="flex flex-col items-center gap-2 w-full max-w-[800px]"
       >
         <DifficultySelector
           currentDifficulty={difficulty}
@@ -150,7 +150,7 @@ const Game = () => {
           }}
         />
 
-        <div className="flex items-center gap-6 bg-primary/10 px-6 py-3 rounded-lg">
+        <div className="flex items-center gap-6 bg-primary/10 px-6 py-2 rounded-lg">
           <div className="flex items-center gap-2">
             <Move className="w-5 h-5" />
             <span className="font-bold">{moves}/{maxMoves[difficulty]}</span>
