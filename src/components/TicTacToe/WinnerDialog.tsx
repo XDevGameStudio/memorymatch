@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Home, RotateCcw } from 'lucide-react';
 import Confetti from 'react-confetti';
@@ -46,6 +46,11 @@ const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, mov
     }
   };
 
+  const dialogTitle = isWin ? "Congratulations!" : "Game Over";
+  const dialogDescription = isWin 
+    ? `You've won in ${moves} moves!` 
+    : "You've run out of moves! Try again?";
+
   return (
     <>
       {open && isWin && (
@@ -60,17 +65,14 @@ const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, mov
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
+            <DialogTitle className="text-center text-4xl font-bold">
+              {dialogTitle}
+            </DialogTitle>
+            <DialogDescription className="text-center text-lg">
+              {dialogDescription}
+            </DialogDescription>
             <div className="flex flex-col items-center gap-4 py-4">
-              <h2 className="text-4xl font-bold">
-                {isWin 
-                  ? "Congratulations!" 
-                  : "Game Over"}
-              </h2>
-              <p className="text-lg text-muted-foreground text-center">
-                {isWin 
-                  ? `You've won in ${moves} moves!`
-                  : "You've run out of moves! Try again?"}
-              </p>
+              {/* Additional content can go here if needed */}
             </div>
           </DialogHeader>
           <div className="flex justify-center gap-4 pt-4">
