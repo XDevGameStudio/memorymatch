@@ -122,7 +122,7 @@ const Game = () => {
             Play Game
           </Button>
         </div>
-        <div className="fixed bottom-12 right-8">
+        <div className="fixed bottom-4 right-4">
           <p className="font-bold text-primary text-sm">created by x dev</p>
         </div>
       </div>
@@ -194,7 +194,7 @@ const Game = () => {
         moves={moves}
       />
 
-      <div className="fixed bottom-12 right-8">
+      <div className="fixed bottom-4 right-4">
         <p className="font-bold text-primary text-sm">created by x dev</p>
       </div>
     </div>
