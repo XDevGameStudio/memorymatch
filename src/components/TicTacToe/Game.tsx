@@ -81,7 +81,6 @@ const Game = () => {
     setters.setLosses(0);
   };
 
-  // ... keep existing code (JSX return statement)
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center gap-8 p-4 bg-background text-foreground relative">
       <ThemeSelector theme={theme} setTheme={setTheme} />
@@ -161,8 +160,8 @@ const Game = () => {
         )}
       </motion.div>
 
-      <div className="fixed bottom-4 right-4">
-        <p className="text-sm text-muted-foreground font-bold">created by x dev</p>
+      <div className="fixed bottom-12 right-8">
+        <p className="text-sm text-primary font-bold">created by x dev</p>
       </div>
     </div>
   );

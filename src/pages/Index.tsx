@@ -1,3 +1,4 @@
+
 import MemoryGame from '@/components/MemoryGame/Game';
 
 const Index = () => {
