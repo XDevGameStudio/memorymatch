@@ -94,6 +94,11 @@ const Game = () => {
 
   const resetGame = () => {
     setIsShuffling(true);
+    setCards(prevCards => 
+      prevCards.map(card => ({ ...card, isMatched: false }))
+    );
+    
+    // Add a small delay before creating a new deck to allow animation to play
     const timer = setTimeout(() => {
       const newDeck = createDeck(difficulty);
       setCards(newDeck);
@@ -103,7 +108,7 @@ const Game = () => {
       setShowWinnerDialog(false);
       setIsPaused(false);
       setIsShuffling(false);
-    }, 300);
+    }, 1200); // Longer duration to match the shuffle animation
     
     return () => clearTimeout(timer);
   };
@@ -143,11 +148,16 @@ const Game = () => {
           currentDifficulty={difficulty}
           onSelect={(d) => {
             setDifficulty(d as Difficulty);
-            const newDeck = createDeck(d as Difficulty);
-            setCards(newDeck);
-            setFlippedIndexes([]);
-            setMatchedPairs(0);
-            setMoves(0);
+            setIsShuffling(true);
+            
+            setTimeout(() => {
+              const newDeck = createDeck(d as Difficulty);
+              setCards(newDeck);
+              setFlippedIndexes([]);
+              setMatchedPairs(0);
+              setMoves(0);
+              setIsShuffling(false);
+            }, 1200); // Match the animation duration
           }}
         />
 
