@@ -54,13 +54,15 @@ const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, mov
   return (
     <>
       {open && isWin && (
-        <Confetti
-          width={windowSize.width}
-          height={windowSize.height}
-          recycle={false}
-          numberOfPieces={200}
-          gravity={0.15}
-        />
+        <div className="fixed inset-0 z-[100] pointer-events-none">
+          <Confetti
+            width={windowSize.width}
+            height={windowSize.height}
+            recycle={false}
+            numberOfPieces={200}
+            gravity={0.15}
+          />
+        </div>
       )}
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="sm:max-w-md">
@@ -80,7 +82,7 @@ const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, mov
               <Button 
                 variant="outline" 
                 onClick={handleHome}
-                className="gap-2"
+                className="gap-2 transition-all active:scale-95"
               >
                 <Home className="w-4 h-4" />
                 Home
@@ -88,7 +90,7 @@ const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, mov
             )}
             <Button 
               onClick={handleReset}
-              className="gap-2"
+              className="gap-2 transition-all active:scale-95"
             >
               <RotateCcw className="w-4 h-4" />
               Play Again

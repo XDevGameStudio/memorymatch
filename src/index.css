@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap');
 
 @tailwind base;
@@ -46,16 +47,18 @@
   }
 
   .forest {
-    --background: 139 70% 75%;
-    --foreground: 0 0% 100%;
-    --primary: 139 70% 35%;
+    --background: 139 30% 75%;
+    --foreground: 139 30% 20%;
+    --primary: 139 30% 35%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 139 70% 65%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 139 70% 85%;
-    --muted-foreground: 0 0% 100%;
-    --accent: 139 70% 35%;
-    --accent-foreground: 0 0% 100%;
+    --secondary: 97 30% 66%;
+    --secondary-foreground: 139 30% 20%;
+    --muted: 139 30% 85%;
+    --muted-foreground: 139 30% 20%;
+    --accent: 97 30% 76%;
+    --accent-foreground: 139 30% 25%;
+    --highlight: 139 30% 45%;
+    --found: 139 30% 25%;
   }
 
   .sunset {
