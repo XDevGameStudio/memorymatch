@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import Board from './Board';
 import { getBestMove } from './aiUtils';
@@ -139,7 +140,6 @@ const Game = () => {
 
             <GameControls
               onReset={resetGame}
-              onPause={() => setters.setIsPaused(!state.isPaused)}
               onHome={() => {
                 setters.setVsAI(null);
                 resetGame();
