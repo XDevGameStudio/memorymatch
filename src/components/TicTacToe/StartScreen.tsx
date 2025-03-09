@@ -1,70 +1,35 @@
-import { Button } from "@/components/ui/button";
-import { motion, AnimatePresence } from "framer-motion";
-import { Play } from "lucide-react";
-import { useState } from "react";
-import DifficultySelector from "./DifficultySelector";
 
-interface StartScreenProps {
-  onStart: (mode: boolean) => void;
-}
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Button } from '@/components/ui/button';
+import { UserRound, Monitor } from 'lucide-react';
 
-const StartScreen = ({ onStart }: StartScreenProps) => {
-  const [showDifficulty, setShowDifficulty] = useState(false);
-
+// Simplified component to fix build errors
+const StartScreen = ({ onStart }: { onStart: (againstAI: boolean) => void }) => {
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="flex flex-col items-center gap-8 w-full max-w-[800px] p-4"
+      transition={{ duration: 0.3 }}
+      className="flex flex-col items-center gap-4"
     >
-      <div className="relative">
-        <Button 
-          onClick={() => setShowDifficulty(true)}
-          size="lg"
-          className="w-48 h-48 rounded-2xl text-2xl font-bold hover:scale-105 transition-transform relative overflow-hidden"
-        >
-          <AnimatePresence>
-            {!showDifficulty && (
-              <motion.div
-                initial={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="flex items-center justify-center absolute inset-0"
-              >
-                <Play className="w-12 h-12 mr-2" />
-                Play
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          <AnimatePresence>
-            {showDifficulty && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                className="absolute inset-0 flex flex-col items-center justify-center gap-4"
-              >
-                <div className="text-lg mb-2">Select Difficulty</div>
-                <div className="flex flex-col gap-2 w-full px-4">
-                  {['easy', 'medium', 'hard'].map((difficulty) => (
-                    <Button
-                      key={difficulty}
-                      variant="secondary"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onStart(true);
-                      }}
-                      className="w-full py-2 capitalize"
-                    >
-                      {difficulty}
-                    </Button>
-                  ))}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </Button>
-      </div>
+      <Button 
+        onClick={() => onStart(true)}
+        variant="default"
+        className="w-full p-6 h-auto flex items-center justify-center gap-3"
+      >
+        <Monitor className="w-5 h-5" />
+        <span>Play vs Computer</span>
+      </Button>
+      
+      <Button 
+        onClick={() => onStart(false)}
+        variant="outline"
+        className="w-full p-6 h-auto flex items-center justify-center gap-3"
+      >
+        <UserRound className="w-5 h-5" />
+        <span>Play vs Friend</span>
+      </Button>
     </motion.div>
   );
 };

@@ -21,6 +21,7 @@ const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, mov
     width: window.innerWidth,
     height: window.innerHeight,
   });
+  const [confettiActive, setConfettiActive] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -34,15 +35,30 @@ const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, mov
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Only activate confetti when dialog opens and it's a win
+  useEffect(() => {
+    if (open && isWin) {
+      setConfettiActive(true);
+    } else {
+      setConfettiActive(false);
+    }
+  }, [open, isWin]);
+
   const handleReset = () => {
-    onReset();
-    onOpenChange(false);
+    onOpenChange(false); // Close dialog first
+    // Slight delay before resetting game to avoid state conflicts
+    setTimeout(() => {
+      onReset();
+    }, 50);
   };
 
   const handleHome = () => {
     if (onHome) {
-      onHome();
-      onOpenChange(false);
+      onOpenChange(false); // Close dialog first
+      // Slight delay before going home to avoid state conflicts
+      setTimeout(() => {
+        onHome();
+      }, 50);
     }
   };
 
@@ -53,7 +69,7 @@ const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, mov
 
   return (
     <>
-      {open && isWin && (
+      {confettiActive && (
         <div className="fixed inset-0 z-[100] pointer-events-none">
           <Confetti
             width={windowSize.width}
