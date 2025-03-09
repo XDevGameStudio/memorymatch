@@ -30,17 +30,29 @@ const Game = () => {
     hard: 40
   };
 
+  // Initialize the game when it first starts
   useEffect(() => {
-    if (gameStarted) {
-      resetGame();
+    if (gameStarted && cards.length === 0) {
+      resetGame(true);
     }
-  }, [gameStarted, difficulty]);
+  }, [gameStarted]);
 
+  // Handle difficulty changes
   useEffect(() => {
-    const hasWon = matchedPairs === cards.length / 2 && cards.length > 0;
+    if (gameStarted && cards.length > 0) {
+      resetGame(false);
+    }
+  }, [difficulty]);
+
+  // Check for win/loss conditions
+  useEffect(() => {
+    // Only check win condition when cards exist and when we're not already showing the dialog
+    if (cards.length === 0 || showWinnerDialog) return;
+    
+    const hasWon = matchedPairs === cards.length / 2;
     const hasLost = moves >= maxMoves[difficulty];
     
-    if ((hasWon || hasLost) && !showWinnerDialog) {
+    if (hasWon || hasLost) {
       if (hasWon) {
         setTotalWins(prev => prev + 1);
       }
@@ -49,8 +61,8 @@ const Game = () => {
   }, [matchedPairs, cards.length, moves, maxMoves, difficulty, showWinnerDialog]);
 
   const handleCardClick = (index: number) => {
-    if (moves >= maxMoves[difficulty]) {
-      return;
+    if (moves >= maxMoves[difficulty] || isShuffling) {
+      return; // Prevent clicks when game is over or shuffling
     }
 
     if (
@@ -86,26 +98,44 @@ const Game = () => {
 
   const handleDifficultyChange = (newDifficulty: Difficulty) => {
     if (difficulty !== newDifficulty) {
-      setIsShuffling(true);
       setDifficulty(newDifficulty);
     }
   };
 
-  const resetGame = () => {
+  const resetGame = (skipAnimation = false) => {
+    // Don't shuffle if we're already shuffling
+    if (isShuffling) return;
+    
+    // Set shuffling state to trigger animation
     setIsShuffling(true);
     
-    // Add a small delay before creating a new deck to allow animation to play
-    const timer = setTimeout(() => {
+    // Close winner dialog if it's open
+    if (showWinnerDialog) {
+      setShowWinnerDialog(false);
+    }
+
+    // Reset game state
+    setFlippedIndexes([]);
+    setMatchedPairs(0);
+    setMoves(0);
+    
+    // Add a small delay for the shuffling animation 
+    // (can be skipped for initial load if desired)
+    const animationDelay = skipAnimation ? 0 : 1000;
+    
+    setTimeout(() => {
       const newDeck = createDeck(difficulty);
       setCards(newDeck);
-      setFlippedIndexes([]);
-      setMatchedPairs(0);
-      setMoves(0);
-      setShowWinnerDialog(false);
-      setIsShuffling(false);
-    }, 1200); // Longer duration to match the shuffle animation
-    
-    return () => clearTimeout(timer);
+      
+      // End the shuffling animation after cards are set
+      setTimeout(() => {
+        setIsShuffling(false);
+      }, 300);
+    }, animationDelay);
+  };
+
+  const handleWinnerDialogReset = () => {
+    resetGame(false);
   };
 
   if (!gameStarted) {
@@ -164,10 +194,10 @@ const Game = () => {
         />
 
         <GameControls
-          onReset={resetGame}
+          onReset={() => resetGame(false)}
           onHome={() => {
             setGameStarted(false);
-            resetGame();
+            resetGame(false);
           }}
         />
       </motion.div>
@@ -175,10 +205,10 @@ const Game = () => {
       <WinnerDialog
         winner={matchedPairs === cards.length / 2 ? 'X' : null}
         isDraw={false}
-        onReset={resetGame}
+        onReset={handleWinnerDialogReset}
         onHome={() => {
           setGameStarted(false);
-          resetGame();
+          resetGame(false);
         }}
         open={showWinnerDialog}
         onOpenChange={setShowWinnerDialog}

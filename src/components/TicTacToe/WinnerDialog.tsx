@@ -45,20 +45,24 @@ const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, mov
   }, [open, isWin]);
 
   const handleReset = () => {
-    onOpenChange(false); // Close dialog first
-    // Slight delay before resetting game to avoid state conflicts
+    // First close the dialog
+    onOpenChange(false);
+    
+    // Reset the game after the dialog is closed
     setTimeout(() => {
       onReset();
-    }, 50);
+    }, 100);
   };
 
   const handleHome = () => {
     if (onHome) {
-      onOpenChange(false); // Close dialog first
-      // Slight delay before going home to avoid state conflicts
+      // First close the dialog
+      onOpenChange(false);
+      
+      // Go home after the dialog is closed
       setTimeout(() => {
         onHome();
-      }, 50);
+      }, 100);
     }
   };
 
