@@ -20,7 +20,6 @@ const Game = () => {
   const [totalWins, setTotalWins] = useState<number>(0);
   const [difficulty, setDifficulty] = useState<Difficulty>('medium');
   const [gameStarted, setGameStarted] = useState<boolean>(false);
-  const [isPaused, setIsPaused] = useState(false);
   const [showWinnerDialog, setShowWinnerDialog] = useState(false);
   const [isShuffling, setIsShuffling] = useState(false);
   const { theme, setTheme } = useTheme();
@@ -56,15 +55,15 @@ const Game = () => {
   }, [matchedPairs, cards.length, moves, maxMoves, difficulty, showWinnerDialog]);
 
   const handleCardClick = (index: number) => {
-    if (isPaused || moves >= maxMoves[difficulty]) {
-      setIsPaused(false);
+    if (moves >= maxMoves[difficulty]) {
       return;
     }
 
     if (
       flippedIndexes.length === 2 ||
       flippedIndexes.includes(index) ||
-      cards[index].isMatched
+      cards[index].isMatched ||
+      isShuffling
     ) {
       return;
     }
@@ -106,11 +105,26 @@ const Game = () => {
       setMatchedPairs(0);
       setMoves(0);
       setShowWinnerDialog(false);
-      setIsPaused(false);
       setIsShuffling(false);
     }, 1200); // Longer duration to match the shuffle animation
     
     return () => clearTimeout(timer);
+  };
+
+  const handleDifficultyChange = (newDifficulty: Difficulty) => {
+    if (difficulty === newDifficulty) return;
+    
+    // Trigger the shuffle animation
+    setIsShuffling(true);
+    
+    // After animation completes, change the difficulty which will create a new deck
+    setTimeout(() => {
+      setDifficulty(newDifficulty);
+      setFlippedIndexes([]);
+      setMatchedPairs(0);
+      setMoves(0);
+      setIsShuffling(false);
+    }, 1200); // Match the animation duration
   };
 
   if (!gameStarted) {
@@ -119,10 +133,14 @@ const Game = () => {
         <MemoryThemeSelector theme={theme} setTheme={setTheme} />
         <div className="text-center">
           <h1 className="text-4xl font-bold mb-8">Memory Match X</h1>
+          <MemoryDifficultySelector 
+            currentDifficulty={difficulty} 
+            onSelect={setDifficulty} 
+          />
           <Button 
             onClick={() => setGameStarted(true)}
             size="lg"
-            className="text-xl px-8 py-6"
+            className="text-xl px-8 py-6 mt-8"
           >
             Play Game
           </Button>
@@ -146,19 +164,7 @@ const Game = () => {
       >
         <MemoryDifficultySelector
           currentDifficulty={difficulty}
-          onSelect={(d) => {
-            setDifficulty(d as Difficulty);
-            setIsShuffling(true);
-            
-            setTimeout(() => {
-              const newDeck = createDeck(d as Difficulty);
-              setCards(newDeck);
-              setFlippedIndexes([]);
-              setMatchedPairs(0);
-              setMoves(0);
-              setIsShuffling(false);
-            }, 1200); // Match the animation duration
-          }}
+          onSelect={handleDifficultyChange}
         />
 
         <div className="flex items-center gap-6 bg-primary/10 px-6 py-3 rounded-lg">
@@ -182,8 +188,6 @@ const Game = () => {
 
         <MemoryGameControls
           onReset={resetGame}
-          onPause={() => setIsPaused(!isPaused)}
-          isPaused={isPaused}
           onHome={() => {
             setGameStarted(false);
             resetGame();

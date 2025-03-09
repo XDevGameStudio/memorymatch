@@ -4,7 +4,7 @@ import { Difficulty } from "./types";
 
 interface MemoryDifficultySelectorProps {
   currentDifficulty: Difficulty;
-  onSelect: (difficulty: string) => void;
+  onSelect: (difficulty: Difficulty) => void;
 }
 
 const MemoryDifficultySelector = ({
