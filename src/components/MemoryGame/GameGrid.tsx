@@ -20,36 +20,37 @@ const GameGrid: React.FC<GameGridProps> = ({
   flippedIndexes,
   onCardClick,
 }) => {
-  // Fixed grid classes for each difficulty to maintain consistent dimensions
-  const gridSizeClass = {
-    easy: "grid-cols-4 max-w-[400px]",
-    medium: "grid-cols-5 max-w-[500px]",
-    hard: "grid-cols-7 max-w-[700px]"
-  };
-
-  const getGridHeight = (difficulty: Difficulty) => {
-    switch (difficulty) {
-      case 'easy': return 'grid-rows-3';
-      case 'medium': return 'grid-rows-4';
-      case 'hard': return 'grid-rows-4';
-      default: return 'grid-rows-4';
+  // Fixed grid classes and dimensions for each difficulty
+  const gridConfig = {
+    easy: {
+      cols: "grid-cols-4",
+      rows: "grid-rows-3",
+      maxWidth: "max-w-[400px]",
+      totalCells: 12
+    },
+    medium: {
+      cols: "grid-cols-5",
+      rows: "grid-rows-4",
+      maxWidth: "max-w-[500px]",
+      totalCells: 20
+    },
+    hard: {
+      cols: "grid-cols-7",
+      rows: "grid-rows-4",
+      maxWidth: "max-w-[700px]",
+      totalCells: 28
     }
   };
 
   // Create a shuffled array of indices for the animation sequence
   const shuffleIndices = React.useMemo(() => {
-    return Array.from({ length: 28 }, (_, i) => i) // Use max potential cards (hard mode)
+    return Array.from({ length: gridConfig[difficulty].totalCells }, (_, i) => i)
       .sort(() => Math.random() - 0.5);
   }, [isShuffling, difficulty]);
 
   // Calculate the number of empty placeholders to add based on difficulty
   const getPlaceholders = () => {
-    const totalCells = {
-      easy: 12,
-      medium: 20,
-      hard: 28
-    }[difficulty];
-
+    const totalCells = gridConfig[difficulty].totalCells;
     // Return placeholders to fill the grid
     return Array.from({ length: Math.max(0, totalCells - cards.length) }, (_, i) => i);
   };
@@ -60,17 +61,19 @@ const GameGrid: React.FC<GameGridProps> = ({
     <div
       className={cn(
         "grid gap-4 w-full mx-auto p-4",
-        gridSizeClass[difficulty],
-        getGridHeight(difficulty)
+        gridConfig[difficulty].cols,
+        gridConfig[difficulty].rows,
+        gridConfig[difficulty].maxWidth
       )}
       style={{
         perspective: 2000,
+        minHeight: difficulty === 'easy' ? '360px' : difficulty === 'medium' ? '480px' : '480px'
       }}
     >
       {/* Real cards */}
       {cards.map((card, index) => (
         <motion.div
-          key={`card-${card.id}-${difficulty}`}
+          key={`card-${card.id}-${index}`}
           initial={isShuffling ? { 
             scale: 1
           } : false}
@@ -115,7 +118,7 @@ const GameGrid: React.FC<GameGridProps> = ({
       {placeholders.map((placeholder) => (
         <div 
           key={`placeholder-${placeholder}-${difficulty}`}
-          className="rounded-lg opacity-0"
+          className="rounded-lg opacity-0 aspect-square"
         ></div>
       ))}
     </div>

@@ -22,6 +22,7 @@ const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, mov
     height: window.innerHeight,
   });
   const [confettiActive, setConfettiActive] = useState(false);
+  const [isResetting, setIsResetting] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -35,6 +36,13 @@ const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, mov
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Reset the isResetting flag when dialog changes to closed
+  useEffect(() => {
+    if (!open) {
+      setIsResetting(false);
+    }
+  }, [open]);
+
   // Only activate confetti when dialog opens and it's a win
   useEffect(() => {
     if (open && isWin) {
@@ -45,24 +53,32 @@ const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, mov
   }, [open, isWin]);
 
   const handleReset = () => {
+    // Prevent multiple clicks
+    if (isResetting) return;
+    setIsResetting(true);
+    
     // First close the dialog
     onOpenChange(false);
     
-    // Reset the game after the dialog is closed
+    // Reset the game after the dialog is closed with a delay
     setTimeout(() => {
       onReset();
-    }, 100);
+    }, 300);
   };
 
   const handleHome = () => {
     if (onHome) {
+      // Prevent multiple clicks
+      if (isResetting) return;
+      setIsResetting(true);
+      
       // First close the dialog
       onOpenChange(false);
       
-      // Go home after the dialog is closed
+      // Go home after the dialog is closed with a delay
       setTimeout(() => {
         onHome();
-      }, 100);
+      }, 300);
     }
   };
 
@@ -84,7 +100,16 @@ const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, mov
           />
         </div>
       )}
-      <Dialog open={open} onOpenChange={onOpenChange}>
+      <Dialog open={open} onOpenChange={(newOpen) => {
+        // If we're closing and not in reset mode, handle dialog close
+        if (!newOpen && !isResetting) {
+          onOpenChange(newOpen);
+        }
+        // If we're manually opening, allow it
+        else if (newOpen) {
+          onOpenChange(newOpen);
+        }
+      }}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="text-center text-4xl font-bold">
@@ -103,6 +128,7 @@ const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, mov
                 variant="outline" 
                 onClick={handleHome}
                 className="gap-2 transition-all active:scale-95"
+                disabled={isResetting}
               >
                 <Home className="w-4 h-4" />
                 Home
@@ -111,6 +137,7 @@ const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, mov
             <Button 
               onClick={handleReset}
               className="gap-2 transition-all active:scale-95"
+              disabled={isResetting}
             >
               <RotateCcw className="w-4 h-4" />
               Play Again
