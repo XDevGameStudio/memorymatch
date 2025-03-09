@@ -4,10 +4,10 @@ import { useTheme } from '@/hooks/use-theme';
 import { motion } from 'framer-motion';
 import { Card as CardType, Difficulty } from './types';
 import { createDeck } from './gameUtils';
-import ThemeSelector from '../TicTacToe/ThemeSelector';
-import DifficultySelector from '../TicTacToe/DifficultySelector';
-import GameControls from '../TicTacToe/GameControls';
-import WinnerDialog from '../TicTacToe/WinnerDialog';
+import MemoryThemeSelector from './MemoryThemeSelector';
+import MemoryDifficultySelector from './MemoryDifficultySelector';
+import MemoryGameControls from './MemoryGameControls';
+import MemoryWinnerDialog from './MemoryWinnerDialog';
 import GameGrid from './GameGrid';
 import { Trophy, Move } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -116,7 +116,7 @@ const Game = () => {
   if (!gameStarted) {
     return (
       <div className="h-full w-full flex flex-col items-center justify-center gap-6 p-4 bg-background text-foreground">
-        <ThemeSelector theme={theme} setTheme={setTheme} />
+        <MemoryThemeSelector theme={theme} setTheme={setTheme} />
         <div className="text-center">
           <h1 className="text-4xl font-bold mb-8">Memory Match X</h1>
           <Button 
@@ -136,7 +136,7 @@ const Game = () => {
 
   return (
     <div className="h-full w-full flex flex-col items-center justify-center gap-4 p-4 bg-background text-foreground relative">
-      <ThemeSelector theme={theme} setTheme={setTheme} />
+      <MemoryThemeSelector theme={theme} setTheme={setTheme} />
       
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
@@ -144,7 +144,7 @@ const Game = () => {
         transition={{ duration: 0.3 }}
         className="flex flex-col items-center gap-4 w-full max-w-[800px]"
       >
-        <DifficultySelector
+        <MemoryDifficultySelector
           currentDifficulty={difficulty}
           onSelect={(d) => {
             setDifficulty(d as Difficulty);
@@ -180,9 +180,10 @@ const Game = () => {
           onCardClick={handleCardClick}
         />
 
-        <GameControls
+        <MemoryGameControls
           onReset={resetGame}
           onPause={() => setIsPaused(!isPaused)}
+          isPaused={isPaused}
           onHome={() => {
             setGameStarted(false);
             resetGame();
@@ -190,9 +191,7 @@ const Game = () => {
         />
       </motion.div>
 
-      <WinnerDialog
-        winner={matchedPairs === cards.length / 2 ? 'X' : null}
-        isDraw={false}
+      <MemoryWinnerDialog
         onReset={resetGame}
         onHome={() => {
           setGameStarted(false);
@@ -202,6 +201,7 @@ const Game = () => {
         onOpenChange={setShowWinnerDialog}
         isWin={matchedPairs === cards.length / 2}
         moves={moves}
+        maxMoves={maxMoves[difficulty]}
       />
 
       <div className="fixed bottom-4 right-4">

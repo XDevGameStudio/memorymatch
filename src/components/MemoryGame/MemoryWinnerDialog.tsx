@@ -5,18 +5,25 @@ import { Button } from "@/components/ui/button";
 import { Home, RotateCcw } from 'lucide-react';
 import Confetti from 'react-confetti';
 
-interface WinnerDialogProps {
-  winner: string | null;
-  isDraw: boolean;
+interface MemoryWinnerDialogProps {
   onReset: () => void;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onHome?: () => void;
-  moves?: number;
-  isWin?: boolean;
+  moves: number;
+  isWin: boolean;
+  maxMoves: number;
 }
 
-const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, moves, isWin }: WinnerDialogProps) => {
+const MemoryWinnerDialog = ({ 
+  onReset, 
+  open, 
+  onOpenChange, 
+  onHome, 
+  moves,
+  isWin,
+  maxMoves
+}: MemoryWinnerDialogProps) => {
   const [windowSize, setWindowSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
@@ -49,7 +56,7 @@ const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, mov
   const dialogTitle = isWin ? "Congratulations!" : "Game Over";
   const dialogDescription = isWin 
     ? `You've won in ${moves} moves!` 
-    : "You've run out of moves! Try again?";
+    : `You've used all ${maxMoves} moves! Try again?`;
 
   return (
     <>
@@ -102,4 +109,4 @@ const WinnerDialog = ({ winner, isDraw, onReset, open, onOpenChange, onHome, mov
   );
 };
 
-export default WinnerDialog;
+export default MemoryWinnerDialog;
