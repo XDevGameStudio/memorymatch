@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { HelpCircle, Sun, Moon, Candy, Sunset, TreePine } from "lucide-react";
 import {
@@ -13,12 +12,12 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
-interface MemoryThemeSelectorProps {
+interface ThemeSelectorProps {
   theme: Theme;
   setTheme: (theme: Theme) => void;
 }
 
-const MemoryThemeSelector = ({ theme, setTheme }: MemoryThemeSelectorProps) => {
+const ThemeSelector = ({ theme, setTheme }: ThemeSelectorProps) => {
   const [showHelp, setShowHelp] = useState(false);
 
   return (
@@ -120,4 +119,4 @@ const MemoryThemeSelector = ({ theme, setTheme }: MemoryThemeSelectorProps) => {
   );
 };
 
-export default MemoryThemeSelector;
+export default ThemeSelector;
