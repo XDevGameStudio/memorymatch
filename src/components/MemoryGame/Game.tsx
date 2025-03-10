@@ -8,7 +8,7 @@ import DifficultySelector from '../TicTacToe/DifficultySelector';
 import GameControls from '../TicTacToe/GameControls';
 import WinnerDialog from '../TicTacToe/WinnerDialog';
 import GameGrid from './GameGrid';
-import { Trophy, Move, Shuffle } from 'lucide-react';
+import { Trophy, Move } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const Game = () => {
@@ -30,24 +30,19 @@ const Game = () => {
     hard: 40
   };
 
-  // Initialize the game when it first starts
   useEffect(() => {
     if (gameStarted && cards.length === 0) {
-      // When coming from home screen, trigger the shuffle animation
       resetGame(false);
     }
   }, [gameStarted]);
 
-  // Handle difficulty changes
   useEffect(() => {
     if (gameStarted && cards.length > 0) {
       resetGame(false);
     }
   }, [difficulty]);
 
-  // Check for win/loss conditions
   useEffect(() => {
-    // Only check win condition when cards exist and when we're not already showing the dialog
     if (cards.length === 0 || showWinnerDialog || isGameOver) return;
     
     const hasWon = matchedPairs === cards.length / 2;
@@ -64,7 +59,7 @@ const Game = () => {
 
   const handleCardClick = (index: number) => {
     if (moves >= maxMoves[difficulty] || isShuffling || isGameOver) {
-      return; // Prevent clicks when game is over or shuffling
+      return;
     }
 
     if (
@@ -105,36 +100,27 @@ const Game = () => {
   };
 
   const resetGame = (skipAnimation = false) => {
-    // Don't shuffle if we're already shuffling
     if (isShuffling) return;
     
-    // Set shuffling state to trigger animation
     setIsShuffling(true);
     
-    // Close winner dialog if it's open
     if (showWinnerDialog) {
       setShowWinnerDialog(false);
     }
 
-    // Reset game over state
     setIsGameOver(false);
 
-    // Reset game state
     setFlippedIndexes([]);
     setMatchedPairs(0);
     setMoves(0);
     
-    // Add a small delay for the shuffling animation
-    // Create an empty deck first to maintain grid size
     const emptyDeck = createDeck(difficulty);
     setCards(emptyDeck);
     
-    // Real shuffle happens with a slight delay
     setTimeout(() => {
       const newDeck = createDeck(difficulty);
       setCards(newDeck);
       
-      // End the shuffling animation after cards are set
       setTimeout(() => {
         setIsShuffling(false);
       }, 1200);
@@ -192,18 +178,6 @@ const Game = () => {
           <div className="flex items-center gap-2">
             <Trophy className="w-5 h-5" />
             <span className="font-bold">{totalWins}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Shuffle className={`w-5 h-5 ${isShuffling ? 'animate-spin' : ''}`} />
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              onClick={() => resetGame(false)}
-              disabled={isShuffling}
-              className="p-1 h-auto"
-            >
-              Shuffle
-            </Button>
           </div>
         </div>
 
