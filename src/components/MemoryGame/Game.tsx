@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTheme } from '@/hooks/use-theme';
 import { motion } from 'framer-motion';
 import { Card as CardType, Difficulty } from './types';
@@ -23,6 +23,9 @@ const Game = () => {
   const [isShuffling, setIsShuffling] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
   const { theme, setTheme } = useTheme();
+  
+  const shuffleTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const endShuffleTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const maxMoves = {
     easy: 15,
@@ -56,6 +59,13 @@ const Game = () => {
       setShowWinnerDialog(true);
     }
   }, [matchedPairs, cards.length, moves, maxMoves, difficulty, showWinnerDialog, isGameOver]);
+
+  useEffect(() => {
+    return () => {
+      if (shuffleTimerRef.current) clearTimeout(shuffleTimerRef.current);
+      if (endShuffleTimerRef.current) clearTimeout(endShuffleTimerRef.current);
+    };
+  }, []);
 
   const handleCardClick = (index: number) => {
     if (moves >= maxMoves[difficulty] || isShuffling || isGameOver) {
@@ -95,12 +105,18 @@ const Game = () => {
 
   const handleDifficultyChange = (newDifficulty: Difficulty) => {
     if (difficulty !== newDifficulty) {
+      if (shuffleTimerRef.current) clearTimeout(shuffleTimerRef.current);
+      if (endShuffleTimerRef.current) clearTimeout(endShuffleTimerRef.current);
+      
       setDifficulty(newDifficulty);
     }
   };
 
   const resetGame = (skipAnimation = false) => {
     if (isShuffling) return;
+    
+    if (shuffleTimerRef.current) clearTimeout(shuffleTimerRef.current);
+    if (endShuffleTimerRef.current) clearTimeout(endShuffleTimerRef.current);
     
     setIsShuffling(true);
     
@@ -109,7 +125,6 @@ const Game = () => {
     }
 
     setIsGameOver(false);
-
     setFlippedIndexes([]);
     setMatchedPairs(0);
     setMoves(0);
@@ -117,11 +132,11 @@ const Game = () => {
     const emptyDeck = createDeck(difficulty);
     setCards(emptyDeck);
     
-    setTimeout(() => {
+    shuffleTimerRef.current = setTimeout(() => {
       const newDeck = createDeck(difficulty);
       setCards(newDeck);
       
-      setTimeout(() => {
+      endShuffleTimerRef.current = setTimeout(() => {
         setIsShuffling(false);
       }, 1200);
     }, skipAnimation ? 0 : 300);
