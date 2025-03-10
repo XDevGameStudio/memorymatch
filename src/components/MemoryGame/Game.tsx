@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { useTheme } from '@/hooks/use-theme';
 import { motion } from 'framer-motion';
@@ -22,10 +23,12 @@ const Game = () => {
   const [showWinnerDialog, setShowWinnerDialog] = useState(false);
   const [isShuffling, setIsShuffling] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
+  const [pendingDifficultyChange, setPendingDifficultyChange] = useState<Difficulty | null>(null);
   const { theme, setTheme } = useTheme();
   
   const shuffleTimerRef = useRef<NodeJS.Timeout | null>(null);
   const endShuffleTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const difficultyChangeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const maxMoves = {
     easy: 15,
@@ -39,8 +42,23 @@ const Game = () => {
     }
   }, [gameStarted]);
 
+  // Handle pending difficulty changes once shuffling is complete
   useEffect(() => {
-    if (gameStarted && cards.length > 0) {
+    if (!isShuffling && pendingDifficultyChange) {
+      const newDifficulty = pendingDifficultyChange;
+      setPendingDifficultyChange(null);
+      
+      // Use a small delay to ensure any previous animations are fully complete
+      difficultyChangeTimeoutRef.current = setTimeout(() => {
+        setDifficulty(newDifficulty);
+        resetGame(false);
+      }, 50);
+    }
+  }, [isShuffling, pendingDifficultyChange]);
+
+  // Effect to reset the game when difficulty changes (but not for pending changes)
+  useEffect(() => {
+    if (gameStarted && cards.length > 0 && !pendingDifficultyChange) {
       resetGame(false);
     }
   }, [difficulty]);
@@ -60,12 +78,22 @@ const Game = () => {
     }
   }, [matchedPairs, cards.length, moves, maxMoves, difficulty, showWinnerDialog, isGameOver]);
 
+  // Cleanup all timers on unmount
   useEffect(() => {
     return () => {
-      if (shuffleTimerRef.current) clearTimeout(shuffleTimerRef.current);
-      if (endShuffleTimerRef.current) clearTimeout(endShuffleTimerRef.current);
+      clearAllTimers();
     };
   }, []);
+
+  const clearAllTimers = () => {
+    if (shuffleTimerRef.current) clearTimeout(shuffleTimerRef.current);
+    if (endShuffleTimerRef.current) clearTimeout(endShuffleTimerRef.current);
+    if (difficultyChangeTimeoutRef.current) clearTimeout(difficultyChangeTimeoutRef.current);
+    
+    shuffleTimerRef.current = null;
+    endShuffleTimerRef.current = null;
+    difficultyChangeTimeoutRef.current = null;
+  };
 
   const handleCardClick = (index: number) => {
     if (moves >= maxMoves[difficulty] || isShuffling || isGameOver) {
@@ -105,20 +133,22 @@ const Game = () => {
 
   const handleDifficultyChange = (newDifficulty: Difficulty) => {
     if (difficulty !== newDifficulty) {
-      if (shuffleTimerRef.current) clearTimeout(shuffleTimerRef.current);
-      if (endShuffleTimerRef.current) clearTimeout(endShuffleTimerRef.current);
-      
-      setDifficulty(newDifficulty);
+      // If currently shuffling, queue the difficulty change
+      if (isShuffling) {
+        setPendingDifficultyChange(newDifficulty);
+      } else {
+        clearAllTimers();
+        setDifficulty(newDifficulty);
+      }
     }
   };
 
   const resetGame = (skipAnimation = false) => {
     if (isShuffling) return;
     
-    if (shuffleTimerRef.current) clearTimeout(shuffleTimerRef.current);
-    if (endShuffleTimerRef.current) clearTimeout(endShuffleTimerRef.current);
-    
+    clearAllTimers();
     setIsShuffling(true);
+    setPendingDifficultyChange(null);
     
     if (showWinnerDialog) {
       setShowWinnerDialog(false);
@@ -129,13 +159,16 @@ const Game = () => {
     setMatchedPairs(0);
     setMoves(0);
     
+    // Set empty deck immediately to ensure correct card count
     const emptyDeck = createDeck(difficulty);
     setCards(emptyDeck);
     
+    // First delay - prepare for shuffle animation
     shuffleTimerRef.current = setTimeout(() => {
       const newDeck = createDeck(difficulty);
       setCards(newDeck);
       
+      // Second delay - end shuffle animation
       endShuffleTimerRef.current = setTimeout(() => {
         setIsShuffling(false);
       }, 1200);
