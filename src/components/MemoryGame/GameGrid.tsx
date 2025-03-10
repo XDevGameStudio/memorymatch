@@ -36,25 +36,38 @@ const GameGrid: React.FC<GameGridProps> = ({
     }
   };
 
+  // Calculate the total number of cells based on difficulty
+  const getTotalCells = (difficulty: Difficulty): number => {
+    switch (difficulty) {
+      case 'easy': return 12;
+      case 'medium': return 20;
+      case 'hard': return 28;
+      default: return 20;
+    }
+  };
+
   // Create a shuffled array of indices for the animation sequence
   const shuffleIndices = React.useMemo(() => {
-    return Array.from({ length: 28 }, (_, i) => i) // Use max potential cards (hard mode)
+    const totalCells = getTotalCells(difficulty);
+    return Array.from({ length: totalCells }, (_, i) => i)
       .sort(() => Math.random() - 0.5);
   }, [isShuffling, difficulty]);
 
-  // Calculate the number of empty placeholders to add based on difficulty
-  const getPlaceholders = () => {
-    const totalCells = {
-      easy: 12,
-      medium: 20,
-      hard: 28
-    }[difficulty];
+  // Generate placeholder cards when actual cards aren't available yet
+  const placeholderCards = React.useMemo(() => {
+    const totalCells = getTotalCells(difficulty);
+    const emptyCount = Math.max(0, totalCells - cards.length);
+    
+    return Array.from({ length: emptyCount }, (_, i) => ({
+      id: -1 - i, // Negative IDs to distinguish from real cards
+      value: '',
+      isFlipped: false,
+      isMatched: false
+    }));
+  }, [cards.length, difficulty]);
 
-    // Return placeholders to fill the grid
-    return Array.from({ length: Math.max(0, totalCells - cards.length) }, (_, i) => i);
-  };
-
-  const placeholders = getPlaceholders();
+  // Combine real cards with placeholders to maintain grid size
+  const displayCards = [...cards, ...placeholderCards];
 
   return (
     <div
@@ -67,57 +80,56 @@ const GameGrid: React.FC<GameGridProps> = ({
         perspective: 2000,
       }}
     >
-      {/* Real cards */}
-      {cards.map((card, index) => (
-        <motion.div
-          key={`card-${card.id}-${difficulty}`}
-          initial={isShuffling ? { 
-            scale: 1
-          } : false}
-          animate={isShuffling ? {
-            rotateY: [0, 180, 360],
-            scale: [1, 0.8, 1],
-            x: [0, (shuffleIndices.indexOf(index) % 2 === 0 ? 30 : -30), 0],
-            y: [0, (shuffleIndices.indexOf(index) % 3 === 0 ? 20 : -20), 0],
-            z: [0, 50, 0],
-            transition: {
-              duration: 1,
-              delay: index * 0.02, // Staggered timing for cards
-              ease: [0.25, 0.1, 0.25, 1] // Custom cubic-bezier for smoother motion
-            }
-          } : {
-            rotateY: 0,
-            scale: 1,
-            x: 0,
-            y: 0,
-            z: 0,
-            transition: {
-              duration: 0.5,
-              ease: "easeOut"
-            }
-          }}
-          style={{ 
-            perspective: 1000,
-            transformStyle: "preserve-3d",
-            backfaceVisibility: "hidden"
-          }}
-        >
-          <Card
-            value={card.value}
-            isFlipped={flippedIndexes.includes(index) || card.isMatched}
-            isMatched={card.isMatched}
-            onClick={() => onCardClick(index)}
-          />
-        </motion.div>
-      ))}
-
-      {/* Empty placeholder slots to maintain grid layout */}
-      {placeholders.map((placeholder) => (
-        <div 
-          key={`placeholder-${placeholder}-${difficulty}`}
-          className="rounded-lg opacity-0"
-        ></div>
-      ))}
+      {displayCards.map((card, index) => {
+        const isPlaceholder = card.id < 0;
+        
+        return (
+          <motion.div
+            key={`card-${card.id}-${difficulty}`}
+            initial={isShuffling ? { 
+              scale: 1
+            } : false}
+            animate={isShuffling ? {
+              rotateY: [0, 180, 360],
+              scale: [1, 0.8, 1],
+              x: [0, (shuffleIndices.indexOf(index) % 2 === 0 ? 30 : -30), 0],
+              y: [0, (shuffleIndices.indexOf(index) % 3 === 0 ? 20 : -20), 0],
+              z: [0, 50, 0],
+              transition: {
+                duration: 1,
+                delay: index * 0.02, // Staggered timing for cards
+                ease: [0.25, 0.1, 0.25, 1] // Custom cubic-bezier for smoother motion
+              }
+            } : {
+              rotateY: 0,
+              scale: 1,
+              x: 0,
+              y: 0,
+              z: 0,
+              transition: {
+                duration: 0.5,
+                ease: "easeOut"
+              }
+            }}
+            style={{ 
+              perspective: 1000,
+              transformStyle: "preserve-3d",
+              backfaceVisibility: "hidden"
+            }}
+          >
+            {!isPlaceholder ? (
+              <Card
+                value={card.value}
+                isFlipped={flippedIndexes.includes(index) || card.isMatched}
+                isMatched={card.isMatched}
+                onClick={() => onCardClick(index)}
+              />
+            ) : (
+              <div className="rounded-lg opacity-0 w-full h-full"></div>
+            )}
+          </motion.div>
+        );
+      })}
     </div>
   );
 };

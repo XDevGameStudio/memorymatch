@@ -9,7 +9,7 @@ import DifficultySelector from '../TicTacToe/DifficultySelector';
 import GameControls from '../TicTacToe/GameControls';
 import WinnerDialog from '../TicTacToe/WinnerDialog';
 import GameGrid from './GameGrid';
-import { Trophy, Move } from 'lucide-react';
+import { Trophy, Move, Shuffle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const Game = () => {
@@ -22,6 +22,7 @@ const Game = () => {
   const [gameStarted, setGameStarted] = useState<boolean>(false);
   const [showWinnerDialog, setShowWinnerDialog] = useState(false);
   const [isShuffling, setIsShuffling] = useState(false);
+  const [isGameOver, setIsGameOver] = useState(false);
   const { theme, setTheme } = useTheme();
 
   const maxMoves = {
@@ -33,7 +34,8 @@ const Game = () => {
   // Initialize the game when it first starts
   useEffect(() => {
     if (gameStarted && cards.length === 0) {
-      resetGame(true);
+      // When coming from home screen, trigger the shuffle animation
+      resetGame(false);
     }
   }, [gameStarted]);
 
@@ -47,7 +49,7 @@ const Game = () => {
   // Check for win/loss conditions
   useEffect(() => {
     // Only check win condition when cards exist and when we're not already showing the dialog
-    if (cards.length === 0 || showWinnerDialog) return;
+    if (cards.length === 0 || showWinnerDialog || isGameOver) return;
     
     const hasWon = matchedPairs === cards.length / 2;
     const hasLost = moves >= maxMoves[difficulty];
@@ -56,12 +58,13 @@ const Game = () => {
       if (hasWon) {
         setTotalWins(prev => prev + 1);
       }
+      setIsGameOver(true);
       setShowWinnerDialog(true);
     }
-  }, [matchedPairs, cards.length, moves, maxMoves, difficulty, showWinnerDialog]);
+  }, [matchedPairs, cards.length, moves, maxMoves, difficulty, showWinnerDialog, isGameOver]);
 
   const handleCardClick = (index: number) => {
-    if (moves >= maxMoves[difficulty] || isShuffling) {
+    if (moves >= maxMoves[difficulty] || isShuffling || isGameOver) {
       return; // Prevent clicks when game is over or shuffling
     }
 
@@ -114,15 +117,20 @@ const Game = () => {
       setShowWinnerDialog(false);
     }
 
+    // Reset game over state
+    setIsGameOver(false);
+
     // Reset game state
     setFlippedIndexes([]);
     setMatchedPairs(0);
     setMoves(0);
     
-    // Add a small delay for the shuffling animation 
-    // (can be skipped for initial load if desired)
-    const animationDelay = skipAnimation ? 0 : 1000;
+    // Add a small delay for the shuffling animation
+    // Create an empty deck first to maintain grid size
+    const emptyDeck = createDeck(difficulty);
+    setCards(emptyDeck);
     
+    // Real shuffle happens with a slight delay
     setTimeout(() => {
       const newDeck = createDeck(difficulty);
       setCards(newDeck);
@@ -130,12 +138,15 @@ const Game = () => {
       // End the shuffling animation after cards are set
       setTimeout(() => {
         setIsShuffling(false);
-      }, 300);
-    }, animationDelay);
+      }, 1200);
+    }, skipAnimation ? 0 : 300);
   };
 
   const handleWinnerDialogReset = () => {
-    resetGame(false);
+    setShowWinnerDialog(false);
+    setTimeout(() => {
+      resetGame(false);
+    }, 100);
   };
 
   if (!gameStarted) {
@@ -183,6 +194,18 @@ const Game = () => {
             <Trophy className="w-5 h-5" />
             <span className="font-bold">{totalWins}</span>
           </div>
+          <div className="flex items-center gap-2">
+            <Shuffle className={`w-5 h-5 ${isShuffling ? 'animate-spin' : ''}`} />
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={() => resetGame(false)}
+              disabled={isShuffling}
+              className="p-1 h-auto"
+            >
+              Shuffle
+            </Button>
+          </div>
         </div>
 
         <GameGrid
@@ -207,6 +230,7 @@ const Game = () => {
         isDraw={false}
         onReset={handleWinnerDialogReset}
         onHome={() => {
+          setShowWinnerDialog(false);
           setGameStarted(false);
           resetGame(false);
         }}
