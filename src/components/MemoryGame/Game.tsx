@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '@/hooks/use-theme';
 import { motion } from 'framer-motion';
