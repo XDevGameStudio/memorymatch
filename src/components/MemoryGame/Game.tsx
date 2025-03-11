@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { useTheme } from '@/hooks/use-theme';
 import { motion } from 'framer-motion';
@@ -26,6 +27,7 @@ const Game = () => {
   
   const shuffleTimerRef = useRef<NodeJS.Timeout | null>(null);
   const endShuffleTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const pendingDifficultyRef = useRef<Difficulty | null>(null);
 
   const maxMoves = {
     easy: 15,
@@ -40,8 +42,10 @@ const Game = () => {
   }, [gameStarted]);
 
   useEffect(() => {
-    if (gameStarted && cards.length > 0) {
-      resetGame(false);
+    if (gameStarted && cards.length > 0 && !isShuffling) {
+      if (pendingDifficultyRef.current === null) {
+        resetGame(false);
+      }
     }
   }, [difficulty]);
 
@@ -59,6 +63,15 @@ const Game = () => {
       setShowWinnerDialog(true);
     }
   }, [matchedPairs, cards.length, moves, maxMoves, difficulty, showWinnerDialog, isGameOver]);
+
+  useEffect(() => {
+    // When shuffling stops, apply any pending difficulty change
+    if (!isShuffling && pendingDifficultyRef.current !== null) {
+      const newDifficulty = pendingDifficultyRef.current;
+      pendingDifficultyRef.current = null;
+      setDifficulty(newDifficulty);
+    }
+  }, [isShuffling]);
 
   useEffect(() => {
     return () => {
@@ -105,10 +118,12 @@ const Game = () => {
 
   const handleDifficultyChange = (newDifficulty: Difficulty) => {
     if (difficulty !== newDifficulty) {
-      if (shuffleTimerRef.current) clearTimeout(shuffleTimerRef.current);
-      if (endShuffleTimerRef.current) clearTimeout(endShuffleTimerRef.current);
-      
-      setDifficulty(newDifficulty);
+      if (isShuffling) {
+        // Queue up the difficulty change to apply after current shuffle
+        pendingDifficultyRef.current = newDifficulty;
+      } else {
+        setDifficulty(newDifficulty);
+      }
     }
   };
 
@@ -129,6 +144,7 @@ const Game = () => {
     setMatchedPairs(0);
     setMoves(0);
     
+    // Always create empty deck with current difficulty first
     const emptyDeck = createDeck(difficulty);
     setCards(emptyDeck);
     

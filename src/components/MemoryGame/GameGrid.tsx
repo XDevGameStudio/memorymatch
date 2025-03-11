@@ -68,9 +68,11 @@ const GameGrid: React.FC<GameGridProps> = ({
 
   // Combine real cards with placeholders to maintain grid size
   const displayCards = [...cards, ...placeholderCards];
+  const totalCells = getTotalCells(difficulty);
 
   return (
     <div
+      key={`grid-${difficulty}-${totalCells}`} // Add key to force re-render when difficulty changes
       className={cn(
         "grid gap-4 w-full mx-auto p-4",
         gridSizeClass[difficulty],
@@ -80,12 +82,12 @@ const GameGrid: React.FC<GameGridProps> = ({
         perspective: 2000,
       }}
     >
-      {displayCards.map((card, index) => {
+      {displayCards.slice(0, totalCells).map((card, index) => {
         const isPlaceholder = card.id < 0;
         
         return (
           <motion.div
-            key={`card-${card.id}-${difficulty}`}
+            key={`card-${card.id}-${index}-${difficulty}`}
             initial={isShuffling ? { 
               scale: 1
             } : false}
